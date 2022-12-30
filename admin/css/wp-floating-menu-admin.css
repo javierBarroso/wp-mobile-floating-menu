@@ -1,0 +1,271 @@
+.style_selector_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2rem;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+div.settings-header-page {
+  border-radius: .2rem .2rem 0 0;
+  padding: 30px 20px;
+  margin: 0;
+  position: relative;
+  background-color: #3db4d8;
+}
+
+div.settings-header-page h3 {
+  color: #fff;
+  font-size: 24px;
+}
+
+.style-input {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.settings-options {
+  margin: 2rem 0;
+  width: 60%;
+}
+
+.settings-options .tabs {
+  gap: 0;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+.settings-options .tabs .tab {
+  background-color: #eee;
+  border: none;
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.settings-options .tabs .tab:hover {
+  background-color: #ddd;
+}
+
+.settings-options .tabs button.active, .settings-options .tabs .active:hover {
+  background-color: #ccc;
+}
+
+.settings-options .tab-content {
+  display: none;
+  padding: 3rem 1.5rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: -1px;
+  row-gap: 2rem;
+}
+
+.settings-options .tab-content .option {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 2fr;
+      grid-template-columns: 1fr 2fr;
+  justify-items: start;
+}
+
+.settings-options .tab-content .option .item-icon .icon-selector {
+  padding: 1rem 2rem;
+  border: 1px #ccc solid;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.settings-options .tab-content .option .item-icon .icon-selector li {
+  border: 1px solid #ccc;
+  padding: 10px 1rem;
+}
+
+.settings-options .tab-content .option .item-icon .icon-selector li div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.settings-options .tab-content .option .checkbox-input label {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  background: #888;
+  border-radius: 0.3rem;
+}
+
+.settings-options .tab-content .option .checkbox-input label::after, .settings-options .tab-content .option .checkbox-input label::before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-block;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+}
+
+.settings-options .tab-content .option .checkbox-input label::after {
+  top: 100%;
+  content: attr(data-tg-on);
+}
+
+.settings-options .tab-content .option .checkbox-input label::before {
+  top: 0;
+  content: attr(data-tg-off);
+}
+
+.settings-options .tab-content .option .checkbox-input input {
+  display: none;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:disabled + .tgl-btn {
+  opacity: 0.5;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:active {
+  background: #888;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:active:before {
+  top: -10%;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:checked + .tgl-btn {
+  background: #86d993;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:checked + .tgl-btn:before {
+  top: -100%;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:checked + .tgl-btn:after {
+  top: 0;
+}
+
+.settings-options .tab-content .option .checkbox-input input[type=checkbox]:checked + .tgl-btn:active:after {
+  top: 10%;
+}
+
+.settings-options .tab-content .option .radio-input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: .3rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr auto;
+      grid-template-columns: 1fr 1fr auto;
+  -webkit-column-gap: .5rem;
+          column-gap: .5rem;
+}
+
+.settings-options .tab-content .option .radio-input label {
+  display: block;
+  width: 5em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  background: #888;
+  border-radius: 0.3rem;
+  text-align: center;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+  padding: inherit 1.8rem;
+  gap: 2px;
+}
+
+.settings-options .tab-content .option .radio-input label::after, .settings-options .tab-content .option .radio-input label::before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-block;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  left: 0;
+  text-align: center;
+  position: absolute;
+  line-height: 2em;
+  font-weight: bold;
+  color: #fff;
+}
+
+.settings-options .tab-content .option .radio-input label::after {
+  top: 100%;
+  content: attr(data);
+}
+
+.settings-options .tab-content .option .radio-input label::before {
+  top: 0%;
+  content: attr(data);
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio] {
+  display: none;
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio]:disabled + label {
+  opacity: 0.5;
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio]:checked + label {
+  background-color: #86d993;
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio]:checked + label:before {
+  top: -100%;
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio]:checked + label:after {
+  background: #86d993;
+  top: 0;
+}
+
+.settings-options .tab-content .option .radio-input input[type=radio]:checked + label:active:after {
+  top: 10%;
+}
+/*# sourceMappingURL=wp-floating-menu-admin.css.map */

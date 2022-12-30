@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 29.999999 30"
+   version="1.1"
+   id="svg872"
+   sodipodi:docname="boton-menu-icon.svg"
+   width="30"
+   height="30"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview874"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     showgrid="false"
+     units="px"
+     width="60px"
+     inkscape:zoom="4.1010776"
+     inkscape:cx="26.090704"
+     inkscape:cy="43.890904"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg872" />
+  <defs
+     id="defs852">
+    <style
+       id="style850">.cls-1{fill:#fff;}.cls-2{fill:none;stroke:#cbcbcb;stroke-miterlimit:10;stroke-width:5.57px;}.cls-3{fill:#92278e;}</style>
+  </defs>
+  <g
+     id="Layer_2"
+     data-name="Layer 2"
+     transform="matrix(0.28636886,0,0,0.28636886,4.9999999,4.9999999)">
+    <g
+       id="Layer_1-2"
+       data-name="Layer 1">
+      <circle
+         class="cls-1"
+         cx="34.919998"
+         cy="34.919998"
+         r="34.919998"
+         id="circle854" />
+      <circle
+         class="cls-2"
+         cx="34.919998"
+         cy="34.919998"
+         r="32.049999"
+         id="circle856" />
+      <line
+         class="cls-1"
+         x1="19.59"
+         y1="26.09"
+         x2="50.25"
+         y2="26.09"
+         id="line858" />
+      <path
+         class="cls-3"
+         d="M 50.25,27.48 H 19.59 a 1.39,1.39 0 1 1 0,-2.78 h 30.66 a 1.39,1.39 0 0 1 0,2.78 z"
+         id="path860" />
+      <line
+         class="cls-1"
+         x1="50.25"
+         y1="35.34"
+         x2="28.879999"
+         y2="35.34"
+         id="line862" />
+      <path
+         class="cls-3"
+         d="m 28.88,33.94 h 21.37 a 1.4,1.4 0 0 1 0,2.79 H 28.88 a 1.4,1.4 0 1 1 0,-2.79 z"
+         id="path864" />
+      <line
+         class="cls-1"
+         x1="22.379999"
+         y1="44.669998"
+         x2="50.25"
+         y2="44.669998"
+         id="line866" />
+      <path
+         class="cls-3"
+         d="M 50.25,46.07 H 22.38 a 1.4,1.4 0 1 1 0,-2.79 h 27.87 a 1.4,1.4 0 0 1 0,2.79 z"
+         id="path868" />
+    </g>
+  </g>
+</svg>
