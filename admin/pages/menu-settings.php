@@ -178,11 +178,16 @@ if(isset($_POST['save-settings'])){
     if(isset($_POST['header-type'])){
        
         $customStructure['headerType'] = $_POST['header-type'];
+    }else{
+        $customStructure['headerType'] = '';
     }
     
     if(isset($_POST['header-alignment'])){
        
         $customStructure['headerAlignment'] = $_POST['header-alignment'];
+    }else{
+        $customStructure['headerAlignment'] = '';
+
     }
 
     if(isset($_POST['header-text'])){
