@@ -61,6 +61,8 @@ if($structure_data->showHeader == 'on'){
 
     $header .= '</div>';
     
+}else{
+    $header = '<br><br>';
 }
 
 $logout = '';

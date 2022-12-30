@@ -186,7 +186,7 @@ if(isset($_POST['save-settings'])){
        
         $customStructure['headerAlignment'] = $_POST['header-alignment'];
     }else{
-        $customStructure['headerAlignment'] = '';
+        $customStructure['headerAlignment'] = 'center';
 
     }
 
@@ -337,11 +337,11 @@ var_dump(json_decode($json)); */
                         <label for="">Header alignment</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; echo $style_records != null && $style_records->headerAlignment == 'left' ? 'checked' : ''; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
                         <label for="header-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; echo $style_records != null && $style_records->headerAlignment == 'center' ? 'checked' : ''; ?> class="header-style <?php echo $style_records ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'center' ? 'checked' : ''; ?> class="header-style <?php echo $style_records ? '' : 'default'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
                         <label for="header-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; echo $style_records != null && $style_records->headerAlignment == 'right' ? 'checked' : ''; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
                         <label for="header-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
