@@ -208,6 +208,17 @@ if(isset($_POST['save-settings'])){
         $customStructure['menuAlignment'] = $_POST['menu-alignment'];
     }
 
+    if(isset($_POST['show-footer'])){
+        $customStructure['showFooter'] = $_POST['show-footer'];
+    }else{
+        $customStructure['showFooter'] = 'off';
+    }
+    if(isset($_POST['show-footer'])){
+        $customStructure['footerAlignment'] = $_POST['footer-alignment'];
+    }else{
+        $customStructure['footerAlignment'] = $style_records ? $style_records->footerAlignment : 'left';
+    }
+
     set_custom_css($customCss);
     
     save_structure($customStructure);
@@ -352,7 +363,7 @@ var_dump(json_decode($json)); */
                         <label for="show-header">Header text</label>
                     </div>
                     <div class="text-input">
-                        <input <?php echo $style_records != null ? 'value="'. $style_records->headerText.'"' : 'value="test"'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
+                        <input <?php echo $style_records != null ? 'value="'. $style_records->headerText.'"' : 'value=""'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
                     </div>
                 </div>
             </div>
@@ -364,8 +375,21 @@ var_dump(json_decode($json)); */
                         <label for="show-footer">Show menu footer</label>
                     </div>
                     <div class="checkbox-input">
-                        <input class="tgl-skewed" type="checkbox" name="" id="show-footer">
+                        <input <?php echo $style_records != null && $style_records->showFooter == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style')">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-footer"></label>
+                    </div>
+                </div>
+                <div class="option">
+                    <div class="label">
+                        <label for="">Footer alignment</label>
+                    </div>
+                    <div class="radio-input">
+                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style <?php echo $style_records != null ? '' : 'default'; ?>" type="radio" name="footer-alignment" id="footer-alignment-left" value="left">
+                        <label for="footer-alignment-left" data="LEFT"></label>
+                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'center' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-center" value="center">
+                        <label for="footer-alignment-center" data="CENTER"></label>
+                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-right" value="right">
+                        <label for="footer-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
             </div>

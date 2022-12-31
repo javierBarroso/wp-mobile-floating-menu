@@ -66,11 +66,14 @@ if($structure_data->showHeader == 'on'){
 }
 
 $logout = '';
-/* if(is_user_logged_in(  )){
 
-    $logo = '<div class="floating-menu-logo"><img src="'.get_avatar_url( wp_get_current_user()->ID).'"><div><a href="'.wp_get_current_user(  )->user_url.'">'.wp_get_current_user(  )->display_name.'</a></div></div><hr><br>';
-    $logout = '<br><hr><a href="'.wp_logout_url( 'home' ).'">Log Out</a>';
-} */
+if($structure_data->showFooter){
+
+    if(is_user_logged_in(  )){
+    
+        $logout = '<br><hr><br><a href="'.wp_logout_url( 'home' ).'">Log Out</a>';
+    }
+}
 
 wp_nav_menu( array(
     //'theme_location'=>'primary',
