@@ -175,18 +175,19 @@ if(isset($_POST['save-settings'])){
         $customStructure['showHeader'] = 'off';
     }
     
-    if(isset($_POST['header-type'])){
+    if(isset($_POST['show-header'])){
        
         $customStructure['headerType'] = $_POST['header-type'];
     }else{
-        $customStructure['headerType'] = '';
+        $customStructure['headerType'] = $style_records ? $style_records->headerType : 'logo';
     }
     
-    if(isset($_POST['header-alignment'])){
+    if(isset($_POST['show-header'])){
        
         $customStructure['headerAlignment'] = $_POST['header-alignment'];
     }else{
-        $customStructure['headerAlignment'] = 'center';
+        
+        $customStructure['headerAlignment'] = $style_records ? $style_records->headerAlignment : 'center';
 
     }
 
@@ -194,7 +195,7 @@ if(isset($_POST['save-settings'])){
        
         $customStructure['headerText'] = $_POST['header-text'];
     }else{
-        $customStructure['headerText'] = '';
+        $customStructure['headerText'] = $style_records ? $style_records->headerText : '';
     }
 
     if(isset($_POST['button-alignment'])){
@@ -270,6 +271,7 @@ var_dump(json_decode($json)); */
                         <select id="menu-select" name='menu_id'>
                             
                             <?php
+                            
                                 foreach ($menus as $key => $menu) {
                                     $selected = '';
                                     if($menu->term_id == $records[0]['current_menu']){
@@ -337,11 +339,11 @@ var_dump(json_decode($json)); */
                         <label for="">Header alignment</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
                         <label for="header-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'center' ? 'checked' : ''; ?> class="header-style <?php echo $style_records ? '' : 'default'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'center' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style <?php echo $style_records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
                         <label for="header-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
+                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
                         <label for="header-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -350,7 +352,7 @@ var_dump(json_decode($json)); */
                         <label for="show-header">Header text</label>
                     </div>
                     <div class="text-input">
-                        <input <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; echo $style_records != null && $style_records->showHeader == 'on' ? 'value="'. $style_records->headerText.'"' : ''; ?> class="header-style" type="text" name="header-text" id="show-header">
+                        <input <?php echo $style_records != null ? 'value="'. $style_records->headerText.'"' : 'value="test"'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
                     </div>
                 </div>
             </div>
