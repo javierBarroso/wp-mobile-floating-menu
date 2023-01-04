@@ -23,6 +23,13 @@ $style_preset = [
         "--selectedItemBackground" => ["#576cd9ff", 4],
         "--selectedItemColor" => ["#feffffff", 5],
         "--fontSize" => ["1em", 6],
+    ],
+    'glass' => [
+        "--menuBackground" => ["#ffffff33", 2],
+        "--fontColor" => ["#fafafaff", 3],
+        "--selectedItemBackground" => ["#ffffff33", 4],
+        "--selectedItemColor" => ["#ffffffff", 5],
+        "--fontSize" => ["1em", 6],
     ]
 ];
 
@@ -110,9 +117,11 @@ function save_structure($option){
 
 if(isset($_POST['save-settings'])){
 
+     
+
     $settings = [
         'Id' => 1,
-        'current_menu' => $_POST['menu_id'],
+        'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
         'style_menu' => $_POST['style_menu'],
     ];
 
@@ -129,6 +138,8 @@ if(isset($_POST['save-settings'])){
     $customCss = [];
 
     $customStructure = [];
+
+    /* Style settings */
 
     if($_POST['style_menu'] == 'custom-style'){
 
@@ -158,14 +169,40 @@ if(isset($_POST['save-settings'])){
         }
 
         
-        /* $json = json_encode($customStructure);
-        var_dump($json); */
+        
     }else{
         
         foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
             $customCss[$key] = $value;
         }
     }
+
+    /* general settings */
+
+    
+    if(isset($_POST['show-menu'])){
+        $customStructure['showMenu'] = $_POST['show-menu'];
+    }else{
+        $customStructure['showMenu'] = 'off';
+    }
+    
+
+    if(isset($_POST['show-menu'])){
+       
+        $customStructure['buttonAlignment'] = $_POST['button-alignment'];
+    }else{
+        $customStructure['buttonAlignment'] = $style_records ? $style_records->buttonAlignment : 'right';
+    }
+    
+    if(isset($_POST['show-menu'])){
+       
+        $customStructure['menuAlignment'] = $_POST['menu-alignment'];
+    }else{
+        $customStructure['menuAlignment'] = $style_records ? $style_records->menuAlignment : 'right';
+    }
+
+    /* Header settings */
+
 
     if(isset($_POST['show-header'])){
            
@@ -174,6 +211,7 @@ if(isset($_POST['save-settings'])){
 
         $customStructure['showHeader'] = 'off';
     }
+
     
     if(isset($_POST['show-header'])){
        
@@ -198,15 +236,7 @@ if(isset($_POST['save-settings'])){
         $customStructure['headerText'] = $style_records ? $style_records->headerText : '';
     }
 
-    if(isset($_POST['button-alignment'])){
-       
-        $customStructure['buttonAlignment'] = $_POST['button-alignment'];
-    }
-    
-    if(isset($_POST['menu-alignment'])){
-       
-        $customStructure['menuAlignment'] = $_POST['menu-alignment'];
-    }
+    /* Footer settings */
 
     if(isset($_POST['show-footer'])){
         $customStructure['showFooter'] = $_POST['show-footer'];
@@ -217,6 +247,14 @@ if(isset($_POST['save-settings'])){
         $customStructure['footerAlignment'] = $_POST['footer-alignment'];
     }else{
         $customStructure['footerAlignment'] = $style_records ? $style_records->footerAlignment : 'left';
+    }
+
+    /* Presets settings */
+
+    if(isset($_POST['style_menu'])){
+        $customStructure['stylePreset'] = $_POST['style_menu'];
+    }else{
+        $customStructure['stylePreset'] = $style_records ? $style_records->stylePreset : 'dark';
     }
 
     set_custom_css($customCss);
@@ -230,20 +268,7 @@ if(isset($_POST['save-settings'])){
     
     
 }
-/* $data = [['Hello', 2], ['World', 3]];
-array_push($data, ["loco", 4]);
-$data['test'] = ['Milo', 5];
 
-$json = json_encode($data);
-
-$array = json_decode($json);
-
-foreach ($array as $key => $value) {
-    //var_dump($key.' : '.$value[1]. ';');
-    //var_dump($value);
-}
-
-var_dump(json_decode($json)); */
 
 ?>
 
@@ -275,14 +300,25 @@ var_dump(json_decode($json)); */
             <div id="general" class="tab-content">
                 <div class="option">
                     <div class="label">
+                        <label for="menu-active">Activate mobile menu</label>
+                    </div>
+                    <div class="checkbox-input">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active')">
+                        <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-menu"></label>
+                    </div>
+                </div>
+                <div class="option">
+                    <div class="label">
                         <label for="menu-select">Select Menu</label>
                     </div>
             
                     <div class="select-input">
-                        <select id="menu-select" name='menu_id'>
+                        <select <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> id="menu-select" name='menu_id' class="menu-active">
                             
                             <?php
-                            
+                                if(empty($menus)){
+                                    echo 'You must create a menu';
+                                }
                                 foreach ($menus as $key => $menu) {
                                     $selected = '';
                                     if($menu->term_id == $records[0]['current_menu']){
@@ -300,11 +336,11 @@ var_dump(json_decode($json)); */
                         <label for="menu-select">Menu button position</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
                         <label for="button-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
                         <label for="button-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'right' ? 'checked' : ''; ?> class="<?php echo $style_records ? '' : 'default'; ?>" type="radio" name="button-alignment" id="button-alignment-right" value="right">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $style_records != null ? '' : 'default'; ?>" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
                         <label for="button-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -313,11 +349,11 @@ var_dump(json_decode($json)); */
                         <label for="menu-select">Menu position</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
                         <label for="menu-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
                         <label for="menu-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'right' ? 'checked' : ''; ?> class="<?php echo $style_records ? '' : 'default'; ?>" type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
+                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $style_records != null ? '' : 'default'; ?>" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
                         <label for="menu-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -462,7 +498,7 @@ var_dump(json_decode($json)); */
                         <br>
                         <div class="radio-input">
     
-                            <input type="radio" name="style_menu" id="dark" value="dark" <?php if($records[0]['style_menu'] == 'dark'){ echo 'checked'; } ?>>
+                            <input class="<?php echo $records && $records[0]['style_menu'] ? $records[0]['style_menu'] : 'default' ?>" type="radio" name="style_menu" id="dark" value="dark" <?php echo !empty($records) && $records[0]['style_menu'] == 'dark' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="dark" data="Dark"></label>
                         </div>
@@ -474,7 +510,7 @@ var_dump(json_decode($json)); */
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="light" value="light" <?php if($records[0]['style_menu'] == 'light'){ echo 'checked'; } ?>>
+                            <input type="radio" name="style_menu" id="light" value="light" <?php echo !empty($records) && $records[0]['style_menu'] == 'light' ? 'checked' : ''; ?>>
                             <label class="style-radio" for="light" data="Light"></label>
                         </div>
                         
@@ -486,7 +522,7 @@ var_dump(json_decode($json)); */
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="blue" value="blue" <?php if($records[0]['style_menu'] == 'blue'){ echo 'checked'; } ?>>
+                            <input type="radio" name="style_menu" id="blue" value="blue" <?php echo !empty($records) && $records[0]['style_menu'] == 'blue' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="blue" data="Blue"></label>
                         </div>
@@ -498,7 +534,7 @@ var_dump(json_decode($json)); */
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="glass" value="glass" <?php if($records[0]['style_menu'] == 'glass'){ echo 'checked'; } ?>>
+                            <input type="radio" name="style_menu" id="glass" value="glass" <?php echo !empty($records) && $records[0]['style_menu'] == 'glass' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="glass" data="Glass"></label>
                         </div>
@@ -510,7 +546,7 @@ var_dump(json_decode($json)); */
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="custom-style" value="custom-style" <?php if($records[0]['style_menu'] == 'custom-style'){ echo 'checked'; } ?>>
+                            <input type="radio" name="style_menu" id="custom-style" value="custom-style" <?php echo !empty($records) && $records[0]['style_menu'] == 'custom-style' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="custom-style" data="Custom"></label>
                         </div>

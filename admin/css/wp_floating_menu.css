@@ -11,6 +11,13 @@ nav.floating-nav-menu-container {
     font-family: 'Poppins-Thin';
     src: url("../assets/font/Poppins-Regular.ttf");
   }
+  .hide {
+    display: none;
+  }
+  hr {
+    border: none;
+    border-top: solid 1px var(--fontColor);
+  }
   /* html{
         --menuBackground : #ffffffff;
         --fontColor: #747474ff;
@@ -181,18 +188,19 @@ nav.floating-nav-menu-container {
                 --itemColor: #747474ff; */
   }
   nav.floating-nav-menu-container ul.floating-nav-menu.glass {
-    border-left: solid 2px #ffffffaa;
-    border-top: solid 2px #ffffffaa;
+    border-top: solid 2px #ffffff66;
+    /* border-top: solid 2px #ffffffaa; */
     /* background: rgba( 255, 255, 255, 0.01 ); */
     -webkit-box-shadow: 0 8px 32px 0 rgba(29, 29, 29, 0.37);
             box-shadow: 0 8px 32px 0 rgba(29, 29, 29, 0.37);
     backdrop-filter: saturate(20%) blur(5px);
     -webkit-backdrop-filter: blur(7px);
+    color: rgba(236, 236, 236, 0.171);
     /* --selectedItemBackground: rgba(216, 216, 216, 0.2);
                 --selectedItemColor: #ffffffff;
                 --itemColor: #ffffffff;
                 --backMenuColor: rgb(69, 183, 228); */
-    text-shadow: #5f454555 2px 2px 3px;
+    text-shadow: #262c3555 2px 2px 2px;
   }
   nav.floating-nav-menu-container ul.floating-nav-menu.blue {
     /* border-left: solid 2px #ffffffaa;
@@ -363,8 +371,8 @@ nav.floating-nav-menu-container {
     color: aliceblue;
     z-index: 999999;
     position: fixed;
-    -webkit-box-shadow: 15px 15px 20px -4px rgba(150, 150, 150, 0.3);
-            box-shadow: 15px 15px 20px -4px rgba(150, 150, 150, 0.3);
+    -webkit-box-shadow: 5px 5px 10px -4px rgba(50, 50, 60, 0.8);
+            box-shadow: 5px 5px 10px -4px rgba(50, 50, 60, 0.8);
     border-radius: 50%;
     background-color: transparent;
     background: url("../assets/img/boton-menu.svg");
