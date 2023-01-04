@@ -4,32 +4,32 @@ $menus = wp_get_nav_menus();
 
 $style_preset = [
     'dark' => [
-        "--menuBackground" => ["#171717ff", 2],
-        "--fontColor" => ["#747474ff", 3],
-        "--selectedItemBackground" => ["#353535ff", 4],
-        "--selectedItemColor" => ["#ffffffff", 5],
-        "--fontSize" => ["1em", 6],
+        "menuBackground" => ["#171717ff", 2],
+        "fontColor" => ["#747474ff", 3],
+        "selectedItemBackground" => ["#353535ff", 4],
+        "selectedItemColor" => ["#ffffffff", 5],
+        "fontSize" => ["1em", 6],
     ],
     'light' => [
-        "--menuBackground" => ["#ffffffff", 2],
-        "--fontColor" => ["#747474ff", 3],
-        "--selectedItemBackground" => ["#eeeff6ff", 4],
-        "--selectedItemColor" => ["#2a2e3aff", 5],
-        "--fontSize" => ["1em", 6],
+        "menuBackground" => ["#ffffffff", 2],
+        "fontColor" => ["#747474ff", 3],
+        "selectedItemBackground" => ["#eeeff6ff", 4],
+        "selectedItemColor" => ["#2a2e3aff", 5],
+        "fontSize" => ["1em", 6],
     ],
     'blue' => [
-        "--menuBackground" => ["#2f49d1ff", 2],
-        "--fontColor" => ["#8292e3ff", 3],
-        "--selectedItemBackground" => ["#576cd9ff", 4],
-        "--selectedItemColor" => ["#feffffff", 5],
-        "--fontSize" => ["1em", 6],
+        "menuBackground" => ["#2f49d1ff", 2],
+        "fontColor" => ["#8292e3ff", 3],
+        "selectedItemBackground" => ["#576cd9ff", 4],
+        "selectedItemColor" => ["#feffffff", 5],
+        "fontSize" => ["1em", 6],
     ],
     'glass' => [
-        "--menuBackground" => ["#ffffff33", 2],
-        "--fontColor" => ["#fafafaff", 3],
-        "--selectedItemBackground" => ["#ffffff33", 4],
-        "--selectedItemColor" => ["#ffffffff", 5],
-        "--fontSize" => ["1em", 6],
+        "menuBackground" => ["#ffffff33", 2],
+        "fontColor" => ["#fafafaff", 3],
+        "selectedItemBackground" => ["#ffffff33", 4],
+        "selectedItemColor" => ["#ffffffff", 5],
+        "fontSize" => ["1em", 6],
     ]
 ];
 
@@ -44,10 +44,16 @@ $query = 'SELECT * FROM '. $fm_current_settings_table;
 $records = $wpdb->get_results($query, ARRAY_A);
 
 $query = 'SELECT * FROM '. $fm_custom_style_table;
-$style_records = $wpdb->get_results($query, ARRAY_A);
-if(!empty($style_records)){
+$style = $wpdb->get_results($query, ARRAY_A);
 
-    $style_records = json_decode($style_records[0]['menu_structure']);
+$style_records = null;
+$css_records = null; 
+var_dump($style_preset['dark']['menuBackground'][0]);
+
+if(!empty($style)){
+
+    $style_records = json_decode($style[0]['menu_structure']);
+    $css_records = json_decode($style[0]['css_style']);
 }
 
 function get_icons(){
@@ -75,6 +81,8 @@ function set_custom_css(array $style){
         'css_style' => $css_style,
     ];
 
+    //var_dump($css_style);
+
     empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
     
     
@@ -84,7 +92,7 @@ function set_custom_css(array $style){
     
     foreach ($style as $key => $value) {
         
-        $styleFile[$value[1]]= $key .' : '.$value[0].';';
+        $styleFile[$value[1]]= '--'. $key .' : '.$value[0].';';
         
     }
     
@@ -139,9 +147,36 @@ if(isset($_POST['save-settings'])){
 
     $customStructure = [];
 
+    foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
+        $customCss['--' . $key] = $value;
+    }
+
+    if(isset($_POST['background_color'])){
+        $customCss['menuBackground'] = [$_POST['background_color'], 2];
+    }
+
+    if(isset($_POST['front_color'])){
+        $customCss['fontColor'] = [$_POST['front_color'], 3];
+    }
+
+    if(isset($_POST['selected_item_background_color'])){
+       
+        $customCss['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
+    }
+
+    if(isset($_POST['selected_item_color'])){
+       
+        $customCss['selectedItemColor'] = [$_POST['selected_item_color'], 5];
+    }
+
+    if(isset($_POST['item_font_size'])){
+       
+        $customCss['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
+    }
+
     /* Style settings */
 
-    if($_POST['style_menu'] == 'custom-style'){
+    /* if($_POST['style_menu'] == 'custom-style'){
 
 
 
@@ -175,7 +210,7 @@ if(isset($_POST['save-settings'])){
         foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
             $customCss[$key] = $value;
         }
-    }
+    } */
 
     /* general settings */
 
@@ -262,10 +297,11 @@ if(isset($_POST['save-settings'])){
     save_structure($customStructure);
 
     $query = 'SELECT * FROM '. $fm_custom_style_table;
-    $style_records = $wpdb->get_results($query, ARRAY_A);
-    $style_records = json_decode($style_records[0]['menu_structure']);
+    $options_records = $wpdb->get_results($query, ARRAY_A);
+    $style_records = json_decode($options_records[0]['menu_structure']);
+    $css_records = json_decode($options_records[0]['css_style']);
     
-    
+    var_dump($css_records->menuBackground[0]);
     
 }
 
@@ -441,7 +477,7 @@ if(isset($_POST['save-settings'])){
                         <label for="bg-color">Background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="background_color" class="bg-color-color-picker" value="#ffffff">
+                        <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $css_records ? $css_records->menuBackground[0] : substr($style_preset['dark']['menuBackground'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
@@ -451,7 +487,7 @@ if(isset($_POST['save-settings'])){
                         <label for="f-color">Font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="front_color" class="front-color-picker" value="#555555">
+                        <input type="color" name="front_color" class="front-color-picker" value="<?php echo $css_records ? $css_records->fontColor[0] : substr($style_preset['dark']['fontColor'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
@@ -461,7 +497,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="#cccccc">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? substr($css_records->selectedItemBackground[0], 0, -2) : substr($style_preset['dark']['selectedItemBackground'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
@@ -471,7 +507,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-color">Selected item font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="#666666">
+                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ? substr($css_records->selectedItemColor[0], 0, -2) : substr($style_preset['dark']['selectedItemColor'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
@@ -481,7 +517,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-font-size">Font size</label>
                     </div>
                     <div class="color-input">
-                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker" value="1">
+                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker" value="<?php echo $css_records ? substr($css_records->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
                     </div>
                     
                 </div>

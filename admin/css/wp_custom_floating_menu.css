@@ -1,9 +1,9 @@
 @media ( max-width: 35em) {
     html{
---menuBackground : #171717ff;
---fontColor : #747474ff;
---selectedItemBackground : #353535ff;
---selectedItemColor : #ffffffff;
+--menuBackground : #171717;
+--fontColor : #69ba85;
+--selectedItemBackground : #000000;
+--selectedItemColor : #000000;
 --fontSize : 1em;
         --background:rgba(36, 36, 36, 0);
         --background-display:none;
