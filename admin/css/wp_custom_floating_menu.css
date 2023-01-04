@@ -1,7 +1,7 @@
 @media ( max-width: 35em) {
     html{
---menuBackground : #000000;
---fontColor : #000000;
+--menuBackground : #ffffff33;
+--fontColor : #fafafa;
 --selectedItemBackground : #ffffff;
 --selectedItemColor : #ffffff;
 --fontSize : 1em;

@@ -4,31 +4,31 @@ $menus = wp_get_nav_menus();
 
 $style_preset = [
     'dark' => [
-        "menuBackground" => ["#171717ff", 2],
+        "menuBackground" => ["#171717", 2],
         "fontColor" => ["#747474ff", 3],
-        "selectedItemBackground" => ["#353535ff", 4],
-        "selectedItemColor" => ["#ffffffff", 5],
+        "selectedItemBackground" => ["#353535", 4],
+        "selectedItemColor" => ["#ffffff", 5],
         "fontSize" => ["1em", 6],
     ],
     'light' => [
-        "menuBackground" => ["#ffffffff", 2],
-        "fontColor" => ["#747474ff", 3],
-        "selectedItemBackground" => ["#eeeff6ff", 4],
-        "selectedItemColor" => ["#2a2e3aff", 5],
+        "menuBackground" => ["#ffffff", 2],
+        "fontColor" => ["#747474", 3],
+        "selectedItemBackground" => ["#eeeff6", 4],
+        "selectedItemColor" => ["#2a2e3a", 5],
         "fontSize" => ["1em", 6],
     ],
     'blue' => [
-        "menuBackground" => ["#2f49d1ff", 2],
+        "menuBackground" => ["#2f49d1", 2],
         "fontColor" => ["#8292e3ff", 3],
-        "selectedItemBackground" => ["#576cd9ff", 4],
-        "selectedItemColor" => ["#feffffff", 5],
+        "selectedItemBackground" => ["#576cd9", 4],
+        "selectedItemColor" => ["#feffff", 5],
         "fontSize" => ["1em", 6],
     ],
     'glass' => [
         "menuBackground" => ["#ffffff33", 2],
-        "fontColor" => ["#fafafaff", 3],
-        "selectedItemBackground" => ["#ffffff33", 4],
-        "selectedItemColor" => ["#ffffffff", 5],
+        "fontColor" => ["#fafafa", 3],
+        "selectedItemBackground" => ["#ffffff", 4],
+        "selectedItemColor" => ["#ffffff", 5],
         "fontSize" => ["1em", 6],
     ]
 ];
@@ -476,7 +476,7 @@ if(isset($_GET['test'])){
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? substr($css_records->selectedItemBackground[0], 0, -2) : substr($style_preset['dark']['selectedItemBackground'][0], 0, -2) ?>">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? $css_records->selectedItemBackground[0] : substr($style_preset['dark']['selectedItemBackground'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
@@ -486,7 +486,7 @@ if(isset($_GET['test'])){
                         <label for="s-item-color">Selected item font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ? substr($css_records->selectedItemColor[0], 0, -2) : substr($style_preset['dark']['selectedItemColor'][0], 0, -2) ?>">
+                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ?$css_records->selectedItemColor[0] : substr($style_preset['dark']['selectedItemColor'][0], 0, -2) ?>">
                     </div>
                 </div>
                 
