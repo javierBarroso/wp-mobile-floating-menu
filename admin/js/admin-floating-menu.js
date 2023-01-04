@@ -30,3 +30,7 @@ function openTab(event, id){
     event.currentTarget.className += " active";
     
 }
+
+function test(){
+    window.location.href = window-location.href + '?test=' + 'Hola';
+}

@@ -147,70 +147,47 @@ if(isset($_POST['save-settings'])){
 
     $customStructure = [];
 
-    foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
-        $customCss['--' . $key] = $value;
-    }
+    
 
-    if(isset($_POST['background_color'])){
-        $customCss['menuBackground'] = [$_POST['background_color'], 2];
-    }
-
-    if(isset($_POST['front_color'])){
-        $customCss['fontColor'] = [$_POST['front_color'], 3];
-    }
-
-    if(isset($_POST['selected_item_background_color'])){
-       
-        $customCss['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
-    }
-
-    if(isset($_POST['selected_item_color'])){
-       
-        $customCss['selectedItemColor'] = [$_POST['selected_item_color'], 5];
-    }
-
-    if(isset($_POST['item_font_size'])){
-       
-        $customCss['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
-    }
+    
 
     /* Style settings */
 
-    /* if($_POST['style_menu'] == 'custom-style'){
-
+    if($_POST['style_menu'] == 'custom-style'){
 
 
         if(isset($_POST['background_color'])){
-            $customCss['--menuBackground'] = [$_POST['background_color'], 2];
+        $customCss['menuBackground'] = [$_POST['background_color'], 2];
         }
 
         if(isset($_POST['front_color'])){
-            $customCss['--fontColor'] = [$_POST['front_color'], 3];
+            $customCss['fontColor'] = [$_POST['front_color'], 3];
         }
 
         if(isset($_POST['selected_item_background_color'])){
-           
-            $customCss['--selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
+        
+            $customCss['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
         }
 
         if(isset($_POST['selected_item_color'])){
-           
-            $customCss['--selectedItemColor'] = [$_POST['selected_item_color'], 5];
+        
+            $customCss['selectedItemColor'] = [$_POST['selected_item_color'], 5];
         }
 
         if(isset($_POST['item_font_size'])){
-           
-            $customCss['--fontSize'] = [$_POST['item_font_size'] . 'em', 6];
+        
+            $customCss['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
         }
+            
 
         
         
     }else{
-        
-        foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
-            $customCss[$key] = $value;
+            foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
+            $customCss['--' . $key] = $value;
         }
-    } */
+        
+    }
 
     /* general settings */
 
@@ -304,8 +281,10 @@ if(isset($_POST['save-settings'])){
     var_dump($css_records->menuBackground[0]);
     
 }
+if(isset($_GET['test'])){
 
-
+    echo $_GET['test'];
+}
 ?>
 
 <div class="wrap">
