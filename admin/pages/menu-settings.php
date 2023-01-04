@@ -184,7 +184,7 @@ if(isset($_POST['save-settings'])){
         
     }else{
             foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
-            $customCss['--' . $key] = $value;
+            $customCss[$key] = $value;
         }
         
     }
