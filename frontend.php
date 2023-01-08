@@ -77,11 +77,11 @@ if(!empty($structure_data) && $structure_data->showHeader == 'on'){
 
 $logout = '';
 
-if(!empty($structure_data) && $structure_data->showFooter){
+if(!empty($structure_data) && $structure_data->showFooter == 'on'){
 
-    if(is_user_logged_in(  )){
+    if(is_user_logged_in(  ) && $structure_data->showLogin == 'on'){
     
-        $logout = '<br><hr><br><a href="'.wp_logout_url( 'home' ).'">Log Out</a>';
+        $logout = '<br><hr><br><div class="menu-footer '.$structure_data->footerAlignment.'"><a href="'.wp_logout_url( 'home' ).'">Log Out</a></div>';
     }
 }
 

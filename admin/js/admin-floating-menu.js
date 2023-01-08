@@ -34,3 +34,15 @@ function openTab(event, id){
 function test(){
     window.location.href = window-location.href + '?test=' + 'Hola';
 }
+
+function slider(){
+    var slider = document.getElementsByClassName("range-picker");
+
+    for (let index = 0; index < slider.length; index++) {
+        const value = slider[index].value;
+        
+        slider[index].nextElementSibling.innerHTML = Number(value).toFixed(1) + ' em';
+    }
+    
+};
+

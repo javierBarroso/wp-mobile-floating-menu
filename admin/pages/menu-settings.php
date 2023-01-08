@@ -25,9 +25,9 @@ $style_preset = [
         "fontSize" => ["1em", 6],
     ],
     'glass' => [
-        "menuBackground" => ["rgba( 255, 255, 255, 0.01 )", 2],
+        "menuBackground" => ["#ffffff", 2],
         "fontColor" => ["#fafafa", 3],
-        "selectedItemBackground" => ["rgba( 255, 255, 255, 0.01 )", 4],
+        "selectedItemBackground" => ["#ffffff33", 4],
         "selectedItemColor" => ["#ffffff", 5],
         "fontSize" => ["1em", 6],
     ]
@@ -262,6 +262,11 @@ if(isset($_POST['save-settings'])){
     }else{
         $customStructure['showFooter'] = 'off';
     }
+    if(isset($_POST['show-login'])){
+        $customStructure['showLogin'] = $_POST['show-login'];
+    }else{
+        $customStructure['showLogin'] = 'off';
+    }
     if(isset($_POST['show-footer'])){
         $customStructure['footerAlignment'] = $_POST['footer-alignment'];
     }else{
@@ -446,6 +451,15 @@ if(isset($_POST['save-settings'])){
                 </div>
                 <div class="option">
                     <div class="label">
+                        <label for="show-logout">Show logout or login</label>
+                    </div>
+                    <div class="checkbox-input">
+                        <input <?php echo $style_records != null && $style_records->showLogin == 'on' ? 'checked' : ''; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
+                        <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-login"></label>
+                    </div>
+                </div>
+                <div class="option">
+                    <div class="label">
                         <label for="">Footer alignment</label>
                     </div>
                     <div class="radio-input">
@@ -464,7 +478,7 @@ if(isset($_POST['save-settings'])){
             <div id="custom-colors" class="tab-content">
                 
             
-                <div class="style-input">
+                <div class="option">
                     <div class="label">
                         <!-- <input type="checkbox" name="" id="bg-color" onclick="enable_input('bg-color-color-picker')"> -->
                         <label for="bg-color">Background color</label>
@@ -474,7 +488,7 @@ if(isset($_POST['save-settings'])){
                     </div>
                 </div>
                 
-                <div class="style-input">
+                <div class="option">
                     <div class="label">
                         <!-- <input type="checkbox" name="" id="f-color" onclick="enable_input('front-color-picker')"> -->
                         <label for="f-color">Font color</label>
@@ -484,17 +498,17 @@ if(isset($_POST['save-settings'])){
                     </div>
                 </div>
                 
-                <div class="style-input">
+                <div class="option">
                     <div class="label">
                         <!-- <input type="checkbox" name="" id="s-item-bg-color" onclick="enable_input('select-item-bg-color-picker')"> -->
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? $css_records->selectedItemBackground[0] : $style_preset['dark']['selectedItemBackground'][0] ?>">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? ($records[0]['style_menu'] == 'glass' ? substr($css_records->selectedItemBackground[0], 0, -2) : $css_records->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
                     </div>
                 </div>
                 
-                <div class="style-input">
+                <div class="option">
                     <div class="label">
                         <!-- <input type="checkbox" name="" id="s-item-color" onclick="enable_input('select-item-color-picker')"> -->
                         <label for="s-item-color">Selected item font color</label>
@@ -504,13 +518,14 @@ if(isset($_POST['save-settings'])){
                     </div>
                 </div>
                 
-                <div class="style-input">
+                <div class="option">
                     <div class="label">
                         <!-- <input type="checkbox" name="" id="s-font-size" onclick="enable_input('select-font-size-picker')"> -->
                         <label for="s-font-size">Font size</label>
                     </div>
-                    <div class="color-input">
-                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker" value="<?php echo $css_records ? substr($css_records->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
+                    <div class="slider-input">
+                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo $css_records ? substr($css_records->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
+                        <span>0</span>
                     </div>
                     
                 </div>
@@ -664,7 +679,7 @@ if(isset($_POST['save-settings'])){
         }
         
     }
-
+    slider();
 </script>
 
 

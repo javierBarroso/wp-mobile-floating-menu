@@ -203,7 +203,8 @@ nav.floating-nav-menu-container{
             &.glass{
                 border-top: solid 2px #ffffff66;
                 /* border-top: solid 2px #ffffffaa; */
-                /* background: rgba( 255, 255, 255, 0.01 ); */
+                
+                background: rgba( var(--menuBackground), 0.01 );
                 box-shadow: 0 8px 32px 0 rgba(29, 29, 29, 0.37);
                 backdrop-filter: saturate(20%) blur( 5px );
                 -webkit-backdrop-filter: blur( 7px );  
@@ -321,7 +322,8 @@ nav.floating-nav-menu-container{
                         
                         color: var(--selectedItemColor);
                         font-family: 'Poppins-Thin';
-                        background: var(--selectedItemBackground);
+                        background-color: var(--selectedItemBackground);
+                        //background: rgba( var(--selectedItemBackground), 0.5 ) ;
                         border-radius: 0.5em;
                         line-height: 100%;
                         
@@ -331,6 +333,18 @@ nav.floating-nav-menu-container{
                 }
                 
                 
+            }
+            .menu-footer{
+                display: flex;
+                &.right{
+                    justify-content: flex-end;
+                }
+                &.left{
+                    justify-content: flex-start;
+                }
+                &.center{
+                    justify-content: center;
+                }
             }
         }
 
