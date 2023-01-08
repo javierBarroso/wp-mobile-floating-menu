@@ -85,8 +85,8 @@ if(!empty($structure_data) && $structure_data->showFooter){
     }
 }
 
-if(!empty($records)){
-    var_dump(wp_get_nav_menu_object( 'test' ));
+if(!empty($records) && $records[0]['current_menu'] && json_decode($custom_records[0]['menu_structure'])->showMenu == 'on'){
+    
 
     wp_nav_menu( array(
         //'theme_location'=>'primary',
@@ -106,6 +106,10 @@ if(!empty($records)){
     function register_floating_menu(){
         register_nav_menu( 'primary', array('Primary Menu') );
     }
+}else{
+    ?>
+    <nav class="floating-nav-menu-container"><ul class="floating-nav-menu dark right" data-visible="false" style="display:flex ;"><div style="margin: auto;">no menu selected</div></ul> </nav>
+    <?php
 }
  
 ?>

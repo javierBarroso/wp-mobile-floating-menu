@@ -3,7 +3,8 @@
 
     global $wpdb;
 
-    $fm_current_settings_table = $wpdb -> prefix . 'jb_floating_menu_settings';
+    $old_table_1 = $wpdb -> prefix . 'jb_floating_menu_settings';
+    $old_table_2 = $wpdb -> prefix . 'jb_floating_menu_settings';
 
     $wpdb->query( "DROP TABLE IF EXISTS $fm_current_settings_table" );
     

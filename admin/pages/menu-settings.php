@@ -5,7 +5,7 @@ $menus = wp_get_nav_menus();
 $style_preset = [
     'dark' => [
         "menuBackground" => ["#171717", 2],
-        "fontColor" => ["#747474ff", 3],
+        "fontColor" => ["#747474", 3],
         "selectedItemBackground" => ["#353535", 4],
         "selectedItemColor" => ["#ffffff", 5],
         "fontSize" => ["1em", 6],
@@ -19,15 +19,15 @@ $style_preset = [
     ],
     'blue' => [
         "menuBackground" => ["#2f49d1", 2],
-        "fontColor" => ["#8292e3ff", 3],
+        "fontColor" => ["#8292e3", 3],
         "selectedItemBackground" => ["#576cd9", 4],
         "selectedItemColor" => ["#feffff", 5],
         "fontSize" => ["1em", 6],
     ],
     'glass' => [
-        "menuBackground" => ["#ffffff33", 2],
+        "menuBackground" => ["rgba( 255, 255, 255, 0.01 )", 2],
         "fontColor" => ["#fafafa", 3],
-        "selectedItemBackground" => ["#ffffff", 4],
+        "selectedItemBackground" => ["rgba( 255, 255, 255, 0.01 )", 4],
         "selectedItemColor" => ["#ffffff", 5],
         "fontSize" => ["1em", 6],
     ]
@@ -47,14 +47,21 @@ $query = 'SELECT * FROM '. $fm_custom_style_table;
 $style = $wpdb->get_results($query, ARRAY_A);
 
 $style_records = null;
-$css_records = null; 
-var_dump($style_preset['dark']['menuBackground'][0]);
+$css_records = null;
+$current_style_preset = 'dark';
+
+if(isset($records[0]['style_menu'])){
+    $current_style_preset = $records[0]['style_menu'];
+}
+
 
 if(!empty($style)){
 
     $style_records = json_decode($style[0]['menu_structure']);
     $css_records = json_decode($style[0]['css_style']);
 }
+
+
 
 function get_icons(){
 
@@ -81,7 +88,7 @@ function set_custom_css(array $style){
         'css_style' => $css_style,
     ];
 
-    //var_dump($css_style);
+   
 
     empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
     
@@ -153,11 +160,11 @@ if(isset($_POST['save-settings'])){
 
     /* Style settings */
 
-    if($_POST['style_menu'] == 'custom-style'){
+    if($_POST['style_menu'] == $current_style_preset){
 
 
         if(isset($_POST['background_color'])){
-        $customCss['menuBackground'] = [$_POST['background_color'], 2];
+            $customCss['menuBackground'] = [$_POST['background_color'], 2];
         }
 
         if(isset($_POST['front_color'])){
@@ -269,6 +276,16 @@ if(isset($_POST['save-settings'])){
         $customStructure['stylePreset'] = $style_records ? $style_records->stylePreset : 'dark';
     }
 
+    $settings = [
+        'Id' => 1,
+        'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
+        'style_menu' => $_POST['style_menu'],
+    ];
+
+
+    empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1));
+
+    
     set_custom_css($customCss);
     
     save_structure($customStructure);
@@ -278,13 +295,10 @@ if(isset($_POST['save-settings'])){
     $style_records = json_decode($options_records[0]['menu_structure']);
     $css_records = json_decode($options_records[0]['css_style']);
     
-    var_dump($css_records->menuBackground[0]);
     
 }
-if(isset($_GET['test'])){
 
-    echo $_GET['test'];
-}
+
 ?>
 
 <div class="wrap">
@@ -456,7 +470,7 @@ if(isset($_GET['test'])){
                         <label for="bg-color">Background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $css_records ? $css_records->menuBackground[0] : substr($style_preset['dark']['menuBackground'][0], 0, -2) ?>">
+                        <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $css_records != null ? $css_records->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ?>">
                     </div>
                 </div>
                 
@@ -466,7 +480,7 @@ if(isset($_GET['test'])){
                         <label for="f-color">Font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="front_color" class="front-color-picker" value="<?php echo $css_records ? $css_records->fontColor[0] : substr($style_preset['dark']['fontColor'][0], 0, -2) ?>">
+                        <input type="color" name="front_color" class="front-color-picker" value="<?php echo $css_records ? $css_records->fontColor[0] : $style_preset['dark']['fontColor'][0] ?>">
                     </div>
                 </div>
                 
@@ -476,7 +490,7 @@ if(isset($_GET['test'])){
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? $css_records->selectedItemBackground[0] : substr($style_preset['dark']['selectedItemBackground'][0], 0, -2) ?>">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? $css_records->selectedItemBackground[0] : $style_preset['dark']['selectedItemBackground'][0] ?>">
                     </div>
                 </div>
                 
@@ -486,7 +500,7 @@ if(isset($_GET['test'])){
                         <label for="s-item-color">Selected item font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ?$css_records->selectedItemColor[0] : substr($style_preset['dark']['selectedItemColor'][0], 0, -2) ?>">
+                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ?$css_records->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
                     </div>
                 </div>
                 
