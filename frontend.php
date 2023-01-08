@@ -95,7 +95,7 @@ if(!empty($records) && $records[0]['current_menu'] && json_decode($custom_record
         'container_class'=>'floating-nav-menu-container',
         'menu_class'=>'floating-nav-menu '. $records[0]['style_menu'] . ' ' . $structure_data->menuAlignment,
         'menu_id'=>'loco',
-        'items_wrap'=>'<ul data-visible="false" class="%2$s">Free version'.$header.'%3$s'.$logout .'</ul>',
+        'items_wrap'=>'<ul data-visible="false" class="%2$s">Free version '.$header.'%3$s'.$logout .'</ul>',
         'walker'=> !empty($records[0]['current_menu']) ? new floating_nav_menu_walker() : null,
      ) );
     
