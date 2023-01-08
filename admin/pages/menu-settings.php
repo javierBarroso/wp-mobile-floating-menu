@@ -325,7 +325,7 @@ if(isset($_POST['save-settings'])){
             <button class="tab" onClick="openTab(event, 'footer')">Footer</button>
             <button class="tab" onClick="openTab(event, 'style-presets')">Style Presets</button>
             <button class="tab" onClick="openTab(event, 'custom-colors')">Style</button>
-            <button class="tab" onClick="openTab(event, 'menu-icons')">Menu Icon</button>
+            <button class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</button>
         </div>
         <form method="post">
         <!-- tabs content -->
@@ -599,29 +599,16 @@ if(isset($_POST['save-settings'])){
                 
             </div>
 
-            <!-- <div id="menu-icons" class="tab-content">
-                <div class="option">
-                    <div class="label">
-                        <label for="header-type">Open menu button</label>
-                    </div>
-                    <div class="input">
-                        <select <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> name="header-type" class="header-style">
-                            <option <?php echo $style_records != null && $style_records->headerType == 'logo' ? 'selected' : ''; ?> value="logo">Site logo</option>
-                            <option <?php echo $style_records != null && $style_records->headerType == 'avatar' ? 'selected' : ''; ?> value="avatar">User avatar</option>
-                        </select>
-                    </div>
-                </div>
-            </div> -->
                     
             <!-- Item Icon Tab -->
-            <!-- <div id="item-icon" class="tab-content">
+            <div id="item-icon" class="tab-content">
                 <div class="option">
                     
-                    
+                    <h2>Under construction</h2>
 
-                    <ul class="item-icon">
+                    <!-- <ul class="item-icon">
                         <?php
-                        /* $items = wp_get_nav_menu_items( $records[0]['current_menu'] );
+                        $items = wp_get_nav_menu_items( $records[0]['current_menu'] );
 
                         $icons_list = get_icons();
                         $icon = '';
@@ -643,11 +630,11 @@ if(isset($_POST['save-settings'])){
                             $html .= '<div>no Icon</div>';
                             $html .= '</li>';
                         }
-                        echo $html; */
+                        echo $html;
                         ?>
-                    </ul>
+                    </ul> -->
                 </div>
-            </div> -->
+            </div>
             <br><br>
             <button class="button button-primary"  type="submit" name="save-settings">Save Changes</button>
         </form>
