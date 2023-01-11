@@ -18,8 +18,8 @@ if(!is_admin(  )){
 
 global $wpdb;
         
-$fm_current_settings_table = $wpdb -> prefix . 'floating_menu_settings';
-$fm_custom_style_table = $wpdb -> prefix . 'floating_menu_custom_style_settings';
+$fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
+$fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
 $query = 'SELECT * FROM '. $fm_current_settings_table;
 $records = $wpdb->get_results($query, ARRAY_A);
@@ -93,7 +93,7 @@ if(!empty($records) && $records[0]['current_menu'] && json_decode($custom_record
         'menu' => !empty($records[0]['current_menu']) ? $records[0]['current_menu'] : (object) array('term_id'=>0),
         'container'=>'nav',
         'container_class'=>'floating-nav-menu-container',
-        'menu_class'=>'floating-nav-menu '. $records[0]['style_menu'] . ' ' . $structure_data->menuAlignment,
+        'menu_class'=>'floating-nav-menu '. $records[0]['style_preset'] . ' ' . $structure_data->menuAlignment,
         'menu_id'=>'loco',
         'items_wrap'=>'<ul data-visible="false" class="%2$s">'.$header.'%3$s'.$logout .'</ul>',
         'walker'=> !empty($records[0]['current_menu']) ? new floating_nav_menu_walker() : null,

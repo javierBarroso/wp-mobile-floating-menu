@@ -1,43 +1,17 @@
 <?php
 
-$menus = wp_get_nav_menus();
+require_once plugin_dir_path( __FILE__ ) . 'partials/style-presets.php';
+require_once plugin_dir_path( __DIR__ ) . 'clases/settings-management.php';
 
-$style_preset = [
-    'dark' => [
-        "menuBackground" => ["#171717", 2],
-        "fontColor" => ["#747474", 3],
-        "selectedItemBackground" => ["#353535", 4],
-        "selectedItemColor" => ["#ffffff", 5],
-        "fontSize" => ["1em", 6],
-    ],
-    'light' => [
-        "menuBackground" => ["#ffffff", 2],
-        "fontColor" => ["#747474", 3],
-        "selectedItemBackground" => ["#eeeff6", 4],
-        "selectedItemColor" => ["#2a2e3a", 5],
-        "fontSize" => ["1em", 6],
-    ],
-    'blue' => [
-        "menuBackground" => ["#2f49d1", 2],
-        "fontColor" => ["#8292e3", 3],
-        "selectedItemBackground" => ["#576cd9", 4],
-        "selectedItemColor" => ["#feffff", 5],
-        "fontSize" => ["1em", 6],
-    ],
-    'glass' => [
-        "menuBackground" => ["#ffffff", 2],
-        "fontColor" => ["#fafafa", 3],
-        "selectedItemBackground" => ["#ffffff33", 4],
-        "selectedItemColor" => ["#ffffff", 5],
-        "fontSize" => ["1em", 6],
-    ]
-];
+$setting_manager = new WpSettingsManagement;
+
+$menus = $setting_manager->get_menus_list();
 
 
 global $wpdb;
 
-$fm_current_settings_table = $wpdb -> prefix . 'floating_menu_settings';
-$fm_custom_style_table = $wpdb -> prefix . 'floating_menu_custom_style_settings';
+$fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
+$fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
 
 $query = 'SELECT * FROM '. $fm_current_settings_table;
@@ -50,8 +24,8 @@ $style_records = null;
 $css_records = null;
 $current_style_preset = 'dark';
 
-if(isset($records[0]['style_menu'])){
-    $current_style_preset = $records[0]['style_menu'];
+if(isset($records[0]['style_preset'])){
+    $current_style_preset = $records[0]['style_preset'];
 }
 
 
@@ -75,7 +49,7 @@ function set_custom_css(array $style){
 
     global $wpdb;
 
-    $fm_custom_style_table = $wpdb -> prefix . 'floating_menu_custom_style_settings';
+    $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
     $query = 'SELECT * FROM '. $fm_custom_style_table;
     $records = $wpdb->get_results($query, ARRAY_A);
@@ -88,7 +62,7 @@ function set_custom_css(array $style){
         'css_style' => $css_style,
     ];
 
-   
+    
 
     empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
     
@@ -111,7 +85,7 @@ function save_structure($option){
 
     global $wpdb;
 
-    $fm_custom_style_table = $wpdb -> prefix . 'floating_menu_custom_style_settings';
+    $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
     $query = 'SELECT * FROM '. $fm_custom_style_table;
     $records = $wpdb->get_results($query, ARRAY_A);
@@ -131,13 +105,13 @@ function save_structure($option){
 
 
 if(isset($_POST['save-settings'])){
-
+    
      
 
-    $settings = [
+    /* $settings = [
         'Id' => 1,
         'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
-        'style_menu' => $_POST['style_menu'],
+        'style_preset' => $_POST['style_preset'],
     ];
 
 
@@ -146,7 +120,7 @@ if(isset($_POST['save-settings'])){
     
     
     $query = 'SELECT * FROM '. $fm_current_settings_table;
-    $records = $wpdb->get_results($query, ARRAY_A);
+    $records = $wpdb->get_results($query, ARRAY_A); */
 
 
     
@@ -160,7 +134,7 @@ if(isset($_POST['save-settings'])){
 
     /* Style settings */
 
-    if($_POST['style_menu'] == $current_style_preset){
+    if($_POST['style_preset'] == $current_style_preset){
 
 
         if(isset($_POST['background_color'])){
@@ -190,7 +164,7 @@ if(isset($_POST['save-settings'])){
         
         
     }else{
-            foreach ($style_preset[$_POST['style_menu']] as $key => $value) {
+            foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
             $customCss[$key] = $value;
         }
         
@@ -275,8 +249,8 @@ if(isset($_POST['save-settings'])){
 
     /* Presets settings */
 
-    if(isset($_POST['style_menu'])){
-        $customStructure['stylePreset'] = $_POST['style_menu'];
+    if(isset($_POST['style_preset'])){
+        $customStructure['stylePreset'] = $_POST['style_preset'];
     }else{
         $customStructure['stylePreset'] = $style_records ? $style_records->stylePreset : 'dark';
     }
@@ -284,7 +258,7 @@ if(isset($_POST['save-settings'])){
     $settings = [
         'Id' => 1,
         'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
-        'style_menu' => $_POST['style_menu'],
+        'style_preset' => $_POST['style_preset'],
     ];
 
 
@@ -307,9 +281,6 @@ if(isset($_POST['save-settings'])){
 ?>
 
 <div class="wrap">
-
-    
-   
     
     <div class="settings-header-page">
         <h3>Mobile Menu Settings</h3>
@@ -355,10 +326,10 @@ if(isset($_POST['save-settings'])){
                                 }
                                 foreach ($menus as $key => $menu) {
                                     $selected = '';
-                                    if($menu->term_id == $records[0]['current_menu']){
+                                    if($menu['id'] == $records[0]['current_menu']){
                                         $selected = 'selected';
                                     }
-                                    echo '<option value="'.$menu->term_id.'" '.$selected.'>'.$menu->name.'</option>' ;
+                                    echo '<option value="'.$menu['id'].'" '.$selected.'>'.$menu['name'].'</option>' ;
                                 }
                             ?>
     
@@ -504,7 +475,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? ($records[0]['style_menu'] == 'glass' ? substr($css_records->selectedItemBackground[0], 0, -2) : $css_records->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? ($records[0]['style_preset'] == 'glass' ? substr($css_records->selectedItemBackground[0], 0, -2) : $css_records->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
                     </div>
                 </div>
                 
@@ -542,7 +513,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
     
-                            <input class="<?php echo $records && $records[0]['style_menu'] ? $records[0]['style_menu'] : 'default' ?>" type="radio" name="style_menu" id="dark" value="dark" <?php echo !empty($records) && $records[0]['style_menu'] == 'dark' ? 'checked' : ''; ?>>
+                            <input class="<?php echo $style_records && $style_records->stylePreset ? $style_records->stylePreset : 'default' ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($style_records) && $style_records->stylePreset == 'dark' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="dark" data="Dark"></label>
                         </div>
@@ -554,7 +525,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="light" value="light" <?php echo !empty($records) && $records[0]['style_menu'] == 'light' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="light" value="light" <?php echo !empty($records) && $style_records->stylePreset == 'light' ? 'checked' : ''; ?>>
                             <label class="style-radio" for="light" data="Light"></label>
                         </div>
                         
@@ -566,7 +537,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="blue" value="blue" <?php echo !empty($records) && $records[0]['style_menu'] == 'blue' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="blue" value="blue" <?php echo !empty($records) && $style_records->stylePreset == 'blue' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="blue" data="Blue"></label>
                         </div>
@@ -578,7 +549,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="glass" value="glass" <?php echo !empty($records) && $records[0]['style_menu'] == 'glass' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="glass" value="glass" <?php echo !empty($records) && $style_records->stylePreset == 'glass' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="glass" data="Glass"></label>
                         </div>
@@ -590,7 +561,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_menu" id="custom-style" value="custom-style" <?php echo !empty($records) && $records[0]['style_menu'] == 'custom-style' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo !empty($records) && $style_records->stylePreset == 'custom-style' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="custom-style" data="Custom"></label>
                         </div>

@@ -73,8 +73,8 @@ class WpMobileFloatingMenu{
     function deactivate(){
         global $wpdb;
 
-        $fm_current_settings_table = $wpdb -> prefix . 'floating_menu_settings';
-        $fm_custom_style_table = $wpdb -> prefix . 'floating_menu_custom_style_settings';
+        $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
+        $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
         
         $wpdb->query( "DROP TABLE IF EXISTS $fm_custom_style_table, $fm_current_settings_table" );
         
