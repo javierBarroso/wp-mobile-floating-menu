@@ -7,33 +7,26 @@ $setting_manager = new WpSettingsManagement;
 
 $menus = $setting_manager->get_menus_list();
 
+$records = $setting_manager->load_settings();
+
 
 global $wpdb;
 
 $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
-$fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
 
-$query = 'SELECT * FROM '. $fm_current_settings_table;
-$records = $wpdb->get_results($query, ARRAY_A);
-
-$query = 'SELECT * FROM '. $fm_custom_style_table;
-$style = $wpdb->get_results($query, ARRAY_A);
-
-$style_records = null;
-$css_records = null;
 $current_style_preset = 'dark';
 
-if(isset($records[0]['style_preset'])){
-    $current_style_preset = $records[0]['style_preset'];
+if(isset($records->stylePreset)){
+    $current_style_preset = $records->stylePreset;
 }
 
 
-if(!empty($style)){
+/* if(!empty($style)){
 
     $style_records = json_decode($style[0]['menu_structure']);
     $css_records = json_decode($style[0]['css_style']);
-}
+} */
 
 
 
@@ -45,7 +38,7 @@ function get_icons(){
     return $files;
 }
 
-function set_custom_css(array $style){
+/* function set_custom_css(array $style){
 
     global $wpdb;
 
@@ -101,12 +94,138 @@ function save_structure($option){
     empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
     
 }
-
+ */
 
 
 if(isset($_POST['save-settings'])){
     
-     
+    //$records = $setting_manager->save_general_settings();
+    
+    $customCss = [];
+
+    $customStructure = [];
+
+    /* Style settings */
+    
+    if($_POST['style_preset'] == $current_style_preset){
+
+
+        if(isset($_POST['background_color'])){
+            $customCss['style']['menuBackground'] = [$_POST['background_color'], 2];
+        }
+
+        if(isset($_POST['front_color'])){
+            $customCss['style']['fontColor'] = [$_POST['front_color'], 3];
+        }
+
+        if(isset($_POST['selected_item_background_color'])){
+        
+            $customCss['style']['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
+        }
+
+        if(isset($_POST['selected_item_color'])){
+        
+            $customCss['style']['selectedItemColor'] = [$_POST['selected_item_color'], 5];
+        }
+
+        if(isset($_POST['item_font_size'])){
+        
+            $customCss['style']['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
+        }
+            
+
+        
+        
+    }else{
+            foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
+            $customCss['style'][$key] = $value;
+        }
+        
+    }
+    /* general settings */
+    
+    
+    if(isset($_POST['show-menu'])){
+        $customCss['showMenu'] = $_POST['show-menu'];
+    }else{
+        $customCss['showMenu'] = 'off';
+    }
+
+    if(isset($_POST['menu_id'])){
+        $customCss['menuId'] = $_POST['menu_id'];
+    }else{
+        $customCss['menuId'] = '';
+    }
+    
+
+    if(isset($_POST['show-menu'])){
+        $customCss['buttonAlignment'] = $_POST['button-alignment'];
+    }else{
+        $customCss['buttonAlignment'] = $records ? $records->buttonAlignment : 'right';
+    }
+    
+    if(isset($_POST['show-menu'])){
+        $customCss['menuAlignment'] = $_POST['menu-alignment'];
+    }else{
+        $customCss['menuAlignment'] = $records ? $records->menuAlignment : 'right';
+    }
+
+    /* Header settings */
+
+
+    if(isset($_POST['show-header'])){
+        $customCss['showHeader'] = $_POST['show-header'];
+    }else{
+
+        $customCss['showHeader'] = 'off';
+    }
+
+    
+    if(isset($_POST['show-header'])){
+        $customCss['headerType'] = $_POST['header-type'];
+    }else{
+        $customCss['headerType'] = $records ? $records->headerType : 'logo';
+    }
+    
+    if(isset($_POST['show-header'])){
+        $customCss['headerAlignment'] = $_POST['header-alignment'];
+    }else{
+        
+        $customCss['headerAlignment'] = $records ? $records->headerAlignment : 'center';
+
+    }
+
+    if(isset($_POST['header-text'])){
+        $customCss['headerText'] = $_POST['header-text'];
+    }else{
+        $customCss['headerText'] = $records ? $records->headerText : '';
+    }
+
+    /* Footer settings */
+
+    if(isset($_POST['show-footer'])){
+        $customCss['showFooter'] = $_POST['show-footer'];
+    }else{
+        $customCss['showFooter'] = 'off';
+    }
+    if(isset($_POST['show-login'])){
+        $customCss['showLogin'] = $_POST['show-login'];
+    }else{
+        $customCss['showLogin'] = 'off';
+    }
+    if(isset($_POST['show-footer'])){
+        $customCss['footerAlignment'] = $_POST['footer-alignment'];
+    }else{
+        $customCss['footerAlignment'] = $records ? $records->footerAlignment : 'left';
+    }
+
+    /* Presets settings */
+
+    if(isset($_POST['style_preset'])){
+        $customCss['stylePreset'] = $_POST['style_preset'];
+    }else{
+        $customCss['stylePreset'] = $records ? $records->stylePreset : 'dark';
+    }
 
     /* $settings = [
         'Id' => 1,
@@ -115,166 +234,20 @@ if(isset($_POST['save-settings'])){
     ];
 
 
-    empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1));
+    empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1)); */
 
+    $records = $setting_manager->save_general_settings($customCss);
     
+    //set_custom_css($customCss);
     
-    $query = 'SELECT * FROM '. $fm_current_settings_table;
-    $records = $wpdb->get_results($query, ARRAY_A); */
+    //save_structure($customStructure);
 
-
-    
-    $customCss = [];
-
-    $customStructure = [];
-
-    
-
-    
-
-    /* Style settings */
-
-    if($_POST['style_preset'] == $current_style_preset){
-
-
-        if(isset($_POST['background_color'])){
-            $customCss['menuBackground'] = [$_POST['background_color'], 2];
-        }
-
-        if(isset($_POST['front_color'])){
-            $customCss['fontColor'] = [$_POST['front_color'], 3];
-        }
-
-        if(isset($_POST['selected_item_background_color'])){
-        
-            $customCss['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
-        }
-
-        if(isset($_POST['selected_item_color'])){
-        
-            $customCss['selectedItemColor'] = [$_POST['selected_item_color'], 5];
-        }
-
-        if(isset($_POST['item_font_size'])){
-        
-            $customCss['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
-        }
-            
-
-        
-        
-    }else{
-            foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
-            $customCss[$key] = $value;
-        }
-        
-    }
-
-    /* general settings */
-
-    
-    if(isset($_POST['show-menu'])){
-        $customStructure['showMenu'] = $_POST['show-menu'];
-    }else{
-        $customStructure['showMenu'] = 'off';
-    }
-    
-
-    if(isset($_POST['show-menu'])){
-       
-        $customStructure['buttonAlignment'] = $_POST['button-alignment'];
-    }else{
-        $customStructure['buttonAlignment'] = $style_records ? $style_records->buttonAlignment : 'right';
-    }
-    
-    if(isset($_POST['show-menu'])){
-       
-        $customStructure['menuAlignment'] = $_POST['menu-alignment'];
-    }else{
-        $customStructure['menuAlignment'] = $style_records ? $style_records->menuAlignment : 'right';
-    }
-
-    /* Header settings */
-
-
-    if(isset($_POST['show-header'])){
-           
-        $customStructure['showHeader'] = $_POST['show-header'];
-    }else{
-
-        $customStructure['showHeader'] = 'off';
-    }
-
-    
-    if(isset($_POST['show-header'])){
-       
-        $customStructure['headerType'] = $_POST['header-type'];
-    }else{
-        $customStructure['headerType'] = $style_records ? $style_records->headerType : 'logo';
-    }
-    
-    if(isset($_POST['show-header'])){
-       
-        $customStructure['headerAlignment'] = $_POST['header-alignment'];
-    }else{
-        
-        $customStructure['headerAlignment'] = $style_records ? $style_records->headerAlignment : 'center';
-
-    }
-
-    if(isset($_POST['header-text'])){
-       
-        $customStructure['headerText'] = $_POST['header-text'];
-    }else{
-        $customStructure['headerText'] = $style_records ? $style_records->headerText : '';
-    }
-
-    /* Footer settings */
-
-    if(isset($_POST['show-footer'])){
-        $customStructure['showFooter'] = $_POST['show-footer'];
-    }else{
-        $customStructure['showFooter'] = 'off';
-    }
-    if(isset($_POST['show-login'])){
-        $customStructure['showLogin'] = $_POST['show-login'];
-    }else{
-        $customStructure['showLogin'] = 'off';
-    }
-    if(isset($_POST['show-footer'])){
-        $customStructure['footerAlignment'] = $_POST['footer-alignment'];
-    }else{
-        $customStructure['footerAlignment'] = $style_records ? $style_records->footerAlignment : 'left';
-    }
-
-    /* Presets settings */
-
-    if(isset($_POST['style_preset'])){
-        $customStructure['stylePreset'] = $_POST['style_preset'];
-    }else{
-        $customStructure['stylePreset'] = $style_records ? $style_records->stylePreset : 'dark';
-    }
-
-    $settings = [
-        'Id' => 1,
-        'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
-        'style_preset' => $_POST['style_preset'],
-    ];
-
-
-    empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1));
-
-    
-    set_custom_css($customCss);
-    
-    save_structure($customStructure);
-
-    $query = 'SELECT * FROM '. $fm_custom_style_table;
+    /* $query = 'SELECT * FROM '. $fm_custom_style_table;
     $options_records = $wpdb->get_results($query, ARRAY_A);
     $style_records = json_decode($options_records[0]['menu_structure']);
-    $css_records = json_decode($options_records[0]['css_style']);
+    $css_records = json_decode($options_records[0]['css_style']); */
     
-    
+
 }
 
 
@@ -308,7 +281,7 @@ if(isset($_POST['save-settings'])){
                         <label for="menu-active">Activate mobile menu</label>
                     </div>
                     <div class="checkbox-input">
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active')">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active')">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-menu"></label>
                     </div>
                 </div>
@@ -318,7 +291,7 @@ if(isset($_POST['save-settings'])){
                     </div>
             
                     <div class="select-input">
-                        <select <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> id="menu-select" name='menu_id' class="menu-active">
+                        <select <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> id="menu-select" name='menu_id' class="menu-active">
                             
                             <?php
                                 if(empty($menus)){
@@ -326,7 +299,7 @@ if(isset($_POST['save-settings'])){
                                 }
                                 foreach ($menus as $key => $menu) {
                                     $selected = '';
-                                    if($menu['id'] == $records[0]['current_menu']){
+                                    if($menu['id'] == $records->menuId){
                                         $selected = 'selected';
                                     }
                                     echo '<option value="'.$menu['id'].'" '.$selected.'>'.$menu['name'].'</option>' ;
@@ -341,11 +314,11 @@ if(isset($_POST['save-settings'])){
                         <label for="menu-select">Menu button position</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
                         <label for="button-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
                         <label for="button-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $style_records != null ? '' : 'default'; ?>" <?php echo $style_records != null && $style_records->buttonAlignment && $style_records->buttonAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $records != null ? '' : 'default'; ?>" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
                         <label for="button-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -354,11 +327,11 @@ if(isset($_POST['save-settings'])){
                         <label for="menu-select">Menu position</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
                         <label for="menu-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
                         <label for="menu-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $style_records != null ? '' : 'default'; ?>" <?php echo $style_records != null && $style_records->menuAlignment && $style_records->menuAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
+                        <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $records != null ? '' : 'default'; ?>" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
                         <label for="menu-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -371,7 +344,7 @@ if(isset($_POST['save-settings'])){
                         <label for="show-header">Show menu header</label>
                     </div>
                     <div class="checkbox-input">
-                        <input <?php echo $style_records != null && $style_records->showHeader == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-header" id="show-header" onclick="enable_input('header-style')">
+                        <input <?php echo $records != null && $records->showHeader == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-header" id="show-header" onclick="enable_input('header-style')">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-header"></label>
                     </div>
                 </div>
@@ -380,9 +353,9 @@ if(isset($_POST['save-settings'])){
                         <label for="header-type">Show menu header</label>
                     </div>
                     <div class="input">
-                        <select <?php echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> name="header-type" class="header-style">
-                            <option <?php echo $style_records != null && $style_records->headerType == 'logo' ? 'selected' : ''; ?> value="logo">Site logo</option>
-                            <option <?php echo $style_records != null && $style_records->headerType == 'avatar' ? 'selected' : ''; ?> value="avatar">User avatar</option>
+                        <select <?php echo $records != null && $records->showHeader == 'on' ? '' : 'disabled'; ?> name="header-type" class="header-style">
+                            <option <?php echo $records != null && $records->headerType == 'logo' ? 'selected' : ''; ?> value="logo">Site logo</option>
+                            <option <?php echo $records != null && $records->headerType == 'avatar' ? 'selected' : ''; ?> value="avatar">User avatar</option>
                         </select>
                     </div>
                 </div>
@@ -391,11 +364,11 @@ if(isset($_POST['save-settings'])){
                         <label for="">Header alignment</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
+                        <input <?php echo $records != null && $records->headerAlignment == 'left' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
                         <label for="header-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'center' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style <?php echo $style_records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
+                        <input <?php echo $records != null && $records->headerAlignment == 'center' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
                         <label for="header-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->headerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
+                        <input <?php echo $records != null && $records->headerAlignment == 'right' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
                         <label for="header-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -404,7 +377,7 @@ if(isset($_POST['save-settings'])){
                         <label for="show-header">Header text</label>
                     </div>
                     <div class="text-input">
-                        <input <?php echo $style_records != null ? 'value="'. $style_records->headerText.'"' : 'value=""'; echo $style_records != null && $style_records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
+                        <input <?php echo $records != null ? 'value="'. $records->headerText.'"' : 'value=""'; echo $records != null && $records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
                     </div>
                 </div>
             </div>
@@ -416,7 +389,7 @@ if(isset($_POST['save-settings'])){
                         <label for="show-footer">Show menu footer</label>
                     </div>
                     <div class="checkbox-input">
-                        <input <?php echo $style_records != null && $style_records->showFooter == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style')">
+                        <input <?php echo $records != null && $records->showFooter == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style')">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-footer"></label>
                     </div>
                 </div>
@@ -425,7 +398,7 @@ if(isset($_POST['save-settings'])){
                         <label for="show-logout">Show logout or login</label>
                     </div>
                     <div class="checkbox-input">
-                        <input <?php echo $style_records != null && $style_records->showLogin == 'on' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
+                        <input <?php echo $records != null && $records->showLogin == 'on' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-login"></label>
                     </div>
                 </div>
@@ -434,11 +407,11 @@ if(isset($_POST['save-settings'])){
                         <label for="">Footer alignment</label>
                     </div>
                     <div class="radio-input">
-                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'left' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style <?php echo $style_records != null ? '' : 'default'; ?>" type="radio" name="footer-alignment" id="footer-alignment-left" value="left">
+                        <input <?php echo $records != null && $records->footerAlignment == 'left' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="footer-alignment" id="footer-alignment-left" value="left">
                         <label for="footer-alignment-left" data="LEFT"></label>
-                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'center' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-center" value="center">
+                        <input <?php echo $records != null && $records->footerAlignment == 'center' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-center" value="center">
                         <label for="footer-alignment-center" data="CENTER"></label>
-                        <input <?php echo $style_records != null && $style_records->footerAlignment == 'right' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-right" value="right">
+                        <input <?php echo $records != null && $records->footerAlignment == 'right' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-right" value="right">
                         <label for="footer-alignment-right" data="RIGHT"></label>
                     </div>
                 </div>
@@ -455,7 +428,7 @@ if(isset($_POST['save-settings'])){
                         <label for="bg-color">Background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $css_records != null ? $css_records->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ?>">
+                        <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $records != null ? $records->style->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ?>">
                     </div>
                 </div>
                 
@@ -465,7 +438,7 @@ if(isset($_POST['save-settings'])){
                         <label for="f-color">Font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="front_color" class="front-color-picker" value="<?php echo $css_records ? $css_records->fontColor[0] : $style_preset['dark']['fontColor'][0] ?>">
+                        <input type="color" name="front_color" class="front-color-picker" value="<?php echo $records ? $records->style->fontColor[0] : $style_preset['dark']['fontColor'][0] ?>">
                     </div>
                 </div>
                 
@@ -475,7 +448,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-bg-color">Selected item background color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $css_records ? ($records[0]['style_preset'] == 'glass' ? substr($css_records->selectedItemBackground[0], 0, -2) : $css_records->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
+                        <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $records ? ($records->stylePreset == 'glass' ? substr($records->style->selectedItemBackground[0], 0, -2) : $records->style->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
                     </div>
                 </div>
                 
@@ -485,7 +458,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-color">Selected item font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $css_records ?$css_records->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
+                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $records ?$records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
                     </div>
                 </div>
                 
@@ -495,7 +468,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-font-size">Font size</label>
                     </div>
                     <div class="slider-input">
-                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo $css_records ? substr($css_records->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
+                        <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo $records ? substr($records->style->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
                         <span>0</span>
                     </div>
                     
@@ -513,7 +486,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
     
-                            <input class="<?php echo $style_records && $style_records->stylePreset ? $style_records->stylePreset : 'default' ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($style_records) && $style_records->stylePreset == 'dark' ? 'checked' : ''; ?>>
+                            <input class="<?php echo $records && $records->stylePreset ? $records->stylePreset : 'default' ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($records) && $records->stylePreset == 'dark' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="dark" data="Dark"></label>
                         </div>
@@ -525,7 +498,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_preset" id="light" value="light" <?php echo !empty($records) && $style_records->stylePreset == 'light' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="light" value="light" <?php echo !empty($records) && $records->stylePreset == 'light' ? 'checked' : ''; ?>>
                             <label class="style-radio" for="light" data="Light"></label>
                         </div>
                         
@@ -537,7 +510,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_preset" id="blue" value="blue" <?php echo !empty($records) && $style_records->stylePreset == 'blue' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="blue" value="blue" <?php echo !empty($records) && $records->stylePreset == 'blue' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="blue" data="Blue"></label>
                         </div>
@@ -549,7 +522,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_preset" id="glass" value="glass" <?php echo !empty($records) && $style_records->stylePreset == 'glass' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="glass" value="glass" <?php echo !empty($records) && $records->stylePreset == 'glass' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="glass" data="Glass"></label>
                         </div>
@@ -561,7 +534,7 @@ if(isset($_POST['save-settings'])){
                         <br>
                         <div class="radio-input">
 
-                            <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo !empty($records) && $style_records->stylePreset == 'custom-style' ? 'checked' : ''; ?>>
+                            <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo !empty($records) && $records->stylePreset == 'custom-style' ? 'checked' : ''; ?>>
                             
                             <label class="style-radio" for="custom-style" data="Custom"></label>
                         </div>
@@ -579,7 +552,7 @@ if(isset($_POST['save-settings'])){
 
                     <!-- <ul class="item-icon">
                         <?php
-                        $items = wp_get_nav_menu_items( $records[0]['current_menu'] );
+                        $items = wp_get_nav_menu_items( $records->current_menu );
 
                         $icons_list = get_icons();
                         $icon = '';

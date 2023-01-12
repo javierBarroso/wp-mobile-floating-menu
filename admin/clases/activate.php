@@ -15,7 +15,6 @@
         global $wpdb;
 
         $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
-        $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
 
         /* Fix problem */
         $old_table_1 = $wpdb -> prefix . 'jb_jb_mobile_menu';
@@ -29,19 +28,10 @@
             `Id` INT NOT NULL AUTO_INCREMENT , 
             `current_menu` TEXT NOT NULL DEFAULT '1', 
             `style_preset` TEXT NOT NULL DEFAULT 'dark', 
+            `current_style` TEXT NULL , 
             PRIMARY KEY (`Id`));";
         $wpdb -> query($query);
 
-        $query = "CREATE TABLE IF NOT EXISTS `".$fm_custom_style_table."`(
-            `Id` INT NOT NULL AUTO_INCREMENT , 
-            `menu_id` INT NOT NULL , 
-            `css_style` TEXT NULL , 
-            `menu_structure` TEXT NULL ,   
-            PRIMARY KEY (`Id`),
-            FOREIGN KEY (menu_id) REFERENCES $fm_current_settings_table(Id)
-        );";
-        $wpdb -> query($query); 
-        
 
         flush_rewrite_rules();
     }

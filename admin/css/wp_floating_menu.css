@@ -314,15 +314,19 @@ nav.floating-nav-menu-container {
   .nav-toggle-container {
     width: 100%;
   }
-  .nav-toggle-container.right button {
-    right: 10px;
+  .nav-toggle-container.right {
+    display: flex;
+    right: 15px;
+    justify-content: flex-end;
   }
   .nav-toggle-container.center {
     display: flex;
     justify-content: center;
   }
-  .nav-toggle-container.left button {
-    left: 10px;
+  .nav-toggle-container.left {
+    display: flex;
+    left: 15px;
+    justify-content: flex-start;
   }
   .nav-toggle-container button.mobile-nav-toggle[aria-expanded=true] {
     background-color: transparent;
@@ -346,7 +350,8 @@ nav.floating-nav-menu-container {
     width: 60px;
     height: 60px;
     aspect-ratio: 1;
-    bottom: 10px;
+    bottom: 15px;
+    margin: 0 15px;
     transform-origin: 50%;
   }
 }/*# sourceMappingURL=wp_floating_menu.css.map */

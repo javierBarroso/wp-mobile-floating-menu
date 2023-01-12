@@ -1,10 +1,10 @@
 @media ( max-width: 35em) {
     html{
 --menuBackground : #171717;
---fontColor : #747474;
+--fontColor : #e3e3e3;
 --selectedItemBackground : #353535;
 --selectedItemColor : #ffffff;
---fontSize : 1em;
+--fontSize : 1.41em;
         --background:rgba(36, 36, 36, 0);
         --background-display:none;
         --backMenuColor: rgba(36, 36, 36, 0);

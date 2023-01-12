@@ -5,6 +5,7 @@ class MobileFloatingMenuFrontEnd{
     function __construct()
     {
         require ('admin/clases/floating_nav_menu_walker.php');
+        require_once ('admin/clases/settings-management.php');
     }
 
     
@@ -15,34 +16,13 @@ class MobileFloatingMenuFrontEnd{
 if(!is_admin(  )){
     new MobileFloatingMenuFrontEnd;
 }
+$settings = new WpSettingsManagement;
 
-global $wpdb;
-        
-$fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
-$fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
-
-$query = 'SELECT * FROM '. $fm_current_settings_table;
-$records = $wpdb->get_results($query, ARRAY_A);
-
-$query = 'SELECT * FROM '. $fm_custom_style_table;
-$custom_records = $wpdb->get_results($query, ARRAY_A);
-
-if(!empty($records)){
-
-    $structure_data = json_decode($custom_records[0]['menu_structure']);
-    //$custom_logo_id = get_theme_mod( 'custom_logo' );
-    //$image = wp_get_attachment_image_src( $custom_logo_id , 'full' )[0];
-
-    /* echo '<div class="nav-toggle-container '. !empty($structure_data) ? $structure_data->buttonAlignment : '' . '">
-                <button  id="mobile-nav-toggle" class="mobile-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
-            </div>
-            <div class="floating-menu-back"></div>
-            '; */
-}
+$records = $settings->load_settings();
 
 
 ?>
-<div class="nav-toggle-container <?php echo !empty($structure_data) ? $structure_data->buttonAlignment : 'hide'?>">
+<div class="nav-toggle-container <?php echo !empty($records) ? $records->buttonAlignment : 'hide'?>">
     <button  id="mobile-nav-toggle" class="mobile-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
 </div>
 <div class="floating-menu-back"></div>
@@ -53,20 +33,20 @@ if(!empty($records)){
 
 $header = '';
 
-if(!empty($structure_data) && $structure_data->showHeader == 'on'){
+if(!empty($records) && $records->showHeader == 'on'){
 
     $header = '<div class="header">';
 
-    if($structure_data->headerType == 'logo'){
+    if($records->headerType == 'logo'){
 
-        $header .= '<div class="blog-logo '.$structure_data->headerAlignment.'" >'.get_custom_logo( ).'</div>';
+        $header .= '<div class="blog-logo '.$records->headerAlignment.'" >'.get_custom_logo( ).'</div>';
     }
-    if($structure_data->headerType == 'avatar'){
+    if($records->headerType == 'avatar'){
 
-        $header .= '<div class="user-avatar '.$structure_data->headerAlignment.'"><img src="'.get_avatar_url( wp_get_current_user()->ID).'"><div><a href="'.wp_get_current_user(  )->user_url.'">'.wp_get_current_user(  )->display_name.'</a></div></div>';
+        $header .= '<div class="user-avatar '.$records->headerAlignment.'"><img src="'.get_avatar_url( wp_get_current_user()->ID).'"><div><a href="'.wp_get_current_user(  )->user_url.'">'.wp_get_current_user(  )->display_name.'</a></div></div>';
     }
-    if($structure_data->headerText){
-        $header .= '<div class="custom-text"><h2 class="'.$structure_data->headerAlignment.'">'.$structure_data->headerText.'</h2></div>';
+    if($records->headerText){
+        $header .= '<div class="custom-text"><h2 class="'.$records->headerAlignment.'">'.$records->headerText.'</h2></div>';
     }
 
     $header .= '</div>';
@@ -77,31 +57,31 @@ if(!empty($structure_data) && $structure_data->showHeader == 'on'){
 
 $logout = '';
 
-if(!empty($structure_data) && $structure_data->showFooter == 'on'){
+if(!empty($records) && $records->showFooter == 'on'){
 
-    if(is_user_logged_in(  ) && $structure_data->showLogin == 'on'){
+    if(is_user_logged_in(  ) && $records->showLogin == 'on'){
     
-        $logout = '<br><hr><br><div class="menu-footer '.$structure_data->footerAlignment.'"><a href="'.wp_logout_url( 'home' ).'">Log Out</a></div>';
+        $logout = '<br><hr><br><div class="menu-footer '.$records->footerAlignment.'"><a href="'.wp_logout_url( 'home' ).'">Log Out</a></div>';
     }
 }
 
-if(!empty($records) && $records[0]['current_menu'] && json_decode($custom_records[0]['menu_structure'])->showMenu == 'on'){
+if(!empty($records) && $records->menuId && $records->showMenu == 'on'){
     
 
     wp_nav_menu( array(
         //'theme_location'=>'primary',
-        'menu' => !empty($records[0]['current_menu']) ? $records[0]['current_menu'] : (object) array('term_id'=>0),
+        'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id'=>0),
         'container'=>'nav',
         'container_class'=>'floating-nav-menu-container',
-        'menu_class'=>'floating-nav-menu '. $records[0]['style_preset'] . ' ' . $structure_data->menuAlignment,
+        'menu_class'=>'floating-nav-menu '. $records->stylePreset . ' ' . $records->menuAlignment,
         'menu_id'=>'loco',
         'items_wrap'=>'<ul data-visible="false" class="%2$s">'.$header.'%3$s'.$logout .'</ul>',
-        'walker'=> !empty($records[0]['current_menu']) ? new floating_nav_menu_walker() : null,
-     ) );
+        'walker'=> !empty($records->menuId) ? new floating_nav_menu_walker() : null,
+    ) );
     
     
     
-     add_action( 'after_setup_theme', 'register_floating_menu' );
+    add_action( 'after_setup_theme', 'register_floating_menu' );
     
     function register_floating_menu(){
         register_nav_menu( 'primary', array('Primary Menu') );
@@ -111,7 +91,7 @@ if(!empty($records) && $records[0]['current_menu'] && json_decode($custom_record
     <nav class="floating-nav-menu-container"><ul class="floating-nav-menu dark right" data-visible="false" style="display:flex ;"><div style="margin: auto;">no menu selected</div></ul> </nav>
     <?php
 }
- 
+
 ?>
 
 

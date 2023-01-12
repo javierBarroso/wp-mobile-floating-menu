@@ -395,10 +395,9 @@ nav.floating-nav-menu-container{
     .nav-toggle-container{
         width: 100%;
         &.right{
-            button{
-
-                right: 10px;
-            }
+            display: flex;
+            right: 15px;
+            justify-content: flex-end;
         }
         &.center{
             
@@ -407,10 +406,9 @@ nav.floating-nav-menu-container{
             justify-content: center;
         }
         &.left{
-            button{
-
-                left: 10px;
-            }
+            display: flex;
+            left: 15px;
+            justify-content: flex-start;
         }
         button.mobile-nav-toggle[aria-expanded='true']{
             background-color: transparent;
@@ -436,7 +434,8 @@ nav.floating-nav-menu-container{
             width: 60px;
             height: 60px;
             aspect-ratio: 1;
-            bottom: 10px;
+            bottom: 15px;
+            margin: 0 15px;
             transform-origin: 50%;
             
         }
