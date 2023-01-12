@@ -26,8 +26,6 @@
 
         $query = "CREATE TABLE IF NOT EXISTS `".$fm_current_settings_table."`(
             `Id` INT NOT NULL AUTO_INCREMENT , 
-            `current_menu` TEXT NOT NULL DEFAULT '1', 
-            `style_preset` TEXT NOT NULL DEFAULT 'dark', 
             `current_style` TEXT NULL , 
             PRIMARY KEY (`Id`));";
         $wpdb -> query($query);

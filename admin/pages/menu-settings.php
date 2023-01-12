@@ -99,9 +99,9 @@ function save_structure($option){
 
 if(isset($_POST['save-settings'])){
     
-    //$records = $setting_manager->save_general_settings();
     
-    $customCss = [];
+    
+    $settings_data = [];
 
     $customStructure = [];
 
@@ -111,26 +111,26 @@ if(isset($_POST['save-settings'])){
 
 
         if(isset($_POST['background_color'])){
-            $customCss['style']['menuBackground'] = [$_POST['background_color'], 2];
+            $settings_data['style']['menuBackground'] = [$_POST['background_color'], 2];
         }
 
         if(isset($_POST['front_color'])){
-            $customCss['style']['fontColor'] = [$_POST['front_color'], 3];
+            $settings_data['style']['fontColor'] = [$_POST['front_color'], 3];
         }
 
         if(isset($_POST['selected_item_background_color'])){
         
-            $customCss['style']['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
+            $settings_data['style']['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
         }
 
         if(isset($_POST['selected_item_color'])){
         
-            $customCss['style']['selectedItemColor'] = [$_POST['selected_item_color'], 5];
+            $settings_data['style']['selectedItemColor'] = [$_POST['selected_item_color'], 5];
         }
 
         if(isset($_POST['item_font_size'])){
         
-            $customCss['style']['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
+            $settings_data['style']['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
         }
             
 
@@ -138,7 +138,7 @@ if(isset($_POST['save-settings'])){
         
     }else{
             foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
-            $customCss['style'][$key] = $value;
+            $settings_data['style'][$key] = $value;
         }
         
     }
@@ -146,85 +146,85 @@ if(isset($_POST['save-settings'])){
     
     
     if(isset($_POST['show-menu'])){
-        $customCss['showMenu'] = $_POST['show-menu'];
+        $settings_data['showMenu'] = $_POST['show-menu'];
     }else{
-        $customCss['showMenu'] = 'off';
+        $settings_data['showMenu'] = 'off';
     }
 
     if(isset($_POST['menu_id'])){
-        $customCss['menuId'] = $_POST['menu_id'];
+        $settings_data['menuId'] = $_POST['menu_id'];
     }else{
-        $customCss['menuId'] = '';
+        $settings_data['menuId'] = '';
     }
     
 
     if(isset($_POST['show-menu'])){
-        $customCss['buttonAlignment'] = $_POST['button-alignment'];
+        $settings_data['buttonAlignment'] = $_POST['button-alignment'];
     }else{
-        $customCss['buttonAlignment'] = $records ? $records->buttonAlignment : 'right';
+        $settings_data['buttonAlignment'] = $records ? $records->buttonAlignment : 'right';
     }
     
     if(isset($_POST['show-menu'])){
-        $customCss['menuAlignment'] = $_POST['menu-alignment'];
+        $settings_data['menuAlignment'] = $_POST['menu-alignment'];
     }else{
-        $customCss['menuAlignment'] = $records ? $records->menuAlignment : 'right';
+        $settings_data['menuAlignment'] = $records ? $records->menuAlignment : 'right';
     }
 
     /* Header settings */
 
 
     if(isset($_POST['show-header'])){
-        $customCss['showHeader'] = $_POST['show-header'];
+        $settings_data['showHeader'] = $_POST['show-header'];
     }else{
 
-        $customCss['showHeader'] = 'off';
+        $settings_data['showHeader'] = 'off';
     }
 
     
     if(isset($_POST['show-header'])){
-        $customCss['headerType'] = $_POST['header-type'];
+        $settings_data['headerType'] = $_POST['header-type'];
     }else{
-        $customCss['headerType'] = $records ? $records->headerType : 'logo';
+        $settings_data['headerType'] = $records ? $records->headerType : 'logo';
     }
     
     if(isset($_POST['show-header'])){
-        $customCss['headerAlignment'] = $_POST['header-alignment'];
+        $settings_data['headerAlignment'] = $_POST['header-alignment'];
     }else{
         
-        $customCss['headerAlignment'] = $records ? $records->headerAlignment : 'center';
+        $settings_data['headerAlignment'] = $records ? $records->headerAlignment : 'center';
 
     }
 
     if(isset($_POST['header-text'])){
-        $customCss['headerText'] = $_POST['header-text'];
+        $settings_data['headerText'] = $_POST['header-text'];
     }else{
-        $customCss['headerText'] = $records ? $records->headerText : '';
+        $settings_data['headerText'] = $records ? $records->headerText : '';
     }
 
     /* Footer settings */
 
     if(isset($_POST['show-footer'])){
-        $customCss['showFooter'] = $_POST['show-footer'];
+        $settings_data['showFooter'] = $_POST['show-footer'];
     }else{
-        $customCss['showFooter'] = 'off';
+        $settings_data['showFooter'] = 'off';
     }
     if(isset($_POST['show-login'])){
-        $customCss['showLogin'] = $_POST['show-login'];
+        $settings_data['showLogin'] = $_POST['show-login'];
     }else{
-        $customCss['showLogin'] = 'off';
+        $settings_data['showLogin'] = 'off';
     }
     if(isset($_POST['show-footer'])){
-        $customCss['footerAlignment'] = $_POST['footer-alignment'];
+        $settings_data['footerAlignment'] = $_POST['footer-alignment'];
     }else{
-        $customCss['footerAlignment'] = $records ? $records->footerAlignment : 'left';
+        $settings_data['footerAlignment'] = $records ? $records->footerAlignment : 'left';
     }
 
     /* Presets settings */
 
     if(isset($_POST['style_preset'])){
-        $customCss['stylePreset'] = $_POST['style_preset'];
+        $settings_data['stylePreset'] = $_POST['style_preset'];
     }else{
-        $customCss['stylePreset'] = $records ? $records->stylePreset : 'dark';
+        $settings_data['stylePreset'] = $records ? $records->stylePreset : 'dark';
     }
 
     /* $settings = [
@@ -236,9 +236,9 @@ if(isset($_POST['save-settings'])){
 
     empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1)); */
 
-    $records = $setting_manager->save_general_settings($customCss);
+    $records = $setting_manager->save_general_settings($settings_data);
     
-    //set_custom_css($customCss);
+    //set_custom_css($settings_data);
     
     //save_structure($customStructure);
 
@@ -458,7 +458,7 @@ if(isset($_POST['save-settings'])){
                         <label for="s-item-color">Selected item font color</label>
                     </div>
                     <div class="color-input">
-                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $records ?$records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
+                        <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $records ? $records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
                     </div>
                 </div>
                 
