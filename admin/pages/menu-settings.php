@@ -454,7 +454,7 @@ if(isset($_POST['save-settings'])){
                         <label for="show-logout">Show logout or login</label>
                     </div>
                     <div class="checkbox-input">
-                        <input <?php echo $style_records != null && $style_records->showLogin == 'on' ? 'checked' : ''; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
+                        <input <?php echo $style_records != null && $style_records->showLogin == 'on' ? 'checked' : ''; echo $style_records != null && $style_records->showFooter == 'on' ? '' : ' disabled'; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
                         <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-login"></label>
                     </div>
                 </div>
