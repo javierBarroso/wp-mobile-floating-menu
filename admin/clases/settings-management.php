@@ -44,8 +44,6 @@ class WpSettingsManagement{
         if(isset($_POST['save-settings'])){
             $settings = [
                 'Id' => 1,
-                'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
-                'style_preset' => $_POST['style_preset'],
                 'current_style' => $settings_data,
             ];
         
@@ -67,20 +65,26 @@ class WpSettingsManagement{
         }
         
         file_put_contents($filePath, implode(PHP_EOL, $styleFile));
+        if($records){
+            $output = json_decode($records[0]['current_style']);
+        }
 
-        $output = json_decode($records[0]['current_style']);
         return $output;
     }
 
     function load_settings(){
         global $wpdb;
 
+        $output = null;
+
         $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
 
         $query = 'SELECT * FROM '. $fm_current_settings_table;
         $records = $wpdb->get_results($query, ARRAY_A);
 
-        $output = json_decode($records[0]['current_style']);
+        if($records){
+            $output = json_decode($records[0]['current_style']);
+        }
 
         return $output;
     }
