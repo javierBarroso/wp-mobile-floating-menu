@@ -47,9 +47,9 @@ class WpMobileFloatingMenu{
 
         add_action('wp_head', array($this, 'includes'));
         
-        add_action( 'wp_head', array( $this, 'frontend_enqueue') );
+        add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue') );
         
-        add_action( 'wp_head', array( $this, 'script_enqueue') );
+        add_action( 'wp_footer', array( $this, 'script_enqueue') );
         
         add_action( 'admin_enqueue_scripts', array($this, 'admin_enqueue') );
 
@@ -114,9 +114,8 @@ class WpMobileFloatingMenu{
     
     function script_enqueue(){
         
-        wp_register_script( 'floating-menu-script', plugins_url('admin/js/floating-menu.js', __FILE__),array('jquery'));
-        wp_enqueue_script( 'floating-menu-script' );
-
+        wp_enqueue_script( 'floating-menu-script',  plugins_url('admin/js/floating-menu.js', __FILE__), '', false);
+        
     }
 
     function admin_enqueue(){

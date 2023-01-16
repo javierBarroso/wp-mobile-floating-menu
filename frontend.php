@@ -73,7 +73,7 @@ if(!empty($records) && $records->menuId && $records->showMenu == 'on'){
         'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id'=>0),
         'container'=>'nav',
         'container_class'=>'floating-nav-menu-container',
-        'menu_class'=>'floating-nav-menu '. $records->stylePreset . ' ' . $records->menuAlignment,
+        'menu_class'=>'floating-nav-menu '. $records->stylePreset . ' down ' . $records->menuAlignment,
         'menu_id'=>'loco',
         'items_wrap'=>'<ul data-visible="false" class="%2$s">'.$header.'%3$s'.$logout .'</ul>',
         'walker'=> !empty($records->menuId) ? new floating_nav_menu_walker() : null,
