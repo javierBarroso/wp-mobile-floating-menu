@@ -1,7 +1,9 @@
 <?php
 
 require_once plugin_dir_path( __FILE__ ) . 'partials/style-presets.php';
-require_once plugin_dir_path( __DIR__ ) . 'clases/settings-management.php';
+require_once plugin_dir_path( __DIR__ ) . 'classes/settings-management.php';
+
+
 
 $setting_manager = new WpSettingsManagement;
 
@@ -22,13 +24,6 @@ if(isset($records->stylePreset)){
 }
 
 
-/* if(!empty($style)){
-
-    $style_records = json_decode($style[0]['menu_structure']);
-    $css_records = json_decode($style[0]['css_style']);
-} */
-
-
 
 function get_icons(){
 
@@ -37,64 +32,6 @@ function get_icons(){
     unset($files[1]);
     return $files;
 }
-
-/* function set_custom_css(array $style){
-
-    global $wpdb;
-
-    $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
-
-    $query = 'SELECT * FROM '. $fm_custom_style_table;
-    $records = $wpdb->get_results($query, ARRAY_A);
-
-    $css_style = json_encode($style);
-
-    $data = [
-        'Id' => '1',
-        'menu_id' => '1',
-        'css_style' => $css_style,
-    ];
-
-    
-
-    empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
-    
-    
-    $filePath = plugin_dir_path( __FILE__ ) .'../css/wp_custom_floating_menu.css';
-    
-    $styleFile = file($filePath, FILE_IGNORE_NEW_LINES);
-    
-    foreach ($style as $key => $value) {
-        
-        $styleFile[$value[1]]= '--'. $key .' : '.$value[0].';';
-        
-    }
-    
-    file_put_contents($filePath, implode(PHP_EOL, $styleFile));
-
-}
-
-function save_structure($option){
-
-    global $wpdb;
-
-    $fm_custom_style_table = $wpdb -> prefix . 'jb_mobile_menu_settings';
-
-    $query = 'SELECT * FROM '. $fm_custom_style_table;
-    $records = $wpdb->get_results($query, ARRAY_A);
-
-    $structure_option = json_encode($option);
-
-    $data = [
-        'Id' => '1',
-        'menu_id' => '1',
-        'menu_structure' => $structure_option
-    ];
-
-    empty($records) ? $wpdb->insert($fm_custom_style_table, $data) : $wpdb->update($fm_custom_style_table, $data, array('Id' => 1));
-    
-}
- */
 
 
 if(isset($_POST['save-settings'])){
@@ -133,16 +70,15 @@ if(isset($_POST['save-settings'])){
             $settings_data['style']['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
         }
             
-
-        
-        
     }else{
             foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
             $settings_data['style'][$key] = $value;
         }
         
     }
-    /* general settings */
+
+
+    //////////////////////////* general settings *//////////////////////////
     
     
     if(isset($_POST['show-menu'])){
@@ -170,7 +106,7 @@ if(isset($_POST['save-settings'])){
         $settings_data['menuAlignment'] = $records ? $records->menuAlignment : 'right';
     }
 
-    /* Header settings */
+    //////////////////////////* Header settings *//////////////////////////
 
 
     if(isset($_POST['show-header'])){
@@ -201,7 +137,13 @@ if(isset($_POST['save-settings'])){
         $settings_data['headerText'] = $records ? $records->headerText : '';
     }
 
-    /* Footer settings */
+    if(isset($_POST['header-search'])){
+        $settings_data['headerSearch'] = $_POST['header-search'];
+    }else{
+        $settings_data['headerSearch'] = 'off';
+    }
+
+    //////////////////////////* Footer settings *//////////////////////////
 
     if(isset($_POST['show-footer'])){
         $settings_data['showFooter'] = $_POST['show-footer'];
@@ -219,7 +161,7 @@ if(isset($_POST['save-settings'])){
         $settings_data['footerAlignment'] = $records ? $records->footerAlignment : 'left';
     }
 
-    /* Presets settings */
+    //////////////////////////* Presets settings *//////////////////////////
 
     if(isset($_POST['style_preset'])){
         $settings_data['stylePreset'] = $_POST['style_preset'];
@@ -227,31 +169,15 @@ if(isset($_POST['save-settings'])){
         $settings_data['stylePreset'] = $records ? $records->stylePreset : 'dark';
     }
 
-    /* $settings = [
-        'Id' => 1,
-        'current_menu' => isset($_POST['menu_id']) ? $_POST['menu_id'] : (isset($records->current_menu) ? $records->current_menu : ''),
-        'style_preset' => $_POST['style_preset'],
-    ];
-
-
-    empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1)); */
-
     $records = $setting_manager->save_general_settings($settings_data);
-    
-    //set_custom_css($settings_data);
-    
-    //save_structure($customStructure);
-
-    /* $query = 'SELECT * FROM '. $fm_custom_style_table;
-    $options_records = $wpdb->get_results($query, ARRAY_A);
-    $style_records = json_decode($options_records[0]['menu_structure']);
-    $css_records = json_decode($options_records[0]['css_style']); */
-    
 
 }
 
 
 ?>
+
+
+<!-- HTML -->
 
 <div class="wrap">
     
@@ -350,6 +276,15 @@ if(isset($_POST['save-settings'])){
                 </div>
                 <div class="option">
                     <div class="label">
+                        <label for="header-search">Show menu search</label>
+                    </div>
+                    <div class="checkbox-input">
+                        <input <?php echo $records != null && $records->headerSearch == 'on' ? 'checked' : ''; ?> class="tgl-skewed header-style" type="checkbox" name="header-search" id="header-search">
+                        <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="header-search"></label>
+                    </div>
+                </div>
+                <div class="option">
+                    <div class="label">
                         <label for="header-type">Show menu header</label>
                     </div>
                     <div class="input">
@@ -380,6 +315,7 @@ if(isset($_POST['save-settings'])){
                         <input <?php echo $records != null ? 'value="'. $records->headerText.'"' : 'value=""'; echo $records != null && $records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
                     </div>
                 </div>
+                
             </div>
 
             <!-- Footer Tab -->
@@ -549,10 +485,10 @@ if(isset($_POST['save-settings'])){
                 <div class="option">
                     
                     <h2>Under construction</h2>
-
-                    <!-- <ul class="item-icon">
+                
+                    <ul class="item-icon">
                         <?php
-                        $items = wp_get_nav_menu_items( $records->current_menu );
+                        $items = wp_get_nav_menu_items( $records->menuId );
 
                         $icons_list = get_icons();
                         $icon = '';
@@ -576,7 +512,7 @@ if(isset($_POST['save-settings'])){
                         }
                         echo $html;
                         ?>
-                    </ul> -->
+                    </ul>
                 </div>
             </div>
             <br><br>

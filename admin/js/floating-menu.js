@@ -42,6 +42,47 @@ navToggle.addEventListener("click", () => {
     }
 });
 
+jQuery(document).ready(function() {
+    var $ = jQuery;
+    if ($('.set_custom_images').length > 0) {
+        if ( typeof wp !== 'undefined' && wp.media && wp.media.editor) {
+            $('.set_custom_images').on('click', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var id = button.prev();
+                wp.media.editor.send.attachment = function(props, attachment) {
+                    id.val(attachment.id);
+                };
+                wp.media.editor.open(button);
+                return false;
+            });
+        }
+    }
+});
+
+function showResult (str) {
+    if (str.length==0) { 
+      document.getElementById("livesearch").innerHTML="";
+      document.getElementById("livesearch").style.border="0px";
+      return;
+    }
+    if (window.XMLHttpRequest) {
+      // code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+    } else {  // code for IE6, IE5
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function() {
+      if (this.readyState==4 && this.status==200) {
+        document.getElementById("livesearch").innerHTML=this.responseText;
+        document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+      }
+    }
+    xmlhttp.open("GET","livesearch.php?q="+str,true);
+    console.log(xmlhttp);
+    xmlhttp.send();
+  }
+
 var activeSubMenu = null;
 
 function openSubmenu(id){
