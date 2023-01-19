@@ -12,9 +12,9 @@ class MobileFloatingMenuFrontEnd
 
 function custom_search_form( ) {
     $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
-                <div class="custom-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
-                    <input type="text" value="' . get_search_query() . '" name="s" id="s" />
-                    <input type="submit" id="searchsubmit" value="'. esc_attr__( 'Search' ) .'" />
+                <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
+                    <input class="search-text-input" type="text" value="' . get_search_query() . '" name="s" id="s" />
+                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents(plugins_url( '/admin/assets/img/search-icon.svg', __FILE__ ) ). '</button>
                 </div>
             </form>';
 
@@ -56,15 +56,13 @@ if (!empty($records) && $records->showHeader == 'on') {
     }
     if ($records->headerType == 'avatar') {
 
-        $header .= '<div class="user-avatar ' . $records->headerAlignment . '"><img src="' . get_avatar_url(wp_get_current_user()->ID) . '"><div><a href="' . wp_get_current_user()->user_url . '">' . wp_get_current_user()->display_name . '</a></div></div>';
+        $header .= '<div class="user-avatar ' . $records->headerAlignment . '"><img src="' . get_avatar_url(wp_get_current_user()->ID) . '"><a href="' . wp_get_current_user()->user_url . '">' . wp_get_current_user()->display_name . '</a></div>';
     }
     if ($records->headerText) {
-        $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2>'. $search;
+        $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2></div>';
     }
-    elseif($records->headerSearch == 'on'){
+    if($records->headerSearch == 'on'){
         $header .= '<div class="custom-text">' . $search . '</div>';
-    }else{
-        $header .= '</div>';
     }
 
     $header .= '</div>';

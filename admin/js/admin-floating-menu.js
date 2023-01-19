@@ -1,3 +1,17 @@
+const iconSelectorButton = document.getElementsByClassName('icon-selector-button');
+
+
+
+function showIconSelectorPanel(id){
+    panel = document.getElementById('icon-panel');
+    console.log('test');
+    if(panel.className == 'icon-modal hide'){
+        panel.className = 'icon-modal show'
+    }else{
+        panel.className = 'icon-modal hide'
+    }
+}
+
 function enable_input(cl){
 
     var inputs = document.getElementsByClassName(cl)
