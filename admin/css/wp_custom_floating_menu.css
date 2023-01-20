@@ -1,13 +1,12 @@
-@media ( max-width: 35em) {
+
     html{
---menuBackground : #171717;
+--menuBackground : #ffffff;
 --fontColor : #747474;
---selectedItemBackground : #353535;
---selectedItemColor : #ffffff;
+--selectedItemBackground : #eeeff6;
+--selectedItemColor : #2a2e3a;
 --fontSize : 1em;
         --background:rgba(36, 36, 36, 0);
         --background-display:none;
         --backMenuColor: rgba(36, 36, 36, 0);
     }
     
-}

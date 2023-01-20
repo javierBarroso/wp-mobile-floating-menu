@@ -2,6 +2,7 @@
 
 require_once plugin_dir_path( __FILE__ ) . 'partials/style-presets.php';
 require_once plugin_dir_path( __DIR__ ) . 'classes/settings-management.php';
+require_once plugin_dir_path( __DIR__ ) . 'classes/floating_nav_menu_walker.php';
 
 
 
@@ -22,7 +23,6 @@ $current_style_preset = 'dark';
 if(isset($records->stylePreset)){
     $current_style_preset = $records->stylePreset;
 }
-
 
 
 function get_icons(){
@@ -183,7 +183,10 @@ if(isset($_POST['save-settings'])){
     
     <div class="settings-header-page">
         <span class="plugin-logo"></span>
-        <h3>Mobile Menu Settings</h3>
+        <div>
+            <h3>Mobile Menu Settings</h3>
+            <h5>friendly use mobile nav menu</h5>
+        </div>
     </div>
 
 
@@ -192,12 +195,12 @@ if(isset($_POST['save-settings'])){
             
             <!-- tab links -->
             <div class="tabs">
-                <button class="tab default" onClick="openTab(event, 'general')">General Options</button>
-                <button class="tab" onClick="openTab(event, 'header')">Header</button>
-                <button class="tab" onClick="openTab(event, 'footer')">Footer</button>
-                <button class="tab" onClick="openTab(event, 'style-presets')">Style Presets</button>
-                <button class="tab" onClick="openTab(event, 'custom-colors')">Style</button>
-                <button class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</button>
+                <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
+                <label class="tab" onClick="openTab(event, 'header')">Header</label>
+                <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
+                <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
+                <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label>
+                <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
             </div>
             <form method="post">
             <!-- tabs content -->
@@ -498,8 +501,8 @@ if(isset($_POST['save-settings'])){
         
                             foreach ($items as $key => $value) {
                                 $html .= '<li class="icon-selector">';
-                                $html .= '<div><div>' . $value->title . '</div><br>';
-                                $html .= '<div onClick="showIconSelectorPanel('.$key.')" class="icon-selector-button" id="menu-item-'.$key.'">no Icon</div>';
+                                $html .= '<p>' . $value->title . '</p>';
+                                $html .= '<label onClick="showIconSelectorPanel('.$key.')" for="" class="icon-selector-button" id="menu-item-'.$key.'">no Icon</label>';
                                 $html .= '</li>';
                             }
                             echo $html;
@@ -513,18 +516,79 @@ if(isset($_POST['save-settings'])){
             </form>
         </div>
         <div class="preview">
-            <link rel="stylesheet" href="../css/wp_custom_floating_menu.css">
+            
             <?php
-            require_once(plugin_dir_path( __DIR__ ).'/classes/floating_nav_menu_walker.php');
+
+                function custom_search_form( ) {
+                    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
+                                <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
+                                    <input class="search-text-input" type="text" value="' . get_search_query() . '" name="s" id="s" />
+                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents(plugin_dir_url( __DIR__) .'assets/img/search-icon.svg'). '</button>
+                                </div>
+                            </form>';
+
+                    return $form;
+                }
+
+                
+                $settings = new WpSettingsManagement;
+
+                $records = $settings->load_settings();
+
+                $header = '';
+
+                $logout = '';
+
+                $search = custom_search_form( );
+
+                if (!empty($records) && $records->showHeader == 'on') {
+
+                    $header = '<div class="header">';
+
+                    if ($records->headerType == 'logo') {
+
+                        $header .= '<div class="blog-logo ' . $records->headerAlignment . '" >' . get_custom_logo() . '</div>';
+                    }
+                    if ($records->headerType == 'avatar') {
+
+                        $header .= '<div class="user-avatar ' . $records->headerAlignment . '"><img src="' . get_avatar_url(wp_get_current_user()->ID) . '"><a href="' . wp_get_current_user()->user_url . '">' . wp_get_current_user()->display_name . '</a></div>';
+                    }
+                    if ($records->headerText) {
+                        $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2></div>';
+                    }
+                    if($records->headerSearch == 'on'){
+                        $header .= '<div class="custom-text">' . $search . '</div>';
+                    }
+
+                    $header .= '</div>';
+                } else {
+                    $header = '<br><br>';
+                }
+
+
+
+                add_filter( 'get_search_form', 'custom_search_form', 40 );
+
+
+
+                if (!empty($records) && $records->showFooter == 'on') {
+
+                    if (is_user_logged_in() && $records->showLogin == 'on') {
+
+                        $logout = '<br><hr><br><div class="menu-footer ' . $records->footerAlignment . '"><a href="' . wp_logout_url('home') . '">Log Out</a></div>';
+                        
+                    }
+                }
+                
             wp_nav_menu(array(
                 //'theme_location'=>'primary',
                 'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
-                'container' => 'nav',
+                'container' => 'div',
                 'container_class' => 'floating-nav-menu-container',
                 'menu_class' => 'floating-nav-menu ' . $records->stylePreset . ' down ' . $records->menuAlignment,
                 'menu_id' => 'loco',
                 'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
-                'walker' => !empty($records->menuId) ? new floating_nav_menu_walker() : null,
+                'walker' => !empty($records->menuId) ? new preview_nav_menu_walker() : null,
             ));
             ?>
         </div>
@@ -532,30 +596,43 @@ if(isset($_POST['save-settings'])){
     </div>
     
     <div class="icon-modal hide" id="icon-panel">
-    <?php 
+        <div class="panel">
+            <div class="header"><h3>Select Icon</h3><span>&times;</span>
+        </div>
+        <br>
+        <br>
 
-        $icons = get_icons();
-        $icon = '';
-                
-        foreach ($icons as $key => $value) {
-            $icon .= '<div>';
-            $icon .= '<span style="background-image: url(\''.plugin_dir_url( __FILE__).'../assets/icons/'.$value.'\')" ></span> ' . $value;
-            $icon .= '</div>';
-        }
-        echo $icon;
+            <div class="content">
 
-    ?>
-        <a></a>
+                <?php 
+
+                    $icons = get_icons();
+                    $icon = '';
+                            
+                    foreach ($icons as $key => $value) {
+                        $icon .= '<div>';
+                        
+                        $icon .= '<img src="'.plugin_dir_url( __FILE__).'../assets/icons/'.$value.'" ></img>';
+                        $icon .= '</div>';
+                    }
+                    echo $icon;
+
+                ?>
+            </div>
+        </div>
+        
     </div>
 </div>
 
 
 
 <script>
-    var notices = document.querySelectorAll('.notice');
+
+
+    /* var notices = document.querySelectorAll('.notice');
     notices.forEach(element => {
         element.remove()
-    });
+    }); */
 
     //document.getElementById('defaultTab').click();
 

@@ -133,6 +133,7 @@ class WpMobileFloatingMenu
     function admin_enqueue()
     {
 
+        wp_enqueue_style('custom_floating_menu_style', plugins_url('admin/css/wp_custom_floating_menu.css', __FILE__));
         wp_enqueue_style('floating_menu_admin_style_custom', plugins_url('admin/css/wp-floating-menu-admin.css', __FILE__));
         wp_register_script('floating-menu-script-admin', plugins_url('admin/js/admin-floating-menu.js', __FILE__), array('jquery'));
         wp_enqueue_script('floating-menu-script-admin');
@@ -152,3 +153,15 @@ register_activation_hook(__FILE__, array($floatingMenu, 'activate'));
 
 //deactivation
 register_deactivation_hook(__FILE__, array($floatingMenu, 'deactivate'));
+
+
+add_action('in_admin_header', function () {
+    $currentPage = get_admin_page_parent( );
+    if ($currentPage != 'wp-mobile-floating-menu/admin/pages/menu-settings.php') return;
+    remove_all_actions('admin_notices');
+    remove_all_actions('all_admin_notices');
+    /* add_action('admin_notices', function () {
+      echo print_r(get_current_screen(  ));
+    }); */
+  }, 1000);
+
