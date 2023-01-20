@@ -1,36 +1,41 @@
 <?php
 
+
 /**
- * The plugin bootstrap file
  *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link              https://wirenomads.com
- * @since             0.1.0
- * @package           Wp_Mobile_Floating_Menu
+ * @link              http://example.com
+ * @since             1.0.0
+ * @package           WordPress_Mobile_Menu
  *
  * @wordpress-plugin
- * Plugin Name:       Wp Mobile Floating Menu
+ * Plugin Name:       WordPress Mobile Menu
  * Plugin URI:        https://wirenomads.com
- * Description:       Navigation menu for mobile
- * Version:           0.3.0
+ * Description:       his plugin will help you to create a nice looking nav menu width no programming knowledge and no effort.
+ * Version:           1.0.0
  * Author:            Javier Barroso
  * Author URI:        https://wirenomads.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wp-mobile-floating-menu
+ * Text Domain:       wordpress_mobile_menu
  * Domain Path:       /languages
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ */
+define( 'WORDPRESS_MOBILE_MENU_VERSION', '1.0.0' );
 
 
 defined('ABSPATH') or die('Hey, Hands off this file!!!!');
 
-if (!defined('FLOATING_MENU')) {
-    define('FLOATING_MENU', plugin_dir_path(__FILE__));
+if (!defined('WP_MOBILE_MENU')) {
+    define('WP_MOBILE_MENU', plugin_dir_path(__FILE__));
 }
 
 
@@ -61,7 +66,7 @@ class WpMobileFloatingMenu
     function includes()
     {
 
-        include_once FLOATING_MENU . 'frontend.php';
+        include_once WP_MOBILE_MENU . 'frontend.php';
 
     }
 
@@ -69,7 +74,7 @@ class WpMobileFloatingMenu
     //activate plugin
     function activate()
     {
-        require_once FLOATING_MENU . 'admin/classes/activate.php';
+        require_once WP_MOBILE_MENU . 'admin/classes/activate.php';
 
         WpMobileFloatingMenuActivate::activate();
     }
@@ -96,17 +101,17 @@ class WpMobileFloatingMenu
             'Mobile Floating Menu',
             'Mobile Floating Menu',
             'manage_options',
-            FLOATING_MENU . 'admin/pages/menu-settings.php',
+            WP_MOBILE_MENU . 'admin/pages/menu-settings.php',
             null,
             plugins_url('admin/assets/img/boton-menu-icon.svg', __FILE__),
             3
         );
         add_submenu_page(
-            FLOATING_MENU . 'admin/pages/menu-settings.php',
+            WP_MOBILE_MENU . 'admin/pages/menu-settings.php',
             'Add Survey',
             'Add Survey',
             'manage_options',
-            FLOATING_MENU . 'admin/pages/menu-settings.php',
+            WP_MOBILE_MENU . 'admin/pages/menu-settings.php',
             null
         );
     }
@@ -140,6 +145,30 @@ class WpMobileFloatingMenu
 
     }
 }
+
+
+// /* run on activation */
+// function activate_wordpress_mobile_menu() {
+// 	require_once WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu-activator.php';
+// 	Wp_Mobile_Menu_Activator::activate();
+// }
+
+// /* run on deactivation */
+// function deactivate_wordpress_mobile_menu() {
+// 	require_once WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu-deactivator.php';
+// 	Wp_Mobile_Menu_Deactivator::deactivate();
+// }
+
+// register_activation_hook( __FILE__, 'activate_wordpress_mobile_menu' );
+// register_deactivation_hook( __FILE__, 'deactivate_wordpress_mobile_menu' );
+
+// /* load plugin file */
+// require WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu.php';
+
+// function run_wp_mobile_menu(){
+//     $plugin = new WpMobileMenu();
+// }
+
 
 if (class_exists('WpMobileFloatingMenu')) {
 
