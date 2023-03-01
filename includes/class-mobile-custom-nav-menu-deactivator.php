@@ -20,7 +20,7 @@
  * @subpackage WordPress_Mobile_Menu/includes
  * @author    Javier Barroso <abby.javi.infox5@gmail.com>
  */
-class WordPress_Mobile_Menu_Deactivator {
+class Mobile_Custom_Nav_Menu_Deactivation {
 
 	/**
 	 * Plugin deactivation class.
