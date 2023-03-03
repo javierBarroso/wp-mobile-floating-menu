@@ -1,12 +1,9 @@
 <?php
 
-class floating_nav_menu_walker extends Walker_Nav_Menu{
+class Mobile_Custom_Nav_Menu_Walker extends Walker_Nav_Menu{
 
     private $curItem;
 
-    
-
-    
     function start_lvl(&$output, $depth = 0, $args = null)
     {
         $output .= '<ul class="floating-nav-submenu" id="floating-nav-submenu-'.$this->curItem.'" data-visible="false">';
@@ -16,7 +13,7 @@ class floating_nav_menu_walker extends Walker_Nav_Menu{
     function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
     {
         
-        $icon = file_get_contents(plugins_url( '../assets/img/down-arrow.svg', __FILE__ ) );
+        $icon = file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL . 'assets/img/down-arrow.svg' );
         
         $classes = '';
         $this->curItem = $data_object->ID;
@@ -33,7 +30,7 @@ class floating_nav_menu_walker extends Walker_Nav_Menu{
     }
 }
 
-class preview_nav_menu_walker extends Walker_Nav_Menu{
+class Preview_Mobile_Custom_nav_menu_walker extends Walker_Nav_Menu{
 
     function start_lvl(&$output, $depth = 0, $args = null)
     {
@@ -44,7 +41,7 @@ class preview_nav_menu_walker extends Walker_Nav_Menu{
     function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
     {
         
-        $icon = file_get_contents(plugins_url( '../assets/img/down-arrow.svg', __FILE__ ) );
+        $icon = file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL . 'assets/img/down-arrow.svg' );
         
         $classes = '';
         $this->curItem = $data_object->ID;

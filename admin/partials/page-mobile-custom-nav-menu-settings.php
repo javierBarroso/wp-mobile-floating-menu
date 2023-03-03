@@ -1,21 +1,18 @@
 <?php
 
-require_once plugin_dir_path( __FILE__ ) . 'partials/style-presets.php';
-require_once plugin_dir_path( __DIR__ ) . 'classes/settings-management.php';
-require_once plugin_dir_path( __DIR__ ) . 'classes/floating_nav_menu_walker.php';
+require_once 'style-presets.php';
+require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/classes/class-settings-management.php';
+require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php';
 
 
 
-$setting_manager = new WpSettingsManagement;
+$setting_manager = new MCNM_Settings_Management;
 
 $menus = $setting_manager->get_menus_list();
 
 $records = $setting_manager->load_settings();
 
 
-global $wpdb;
-
-$fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
 
 
 $current_style_preset = 'dark';
@@ -523,7 +520,7 @@ if(isset($_POST['save-settings'])){
                     $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
                                 <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
                                     <input class="search-text-input" type="text" value="' . get_search_query() . '" name="s" id="s" />
-                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents(plugin_dir_url( __DIR__) .'assets/img/search-icon.svg'). '</button>
+                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL .'assets/img/search-icon.svg'). '</button>
                                 </div>
                             </form>';
 
@@ -531,7 +528,7 @@ if(isset($_POST['save-settings'])){
                 }
 
                 
-                $settings = new WpSettingsManagement;
+                $settings = new MCNM_Settings_Management;
 
                 $records = $settings->load_settings();
 
@@ -588,7 +585,7 @@ if(isset($_POST['save-settings'])){
                 'menu_class' => 'floating-nav-menu ' . $records->stylePreset . ' down ' . $records->menuAlignment,
                 'menu_id' => 'loco',
                 'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
-                'walker' => !empty($records->menuId) ? new preview_nav_menu_walker() : null,
+                'walker' => !empty($records->menuId) ? new Preview_Mobile_Custom_nav_menu_walker() : null,
             ));
             ?>
         </div>

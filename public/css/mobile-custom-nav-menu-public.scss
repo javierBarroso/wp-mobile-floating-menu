@@ -280,7 +280,6 @@ nav.floating-nav-menu-container{
                         margin-left: auto;
                         display: block;
                         max-height: 0;
-                        
                     }
                     &:has(ul.floating-nav-submenu[data-visible="true"]){
                         /* background-color: rgb(241, 241, 241);
@@ -478,7 +477,7 @@ nav.floating-nav-menu-container{
         }
         button.mobile-nav-toggle[aria-expanded='true']{
             background-color: transparent;
-            background: url("../assets/img/menu_button/boton-menu-close.svg");
+            background: url("../assets/img/boton-menu-close.svg");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;

@@ -8,7 +8,7 @@
  */
 
 
-class WpSettingsManagement{
+class MCNM_Settings_Management{
 
 
     function get_menus_list(){
@@ -30,10 +30,8 @@ class WpSettingsManagement{
     function save_general_settings(array $data = []){
 
         global $wpdb;
-
-        $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
         
-        $query = 'SELECT * FROM '. $fm_current_settings_table;
+        $query = 'SELECT * FROM '. MCNM_TABLE;
         $records = $wpdb->get_results($query, ARRAY_A);
 
         $output = null;
@@ -47,14 +45,14 @@ class WpSettingsManagement{
                 'current_style' => $settings_data,
             ];
         
-            empty($records) ? $wpdb -> insert($fm_current_settings_table, $settings) : $wpdb -> update($fm_current_settings_table, $settings, array('Id' => 1));
+            empty($records) ? $wpdb -> insert( MCNM_TABLE, $settings ) : $wpdb -> update( MCNM_TABLE, $settings, array('Id' => 1));
         
-            $query = 'SELECT current_style FROM '. $fm_current_settings_table .' WHERE 1';
+            $query = 'SELECT current_style FROM '. MCNM_TABLE .' WHERE 1';
             $records = $wpdb->get_results($query, ARRAY_A);
         }
     
         
-        $filePath = plugin_dir_path( __FILE__ ) .'../css/wp_custom_floating_menu.css';
+        $filePath = MOBILE_CUSTOM_NAV_MENU_PATH . 'public/css/mobile-custom-nav-menu-variables.css';
         
         $styleFile = file($filePath, FILE_IGNORE_NEW_LINES);
         
@@ -77,9 +75,7 @@ class WpSettingsManagement{
 
         $output = null;
 
-        $fm_current_settings_table = $wpdb -> prefix . 'jb_mobile_menu';
-
-        $query = 'SELECT * FROM '. $fm_current_settings_table;
+        $query = 'SELECT * FROM '. MCNM_TABLE;
         $records = $wpdb->get_results($query, ARRAY_A);
 
         if($records){

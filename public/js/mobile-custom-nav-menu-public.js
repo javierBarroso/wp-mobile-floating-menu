@@ -30,7 +30,7 @@ const navLinks = document.querySelectorAll('nav a').forEach(link => {
 
 navToggle.addEventListener("click", () => {
     const visibility = mobileMenu.getAttribute('data-visible');
-    
+    console.log('test')
     if(visibility === 'false'){
         mobileMenu.setAttribute('data-visible', true)
         navToggle.setAttribute('aria-expanded', true)

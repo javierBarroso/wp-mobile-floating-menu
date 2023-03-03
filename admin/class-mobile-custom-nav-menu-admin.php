@@ -6,18 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Breaking_News_Ticker
- * @subpackage Breaking_News_Ticker/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Breaking_News_Ticker
- * @subpackage Breaking_News_Ticker/admin
+ * @package    Mobile_Custom_Nav_Menu
+ * @subpackage Mobile_Custom_Nav_Menu/admin
  * @author     Javier Barroso <abby.javi.infox@gmail.com>
  * 
  * 
@@ -25,7 +15,7 @@
 
 
 
-class Breaking_News_Ticker_Admin
+class Mobile_Custom_Nav_Menu_Admin
 {
 
 	/**
@@ -61,7 +51,7 @@ class Breaking_News_Ticker_Admin
 
 		add_action('admin_menu', array($this, 'add_admin_menu'));
 
-		add_filter('plugin_action_links_' . BREAKING_NEWS_TICKER_NAME, array($this, 'settings_link'));
+		add_filter('plugin_action_links_' . MOBILE_CUSTOM_NAV_MENU_NAME, array($this, 'settings_link'));
 	}
 
 	function settings_link($links)
@@ -80,142 +70,19 @@ class Breaking_News_Ticker_Admin
 	function add_admin_menu()
 	{
 		add_menu_page(
-			'Tickers',
-			'Breakin News Tickers',
+			'Mobile Custom Nav Menu',
+			'Mobile Custom Nav Menu',
 			'manage_options',
-			'bnt',
-			array($this, 'tickets_list'),
-			null,
-			//plugins_url('admin/media/icon/list-check.svg', __FILE__), 
+			'mcnm',
+			array($this, 'mobile_custom_nav_menu_settings'),
+			MOBILE_CUSTOM_NAV_MENU_URL . 'admin/assets/img/boton-menu-icon.svg', 
 			3
 		);
 	}
 
-	function tickets_list()
+	function mobile_custom_nav_menu_settings()
 	{
-		require_once BREAKING_NEWS_TICKER_PATH . 'admin/partials/page-tickers-list.php';
-	}
-
-	function ticker_add()
-	{
-		require_once BREAKING_NEWS_TICKER_PATH . 'admin/partials/page-ticker-add.php';
-	}
-
-
-
-
-	/**
-	 * get the stored tickers
-	 * 
-	 * @since 1.0.0
-	 */
-
-	public function get_tickers()
-	{
-
-		global $wpdb;
-
-		$query_get_tickers = "SELECT * FROM " . TICKERS_TABLE;
-
-		$tickers = $wpdb->get_results($query_get_tickers, ARRAY_A);
-
-		if (empty($tickers)) {
-			$tickers = array();
-		}
-
-		return $tickers;
-	}
-
-	/**
-	 * Get ticker news
-	 * 
-	 * @since 1.0.1
-	 */
-
-	public function get_ticker_and_news($id)
-	{
-
-		global $wpdb;
-
-		$query_get_ticker = 'SELECT * FROM ' . TICKERS_TABLE . ' WHERE ID = ' . $id;
-
-		$query_get_news = 'SELECT * FROM ' . NEWS_TABLE . ' WHERE ticker_id = ' . $id;
-
-		$ticker = $wpdb->get_results($query_get_ticker, ARRAY_A);
-
-		$news = $wpdb->get_results($query_get_news, ARRAY_A);
-
-		return [$ticker[0], $news];
-	}
-
-	/**
-	 * Save new ticker
-	 * 
-	 * @since 1.0.0
-	 */
-	public function store_ticker($data, $ticker = null)
-	{
-		global $wpdb;
-
-		if (isset($data['save'])) {
-
-			$current_date = current_time('Y-m-d');
-			$author = wp_get_current_user()->ID;
-
-			$ticker_data = [
-				'ID' => $ticker,
-				'title' => $data['title'],
-				'ticker_label' => $data['ticker_label'],
-				'author_id' => $author,
-				'date' => $current_date,
-				'top_label' => $data['top_label'],
-				'scroll_speed' => $data['scroll_speed'],
-				'ticker_style' => $data['ticker_style'],
-			];
-
-			if ($ticker == null) {
-
-				$wpdb->insert(TICKERS_TABLE, $ticker_data);
-
-				$query = "SELECT * FROM " . TICKERS_TABLE . " ORDER BY ID DESC limit 1";
-				$ticker = $wpdb->get_results($query, ARRAY_A);
-				$currentTickertId = $ticker[0]['ID'];
-				$shortcode = "[NEWSTICKER id='$currentTickertId']";
-
-				$wpdb->update(TICKERS_TABLE, array('shortcode' => $shortcode), array('ID' => $currentTickertId));
-
-				foreach ($data['news'] as $news) {
-
-					$news_data = [
-						'ticker_id' => $currentTickertId,
-						'news' => $news,
-					];
-
-					$wpdb->insert(NEWS_TABLE, $news_data);
-				}
-			} else {
-
-				$wpdb->update(TICKERS_TABLE, $ticker_data, array('ID' => $ticker));
-
-				$query_existing_news = 'SELECT * FROM ' . NEWS_TABLE . 'WHERE ticker_id = ' . $ticker;
-
-				$existing_news = $wpdb->delete(NEWS_TABLE, array('ticker_id' => $ticker));
-
-
-				foreach ($data['news'] as $news) {
-
-					$news_data = [
-						'ticker_id' => $ticker,
-						'news' => $news,
-					];
-
-					$wpdb->insert(NEWS_TABLE, $news_data);
-				}
-				var_dump($existing_news);
-			}
-		}
-
-		return true;
+		require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/partials/page-mobile-custom-nav-menu-settings.php';
 	}
 
 
@@ -238,7 +105,8 @@ class Breaking_News_Ticker_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/breaking-news-ticker-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/mobile-custom-nav-menu-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name . 'previe-variables', MOBILE_CUSTOM_NAV_MENU_URL . 'public/css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -261,6 +129,6 @@ class Breaking_News_Ticker_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/breaking-news-ticker-admin.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/mobile-custom-nav-menu.js', array('jquery'), $this->version, false);
 	}
 }

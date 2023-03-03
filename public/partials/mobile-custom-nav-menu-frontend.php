@@ -1,20 +1,14 @@
 <?php
 
-class MobileFloatingMenuFrontEnd
-{
 
-    function __construct()
-    {
-        require('admin/classes/floating_nav_menu_walker.php');
-        require_once('admin/classes/settings-management.php');
-    }
-}
+require_once( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php');
+require_once(MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/classes/class-settings-management.php');
 
 function custom_search_form( ) {
     $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
                 <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
-                    <input class="search-text-input" type="text" value="' . get_search_query() . '" name="s" id="s" />
-                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents(plugins_url( '/admin/assets/img/search-icon.svg', __FILE__ ) ). '</button>
+                    <input class="search-text-input" type="text" placeholder="Search" name="s" id="s" />
+                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( MOBILE_CUSTOM_NAV_MENU_PATH . 'assets/img/search-icon.svg' ) . '</button>
                 </div>
             </form>';
 
@@ -23,9 +17,9 @@ function custom_search_form( ) {
 
 
 if (!is_admin()) {
-    new MobileFloatingMenuFrontEnd;
+    //new MobileFloatingMenuFrontEnd;
 }
-$settings = new WpSettingsManagement;
+$settings = new MCNM_Settings_Management;
 
 $records = $settings->load_settings();
 
@@ -87,7 +81,6 @@ if (!empty($records) && $records->showFooter == 'on') {
 
 if (!empty($records) && $records->menuId && $records->showMenu == 'on') {
 
-
     wp_nav_menu(array(
         //'theme_location'=>'primary',
         'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
@@ -96,7 +89,7 @@ if (!empty($records) && $records->menuId && $records->showMenu == 'on') {
         'menu_class' => 'floating-nav-menu ' . $records->stylePreset . ' down ' . $records->menuAlignment,
         'menu_id' => 'loco',
         'items_wrap' => '<ul data-visible="false" class="%2$s">' . $header . '%3$s' . $logout . '</ul>',
-        'walker' => !empty($records->menuId) ? new floating_nav_menu_walker() : null,
+        'walker' => !empty($records->menuId) ? new Mobile_Custom_Nav_Menu_Walker() : null,
     ));
 
 

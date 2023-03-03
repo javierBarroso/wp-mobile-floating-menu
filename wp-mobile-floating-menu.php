@@ -56,8 +56,8 @@ require dirname(__FILE__) . '/includes/class-mobile-custom-nav-menu-deactivator.
 
 /** define constants */
 
-if(!defined('MOBILE_CUSTOM_NAV_MENU')){
-    define('MOBILE_CUSTOM_NAV_MENU', plugin_basename( __FILE__ ));
+if(!defined('MOBILE_CUSTOM_NAV_MENU_NAME')){
+    define('MOBILE_CUSTOM_NAV_MENU_NAME', plugin_basename( __FILE__ ));
 }
 if(!defined('MOBILE_CUSTOM_NAV_MENU_VERSION')){
     define('MOBILE_CUSTOM_NAV_MENU_VERSION', '1.0.0');
@@ -95,14 +95,13 @@ register_deactivation_hook(__FILE__, 'deactivate_mobile_custom_nav_menu');
 
 
 
-
-
+/* 
 class WpMobileFloatingMenu
 {
 
 
 
-    ///////////////////////////* registration *//////////////////////////
+    
     function register()
     {
 
@@ -118,7 +117,7 @@ class WpMobileFloatingMenu
 
     }
 
-    ///////////////////////////* include frontend file *///////////////////////////
+    
     function includes()
     {
 
@@ -200,51 +199,11 @@ class WpMobileFloatingMenu
         wp_enqueue_script('floating-menu-script-admin');
 
     }
+} */
+
+if(class_exists('Mobile_Custom_Nav_Menu')){
+
+    $plugin = new Mobile_Custom_Nav_Menu();
+    $plugin->run();
+
 }
-
-
-// /* run on activation */
-// function activate_wordpress_mobile_menu() {
-// 	require_once WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu-activator.php';
-// 	Wp_Mobile_Menu_Activator::activate();
-// }
-
-// /* run on deactivation */
-// function deactivate_wordpress_mobile_menu() {
-// 	require_once WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu-deactivator.php';
-// 	Wp_Mobile_Menu_Deactivator::deactivate();
-// }
-
-// register_activation_hook( __FILE__, 'activate_wordpress_mobile_menu' );
-// register_deactivation_hook( __FILE__, 'deactivate_wordpress_mobile_menu' );
-
-// /* load plugin file */
-// require WP_MOBILE_MENU . 'includes/class-wordpress-mobile-menu.php';
-
-// function run_wp_mobile_menu(){
-//     $plugin = new WpMobileMenu();
-// }
-
-
-/* if (class_exists('WpMobileFloatingMenu')) {
-
-    $floatingMenu = new WpMobileFloatingMenu();
-    $floatingMenu->register();
-    
-}
-
-//activation
-register_activation_hook(__FILE__, array($floatingMenu, 'activate'));
-
-//deactivation
-register_deactivation_hook(__FILE__, array($floatingMenu, 'deactivate'));
-
-
-add_action('in_admin_header', function () {
-    $currentPage = get_admin_page_parent( );
-    if ($currentPage != 'wp-mobile-floating-menu/admin/pages/menu-settings.php') return;
-    remove_all_actions('admin_notices');
-    remove_all_actions('all_admin_notices');
-  }, 1000);
-
- */
