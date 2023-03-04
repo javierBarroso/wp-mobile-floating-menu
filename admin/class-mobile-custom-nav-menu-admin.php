@@ -75,7 +75,7 @@ class Mobile_Custom_Nav_Menu_Admin
 			'manage_options',
 			'mcnm',
 			array($this, 'mobile_custom_nav_menu_settings'),
-			MOBILE_CUSTOM_NAV_MENU_URL . 'admin/assets/img/boton-menu-icon.svg', 
+			MOBILE_CUSTOM_NAV_MENU_URL . 'assets/img/boton-menu-icon.svg', 
 			3
 		);
 	}

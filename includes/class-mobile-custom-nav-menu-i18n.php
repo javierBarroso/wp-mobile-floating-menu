@@ -9,7 +9,6 @@
 class Mobile_Custom_Nav_Menu_i18n
 {
 
-
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -24,4 +23,5 @@ class Mobile_Custom_Nav_Menu_i18n
 			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);
 	}
+	
 }

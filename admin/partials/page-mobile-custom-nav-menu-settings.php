@@ -179,10 +179,10 @@ if(isset($_POST['save-settings'])){
 <div class="wrap">
     
     <div class="settings-header-page">
-        <span class="plugin-logo"></span>
+        <span class="plugin-logo"><img src="<?= esc_attr(MOBILE_CUSTOM_NAV_MENU_URL . '/assets/img/boton-menu.svg') ?>" alt=""> </span>
         <div>
             <h3>Mobile Menu Settings</h3>
-            <h5>friendly use mobile nav menu</h5>
+            <h4>friendly use mobile nav menu</h4>
         </div>
     </div>
 
@@ -206,7 +206,7 @@ if(isset($_POST['save-settings'])){
                 <div id="general" class="tab-content">
                     <div class="option">
                         <div class="label">
-                            <label for="menu-active">Activate mobile menu</label>
+                            <label for="menu-active"><?= esc_html('Activate mobile menu')?></label>
                         </div>
                         <div class="checkbox-input">
                             <input <?php echo $records != null && $records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active')">
@@ -215,7 +215,7 @@ if(isset($_POST['save-settings'])){
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select">Select Menu</label>
+                            <label for="menu-select"><?= esc_html('Select Menu')?></label>
                         </div>
                 
                         <div class="select-input">
