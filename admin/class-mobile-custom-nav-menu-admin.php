@@ -1,9 +1,8 @@
 <?php
 
 /**
- * The admin-specific functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://profiles.wordpress.org/javierbarroso/
  * @since      1.0.0
  *
  * @package    Mobile_Custom_Nav_Menu
@@ -11,8 +10,11 @@
  * @author     Javier Barroso <abby.javi.infox@gmail.com>
  * 
  * 
+ *  Text Domain: mobile-custom-nav-menu
+ *  Domain Path: /languages
+ * 
+ * 
  */
-
 
 
 class Mobile_Custom_Nav_Menu_Admin
@@ -75,7 +77,7 @@ class Mobile_Custom_Nav_Menu_Admin
 			'manage_options',
 			'mcnm',
 			array($this, 'mobile_custom_nav_menu_settings'),
-			MOBILE_CUSTOM_NAV_MENU_URL . 'assets/img/boton-menu-icon.svg', 
+			MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/boton-menu-icon.svg', 
 			3
 		);
 	}
@@ -105,8 +107,8 @@ class Mobile_Custom_Nav_Menu_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/mobile-custom-nav-menu-admin.css', array(), $this->version, 'all');
-		wp_enqueue_style($this->plugin_name . 'previe-variables', MOBILE_CUSTOM_NAV_MENU_URL . 'public/css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name . 'previe-variables', MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -129,6 +131,6 @@ class Mobile_Custom_Nav_Menu_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/mobile-custom-nav-menu.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/js/mobile-custom-nav-menu-admin.js', array('jquery'), $this->version, false);
 	}
 }

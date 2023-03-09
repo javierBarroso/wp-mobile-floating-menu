@@ -1,4 +1,19 @@
 <?php
+/**
+ *
+ * @link       https://profiles.wordpress.org/javierbarroso/
+ * @since      1.0.0
+ *
+ * @package    Mobile_Custom_Nav_Menu
+ * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @author     Javier Barroso <abby.javi.infox@gmail.com>
+ * 
+ * 
+ *  Text Domain: mobile-custom-nav-menu
+ *  Domain Path: /languages
+ * 
+ * 
+ */
 
 class Mobile_Custom_Nav_Menu_Public{
     /**
@@ -43,6 +58,7 @@ class Mobile_Custom_Nav_Menu_Public{
     function ini(){
 		
 		require 'partials/mobile-custom-nav-menu-frontend.php';
+		
 	}
 
 	
@@ -62,8 +78,8 @@ class Mobile_Custom_Nav_Menu_Public{
 		 * enqueue css stylesheets for the public faceing side of the site
 		 */
 
-		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/mobile-custom-nav-menu-public.css', array(), $this->version, 'all');
-		wp_enqueue_style($this->plugin_name . 'variables', plugin_dir_url(__FILE__) . 'css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-public.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name . 'variables', MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -78,6 +94,6 @@ class Mobile_Custom_Nav_Menu_Public{
 		 * enqueue javascripts files for the public faceing side of the site
 		 */
 
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/mobile-custom-nav-menu-public.js', array('jquery'), $this->version, true);
+		wp_enqueue_script($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/js/mobile-custom-nav-menu-public.js', array('jquery'), $this->version, true);
 	}
 }

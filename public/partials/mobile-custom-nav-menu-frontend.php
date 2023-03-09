@@ -1,14 +1,29 @@
 <?php
 
+/**
+ *
+ * @link       https://profiles.wordpress.org/javierbarroso/
+ * @since      1.0.0
+ *
+ * @package    Mobile_Custom_Nav_Menu
+ * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @author     Javier Barroso <abby.javi.infox@gmail.com>
+ * 
+ * 
+ *  Text Domain: mobile-custom-nav-menu
+ *  Domain Path: /languages
+ * 
+ * 
+ */
 
 require_once( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php');
-require_once(MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/classes/class-settings-management.php');
+require_once( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php');
 
 function custom_search_form( ) {
-    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
-                <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
+    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url( '/' ) ) . '" >
+                <div class="search-form">
                     <input class="search-text-input" type="text" placeholder="Search" name="s" id="s" />
-                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( MOBILE_CUSTOM_NAV_MENU_PATH . 'assets/img/search-icon.svg' ) . '</button>
+                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/img/search-icon.svg' ) . '</button>
                 </div>
             </form>';
 
@@ -25,7 +40,7 @@ $records = $settings->load_settings();
 
 
 ?>
-<div class="nav-toggle-container <?php echo !empty($records) ? $records->buttonAlignment : 'hide' ?>">
+<div class="nav-toggle-container <?php echo !empty($records) ? esc_attr( $records->buttonAlignment ) : esc_attr( 'hide' ) ?>">
     <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
 </div>
 <div class="floating-menu-back"></div>
@@ -50,10 +65,10 @@ if (!empty($records) && $records->showHeader == 'on') {
     }
     if ($records->headerType == 'avatar') {
 
-        $header .= '<div class="user-avatar ' . $records->headerAlignment . '"><img src="' . get_avatar_url(wp_get_current_user()->ID) . '"><a href="' . wp_get_current_user()->user_url . '">' . wp_get_current_user()->display_name . '</a></div>';
+        $header .= '<div class="user-avatar ' . esc_attr( $records->headerAlignment ) . '"><img src="' . esc_attr( get_avatar_url(wp_get_current_user()->ID) ) . '"><a href="' . esc_attr( wp_get_current_user()->user_url ) . '">' . esc_attr( wp_get_current_user()->display_name ) . '</a></div>';
     }
     if ($records->headerText) {
-        $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2></div>';
+        $header .= '<div class="custom-text"><h2 class="' . esc_attr( $records->headerAlignment ) . '">' . esc_html( $records->headerText ) . '</h2></div>';
     }
     if($records->headerSearch == 'on'){
         $header .= '<div class="custom-text">' . $search . '</div>';
@@ -74,7 +89,7 @@ if (!empty($records) && $records->showFooter == 'on') {
 
     if (is_user_logged_in() && $records->showLogin == 'on') {
 
-        $logout = '<br><hr><br><div class="menu-footer ' . $records->footerAlignment . '"><a href="' . wp_logout_url('home') . '">Log Out</a></div>';
+        $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( wp_logout_url('home') ) . '">Log Out</a></div>';
         
     }
 }
@@ -85,8 +100,8 @@ if (!empty($records) && $records->menuId && $records->showMenu == 'on') {
         //'theme_location'=>'primary',
         'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
         'container' => 'nav',
-        'container_class' => 'floating-nav-menu-container',
-        'menu_class' => 'floating-nav-menu ' . $records->stylePreset . ' down ' . $records->menuAlignment,
+        'container_class' => esc_attr( 'floating-nav-menu-container' ),
+        'menu_class' => 'floating-nav-menu ' . esc_attr( $records->stylePreset ) . ' down ' . esc_attr( $records->menuAlignment ),
         'menu_id' => 'loco',
         'items_wrap' => '<ul data-visible="false" class="%2$s">' . $header . '%3$s' . $logout . '</ul>',
         'walker' => !empty($records->menuId) ? new Mobile_Custom_Nav_Menu_Walker() : null,

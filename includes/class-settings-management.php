@@ -32,7 +32,7 @@ class MCNM_Settings_Management{
         global $wpdb;
         
         $query = 'SELECT * FROM '. MCNM_TABLE;
-        $records = $wpdb->get_results($query, ARRAY_A);
+        $records = $wpdb->get_results($query);
 
         $output = null;
 
@@ -48,11 +48,11 @@ class MCNM_Settings_Management{
             empty($records) ? $wpdb -> insert( MCNM_TABLE, $settings ) : $wpdb -> update( MCNM_TABLE, $settings, array('Id' => 1));
         
             $query = 'SELECT current_style FROM '. MCNM_TABLE .' WHERE 1';
-            $records = $wpdb->get_results($query, ARRAY_A);
+            $records = $wpdb->get_results($query);
         }
     
         
-        $filePath = MOBILE_CUSTOM_NAV_MENU_PATH . 'public/css/mobile-custom-nav-menu-variables.css';
+        $filePath = MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/css/mobile-custom-nav-menu-variables.css';
         
         $styleFile = file($filePath, FILE_IGNORE_NEW_LINES);
         
@@ -64,7 +64,7 @@ class MCNM_Settings_Management{
         
         file_put_contents($filePath, implode(PHP_EOL, $styleFile));
         if($records){
-            $output = json_decode($records[0]['current_style']);
+            $output = json_decode($records[0]->current_style);
         }
 
         return $output;
@@ -76,10 +76,10 @@ class MCNM_Settings_Management{
         $output = null;
 
         $query = 'SELECT * FROM '. MCNM_TABLE;
-        $records = $wpdb->get_results($query, ARRAY_A);
+        $records = $wpdb->get_results($query);
 
         if($records){
-            $output = json_decode($records[0]['current_style']);
+            $output = json_decode($records[0]->current_style);
         }
 
         return $output;

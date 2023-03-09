@@ -381,7 +381,7 @@ div.settings-header-page{
         overflow: hidden;
         @font-face {
             font-family: 'Poppins';
-            src: url('../assets/font/Poppins-Regular.ttf');
+            src: url('../includes/font/Poppins-Regular.ttf');
         }
         
         .hide{
@@ -842,7 +842,7 @@ div.settings-header-page{
             box-shadow: 5px 5px 10px -4px rgba(50, 50, 60, 0.8);
             border-radius: 50%;
             background-color: transparent;
-            background: url("../assets/img/boton-menu.svg");
+            background: url("../includes/img/boton-menu.svg");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
@@ -857,7 +857,7 @@ div.settings-header-page{
         }
         button.mobile-nav-toggle[aria-expanded='true']{
             background-color: transparent;
-            background: url("../assets/img/menu_button/boton-menu-close.svg");
+            background: url("../includes/img/menu_button/boton-menu-close.svg");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;

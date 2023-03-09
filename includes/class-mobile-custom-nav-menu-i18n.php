@@ -18,7 +18,7 @@ class Mobile_Custom_Nav_Menu_i18n
 	{
 
 		load_plugin_textdomain(
-			MOBILE_CUSTOM_NAV_MENU_NAME,
+			'mobile-custom-nav-menu',
 			false,
 			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);

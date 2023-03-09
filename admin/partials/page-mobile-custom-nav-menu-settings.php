@@ -1,7 +1,23 @@
 <?php
 
+/**
+ *
+ * @link       https://profiles.wordpress.org/javierbarroso/
+ * @since      1.0.0
+ *
+ * @package    Mobile_Custom_Nav_Menu
+ * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @author     Javier Barroso <abby.javi.infox@gmail.com>
+ * 
+ * 
+ *  Text Domain: mobile-custom-nav-menu
+ *  Domain Path: /languages
+ * 
+ * 
+ */
+
 require_once 'style-presets.php';
-require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/classes/class-settings-management.php';
+require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php';
 require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php';
 
 
@@ -24,10 +40,11 @@ if(isset($records->stylePreset)){
 
 function get_icons(){
 
-    $files = scandir( plugin_dir_path( __DIR__).'assets/icons/');
+    $files = scandir( MOBILE_CUSTOM_NAV_MENU_PATH .'includes/icons/');
     unset($files[0]);
     unset($files[1]);
     return $files;
+    
 }
 
 
@@ -179,9 +196,9 @@ if(isset($_POST['save-settings'])){
 <div class="wrap">
     
     <div class="settings-header-page">
-        <span class="plugin-logo"><img src="<?= esc_attr(MOBILE_CUSTOM_NAV_MENU_URL . '/assets/img/boton-menu.svg') ?>" alt=""> </span>
+        <span class="plugin-logo"><img src="<?= esc_attr(MOBILE_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg') ?>" alt=""> </span>
         <div>
-            <h3>Mobile Menu Settings</h3>
+            <h3><?= esc_html_e('Mobile Menu Settings', 'mobile-custom-nav-menu') ?></h3>
             <h4>friendly use mobile nav menu</h4>
         </div>
     </div>
@@ -419,60 +436,60 @@ if(isset($_POST['save-settings'])){
                     <div style="display: flex;">
                         <div class="option">
                             <label for="dark">
-                                <img src="<?php echo plugin_dir_url( __FILE__ ). '/img/dark.png'; ?>" width="120px" >
+                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . '/img/dark.png' ) ; ?>" width="120px" >
                             </label>
                             <br>
                             <div class="radio-input">
         
-                                <input class="<?php echo $records && $records->stylePreset ? $records->stylePreset : 'default' ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($records) && $records->stylePreset == 'dark' ? 'checked' : ''; ?>>
+                                <input class="<?php echo esc_attr( $records && $records->stylePreset ? $records->stylePreset : 'default' ) ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($records) && $records->stylePreset == 'dark' ? 'checked' : ''; ?>>
                                 
                                 <label class="style-radio" for="dark" data="Dark"></label>
                             </div>
                         </div>
                         <div class="option">
                             <label for="light">
-                                <img src="<?php echo plugin_dir_url( __FILE__ ). '/img/light.png'; ?>" width="120px" >
+                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/light.png' ); ?>" width="120px" >
                             </label>
                             <br>
                             <div class="radio-input">
     
-                                <input type="radio" name="style_preset" id="light" value="light" <?php echo !empty($records) && $records->stylePreset == 'light' ? 'checked' : ''; ?>>
+                                <input type="radio" name="style_preset" id="light" value="light" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'light' ? 'checked' : '' ); ?>>
                                 <label class="style-radio" for="light" data="Light"></label>
                             </div>
                             
                         </div>
                         <div class="option">
                             <label for="blue">
-                                <img src="<?php echo plugin_dir_url( __FILE__ ). '/img/blue.png'; ?>" width="120px" >
+                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/blue.png' ); ?>" width="120px" >
                             </label>
                             <br>
                             <div class="radio-input">
     
-                                <input type="radio" name="style_preset" id="blue" value="blue" <?php echo !empty($records) && $records->stylePreset == 'blue' ? 'checked' : ''; ?>>
+                                <input type="radio" name="style_preset" id="blue" value="blue" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'blue' ? 'checked' : '' ); ?>>
                                 
                                 <label class="style-radio" for="blue" data="Blue"></label>
                             </div>
                         </div>
                         <div class="option">
                             <label for="glass">
-                                <img src="<?php echo plugin_dir_url( __FILE__ ). '/img/glass.png'; ?>" width="120px" >
+                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/glass.png' ); ?>" width="120px" >
                             </label>
                             <br>
                             <div class="radio-input">
     
-                                <input type="radio" name="style_preset" id="glass" value="glass" <?php echo !empty($records) && $records->stylePreset == 'glass' ? 'checked' : ''; ?>>
+                                <input type="radio" name="style_preset" id="glass" value="glass" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'glass' ? 'checked' : '' ); ?>>
                                 
                                 <label class="style-radio" for="glass" data="Glass"></label>
                             </div>
                         </div>
                         <div class="option">
                             <label for="custom-style">
-                                <img src="<?php echo plugin_dir_url( __FILE__ ). '/img/glass.png'; ?>" width="120px" >
+                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/glass.png' ); ?>" width="120px" >
                             </label>
                             <br>
                             <div class="radio-input">
     
-                                <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo !empty($records) && $records->stylePreset == 'custom-style' ? 'checked' : ''; ?>>
+                                <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'custom-style' ? 'checked' : '' ); ?>>
                                 
                                 <label class="style-radio" for="custom-style" data="Custom"></label>
                             </div>
@@ -498,8 +515,8 @@ if(isset($_POST['save-settings'])){
         
                             foreach ($items as $key => $value) {
                                 $html .= '<li class="icon-selector">';
-                                $html .= '<p>' . $value->title . '</p>';
-                                $html .= '<label onClick="showIconSelectorPanel('.$key.')" for="" class="icon-selector-button" id="menu-item-'.$key.'">no Icon</label>';
+                                $html .= '<p>' . esc_html( $value->title ) . '</p>';
+                                $html .= '<label onClick="showIconSelectorPanel(' . esc_attr( $key ) . ')" for="" class="icon-selector-button" id="menu-item-' . esc_attr( $key ) . '">no Icon</label>';
                                 $html .= '</li>';
                             }
                             echo $html;
@@ -519,8 +536,8 @@ if(isset($_POST['save-settings'])){
                 function custom_search_form( ) {
                     $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
                                 <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
-                                    <input class="search-text-input" type="text" value="' . get_search_query() . '" name="s" id="s" />
-                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL .'assets/img/search-icon.svg'). '</button>
+                                    <input class="search-text-input" type="text" value="" name="s" id="s" />
+                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL .'includes/img/search-icon.svg'). '</button>
                                 </div>
                             </form>';
 
@@ -544,11 +561,11 @@ if(isset($_POST['save-settings'])){
 
                     if ($records->headerType == 'logo') {
 
-                        $header .= '<div class="blog-logo ' . $records->headerAlignment . '" >' . get_custom_logo() . '</div>';
+                        $header .= '<div class="blog-logo ' . esc_attr( $records->headerAlignment ) . '" >' . get_custom_logo() . '</div>';
                     }
                     if ($records->headerType == 'avatar') {
 
-                        $header .= '<div class="user-avatar ' . $records->headerAlignment . '"><img src="' . get_avatar_url(wp_get_current_user()->ID) . '"><a href="' . wp_get_current_user()->user_url . '">' . wp_get_current_user()->display_name . '</a></div>';
+                        $header .= '<div class="user-avatar ' . esc_attr( $records->headerAlignment ) . '"><img src="' . esc_attr( get_avatar_url(wp_get_current_user()->ID) ) . '"><a href="' . esc_attr( wp_get_current_user()->user_url ) . '">' . esc_html( wp_get_current_user()->display_name ) . '</a></div>';
                     }
                     if ($records->headerText) {
                         $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2></div>';
@@ -572,7 +589,7 @@ if(isset($_POST['save-settings'])){
 
                     if (is_user_logged_in() && $records->showLogin == 'on') {
 
-                        $logout = '<br><hr><br><div class="menu-footer ' . $records->footerAlignment . '"><a href="' . wp_logout_url('home') . '">Log Out</a></div>';
+                        $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( wp_logout_url('home') ) . '">Log Out</a></div>';
                         
                     }
                 }
@@ -582,7 +599,7 @@ if(isset($_POST['save-settings'])){
                 'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
                 'container' => 'div',
                 'container_class' => 'floating-nav-menu-container',
-                'menu_class' => 'floating-nav-menu ' . $records->stylePreset . ' down ' . $records->menuAlignment,
+                'menu_class' => 'floating-nav-menu ' . esc_attr( $records->stylePreset ) . ' down ' . esc_attr( $records->menuAlignment ),
                 'menu_id' => 'loco',
                 'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
                 'walker' => !empty($records->menuId) ? new Preview_Mobile_Custom_nav_menu_walker() : null,
@@ -609,7 +626,7 @@ if(isset($_POST['save-settings'])){
                     foreach ($icons as $key => $value) {
                         $icon .= '<div>';
                         
-                        $icon .= '<img src="'.plugin_dir_url( __FILE__).'../assets/icons/'.$value.'" ></img>';
+                        $icon .= '<img src="' . esc_attr( plugin_dir_url( __FILE__).'../includes/icons/'.$value ).'" ></img>';
                         $icon .= '</div>';
                     }
                     echo $icon;
