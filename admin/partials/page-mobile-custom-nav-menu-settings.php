@@ -213,7 +213,7 @@ if(isset($_POST['save-settings'])){
                 <label class="tab" onClick="openTab(event, 'header')">Header</label>
                 <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
                 <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
-                <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label>
+                <!-- <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label> -->
                 <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
             </div>
             <form method="post">
