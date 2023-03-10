@@ -206,7 +206,7 @@ if(isset($_POST['save-settings'])){
 
     <div class="settings">
         <div class="settings-options">
-            
+            <br>
             <!-- tab links -->
             <div class="tabs">
                 <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
