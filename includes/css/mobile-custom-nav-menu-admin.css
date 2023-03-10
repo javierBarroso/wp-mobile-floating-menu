@@ -133,12 +133,6 @@ div.settings-header-page div h4 {
           transition-duration: .4s;
 }
 
-.icon-modal.show {
-  /* visibility: visible;
-        opacity: 1;
-        pointer-events: auto; */
-}
-
 .icon-modal.show .panel {
   -webkit-transition-duration: 1s;
           transition-duration: 1s;
@@ -176,8 +170,6 @@ div.settings-header-page div h4 {
 }
 
 .settings .settings-options .tabs {
-  /* border: 1px solid #ccc;
-            background-color: #f1f1f1; */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -102,7 +102,7 @@ if (!empty($records) && $records->menuId && $records->showMenu == 'on') {
         'container' => 'nav',
         'container_class' => esc_attr( 'floating-nav-menu-container' ),
         'menu_class' => 'floating-nav-menu ' . esc_attr( $records->stylePreset ) . ' down ' . esc_attr( $records->menuAlignment ),
-        'menu_id' => 'loco',
+        'menu_id' => 'mcnm_public',
         'items_wrap' => '<ul data-visible="false" class="%2$s">' . $header . '%3$s' . $logout . '</ul>',
         'walker' => !empty($records->menuId) ? new Mobile_Custom_Nav_Menu_Walker() : null,
     ));
