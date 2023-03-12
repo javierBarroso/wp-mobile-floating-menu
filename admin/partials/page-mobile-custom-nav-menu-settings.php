@@ -94,7 +94,6 @@ if(isset($_POST['save-settings'])){
 
     //////////////////////////* general settings *//////////////////////////
     
-    
     if(isset($_POST['show-menu'])){
         $settings_data['showMenu'] = $_POST['show-menu'];
     }else{
@@ -204,18 +203,17 @@ if(isset($_POST['save-settings'])){
     </div>
 
 
+    <!-- tab links -->
+    <div class="tabs">
+        <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
+        <label class="tab" onClick="openTab(event, 'header')">Header</label>
+        <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
+        <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
+        <!-- <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label> -->
+        <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
+    </div>
     <div class="settings">
         <div class="settings-options">
-            <br>
-            <!-- tab links -->
-            <div class="tabs">
-                <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
-                <label class="tab" onClick="openTab(event, 'header')">Header</label>
-                <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
-                <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
-                <!-- <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label> -->
-                <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
-            </div>
             <form method="post">
             <!-- tabs content -->
     
@@ -530,7 +528,19 @@ if(isset($_POST['save-settings'])){
             </form>
         </div>
         <div class="preview">
-            
+            <div class="previw-back">
+                <h1>My Web</h1>
+                <br>
+                <h2>About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa commodi optio ad non totam repellat, aliquam magnam nulla neque iusto porro, aperiam quisquam dolores similique numquam deserunt. Vel, dolores corrupti!</p>
+                <h3>Portfolio</h3>
+                <ul>
+                    <li>Project 1</li>
+                    <li>Project 2</li>
+                    <li>Project 3</li>
+                    <li>Project 4</li>
+                </ul>
+            </div>
             <?php
 
                 function custom_search_form( ) {
@@ -595,7 +605,6 @@ if(isset($_POST['save-settings'])){
                 }
                 
             wp_nav_menu(array(
-                //'theme_location'=>'primary',
                 'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
                 'container' => 'div',
                 'container_class' => 'floating-nav-menu-container',
@@ -641,14 +650,6 @@ if(isset($_POST['save-settings'])){
 
 
 <script>
-
-
-    /* var notices = document.querySelectorAll('.notice');
-    notices.forEach(element => {
-        element.remove()
-    }); */
-
-    //document.getElementById('defaultTab').click();
 
     var defaultInputs = document.getElementsByClassName('default');
 

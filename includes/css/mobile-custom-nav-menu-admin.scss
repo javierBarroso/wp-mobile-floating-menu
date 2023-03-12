@@ -112,56 +112,48 @@ div.settings-header-page{
     
 }
 
-.settings{
+.tabs{
     display: flex;
-    justify-content: space-between;
-    padding: 2rem 0;
+    height: fit-content;
+    margin: 0px;
+    padding: 0;
+    width: 100%;
+    position: relative;
     flex-wrap: wrap;
-    .settings-options{
-        width: 60%;
-        .tabs{
-            display: flex;
-            height: fit-content;
-            margin: 0px;
-            padding: 0;
-            width: fit-content;
-            margin-bottom: -1px;
-            position: relative;
-            
-            .tab{
-                background-color: #eee;
-                border: 1px solid #ccc;
-                padding: 0.6rem 1rem 1rem 1rem;
-                font-size: 1rem;
-                height: 100%;
-                margin-right: -1px;
-                width: fit-content;
-                transition-duration: .3s;
-                
-                &:hover{
-                    transition-duration: .3s;
-                    background-color: #ddd;
-                    
-                }
-            }
-            
-            label.active, .active:hover{
-                background-color: #fff;
-                border-bottom: #fff solid 1px;
-                z-index: 10;
-            }
-            
+    background: black;
+    .tab{
+        padding: 0.6rem 1rem 1rem 1rem;
+        font-size: 1rem;
+        height: 100%;
+        margin-right: -1px;
+        width: fit-content;
+        transition-duration: .3s;
+        color: #fff;
+        &:hover{
+            transition-duration: .3s;
+            background-color: #ddd;
+            color: #333;
         }
+    }
+    
+    label.active, .active:hover{
+        background-color: #fff;
+        color: #333;
+        z-index: 10;
+    }
+}
+
+.settings{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 2rem 0;
+    .settings-options{
         .tab-content{
             position: relative;
             display: none;
             padding: 3rem 1.5rem;
             background-color: #fff;
-            border: 1px solid #ccc;
-            margin-top: -1px;
             row-gap: 2rem;
-            width: 100%;
-            
             .option{
                 display: grid;
                 grid-template-columns: 1fr 2fr;
@@ -353,10 +345,21 @@ div.settings-header-page{
     
     /* preview */
     .preview{
-        border: #333 solid 1px;
+        border: #333 solid;
+        border-width: 50px 10px 40px 10px;
+        border-radius: 20px;
         width: 360px;
-        height: 740px;
+        height: 540px;
         overflow: hidden;
+        overflow-y: scroll;
+        margin: 0 50px;
+        position: relative;
+        .previw-back{
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
         @font-face {
             font-family: 'Poppins';
             src: url('../includes/font/Poppins-Regular.ttf');

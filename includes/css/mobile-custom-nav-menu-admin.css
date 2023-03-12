@@ -152,24 +152,7 @@ div.settings-header-page div h4 {
   opacity: 0;
 }
 
-.settings {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  padding: 2rem 0;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  /* preview */
-}
-
-.settings .settings-options {
-  width: 60%;
-}
-
-.settings .settings-options .tabs {
+.tabs {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -178,16 +161,14 @@ div.settings-header-page div h4 {
   height: fit-content;
   margin: 0px;
   padding: 0;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  margin-bottom: -1px;
+  width: 100%;
   position: relative;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background: black;
 }
 
-.settings .settings-options .tabs .tab {
-  background-color: #eee;
-  border: 1px solid #ccc;
+.tabs .tab {
   padding: 0.6rem 1rem 1rem 1rem;
   font-size: 1rem;
   height: 100%;
@@ -197,18 +178,29 @@ div.settings-header-page div h4 {
   width: fit-content;
   -webkit-transition-duration: .3s;
           transition-duration: .3s;
+  color: #fff;
 }
 
-.settings .settings-options .tabs .tab:hover {
+.tabs .tab:hover {
   -webkit-transition-duration: .3s;
           transition-duration: .3s;
   background-color: #ddd;
+  color: #333;
 }
 
-.settings .settings-options .tabs label.active, .settings .settings-options .tabs .active:hover {
+.tabs label.active, .tabs .active:hover {
   background-color: #fff;
-  border-bottom: #fff solid 1px;
+  color: #333;
   z-index: 10;
+}
+
+.settings {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr auto;
+      grid-template-columns: 1fr auto;
+  padding: 2rem 0;
+  /* preview */
 }
 
 .settings .settings-options .tab-content {
@@ -216,10 +208,7 @@ div.settings-header-page div h4 {
   display: none;
   padding: 3rem 1.5rem;
   background-color: #fff;
-  border: 1px solid #ccc;
-  margin-top: -1px;
   row-gap: 2rem;
-  width: 100%;
 }
 
 .settings .settings-options .tab-content .option {
@@ -447,10 +436,15 @@ div.settings-header-page div h4 {
 }
 
 .settings .preview {
-  border: #333 solid 1px;
+  border: #333 solid;
+  border-width: 50px 10px 40px 10px;
+  border-radius: 20px;
   width: 360px;
-  height: 740px;
+  height: 540px;
   overflow: hidden;
+  overflow-y: scroll;
+  margin: 0 50px;
+  position: relative;
   /* html{
             --menuBackground : #ffffffff;
             --fontColor: #747474ff;
@@ -460,6 +454,13 @@ div.settings-header-page div h4 {
             --background-display:none;
             --backMenuColor: rgba(36, 36, 36, 0);
         } */
+}
+
+.settings .preview .previw-back {
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 @font-face {
