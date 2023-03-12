@@ -214,18 +214,7 @@ if(isset($_POST['save-settings'])){
     </div>
     <div class="settings">
         <div class="settings-options">
-<<<<<<< HEAD
-            <!-- tab links -->
-            <div class="tabs">
-                <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
-                <label class="tab" onClick="openTab(event, 'header')">Header</label>
-                <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
-                <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
-                <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label>
-                <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
-            </div>
-=======
->>>>>>> wordpress-repo
+
             <form method="post">
             <!-- tabs content -->
     
