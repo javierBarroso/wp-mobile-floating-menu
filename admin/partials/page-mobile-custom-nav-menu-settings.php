@@ -26,492 +26,607 @@ $setting_manager = new MCNM_Settings_Management;
 
 $menus = $setting_manager->get_menus_list();
 
+$pages = array();
+
+foreach (get_pages() as $key => $page) {
+    
+    $pages[$key] = [
+        'name' => $page->post_name,
+        'url' => $page->guid,
+    ];
+}
+
 $records = $setting_manager->load_settings();
 
 
 
 
+if (!did_action('wp_enqueue_media')) {
+    wp_enqueue_media();
+}
+
+
 $current_style_preset = 'dark';
 
-if(isset($records->stylePreset)){
+if (isset($records->stylePreset)) {
     $current_style_preset = $records->stylePreset;
 }
 
+//TODO: icon selector 
+function get_icons()
+{
 
-function get_icons(){
-
-    $files = scandir( MOBILE_CUSTOM_NAV_MENU_PATH .'includes/icons/');
+    $files = scandir(MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/icons/');
     unset($files[0]);
     unset($files[1]);
     return $files;
-    
 }
 
 
-if(isset($_POST['save-settings'])){
-    
-    
-    
+if (isset($_POST['save-settings'])) {
+
+
     $settings_data = [];
 
     $customStructure = [];
 
     /* Style settings */
-    
-    if($_POST['style_preset'] == $current_style_preset){
+
+    if ($_POST['style_preset'] == $current_style_preset) {
 
 
-        if(isset($_POST['background_color'])){
+        if (isset($_POST['background_color'])) {
             $settings_data['style']['menuBackground'] = [$_POST['background_color'], 2];
         }
 
-        if(isset($_POST['front_color'])){
+        if (isset($_POST['front_color'])) {
             $settings_data['style']['fontColor'] = [$_POST['front_color'], 3];
         }
 
-        if(isset($_POST['selected_item_background_color'])){
-        
+        if (isset($_POST['selected_item_background_color'])) {
+
             $settings_data['style']['selectedItemBackground'] = [$_POST['selected_item_background_color'], 4];
         }
 
-        if(isset($_POST['selected_item_color'])){
-        
+        if (isset($_POST['selected_item_color'])) {
+
             $settings_data['style']['selectedItemColor'] = [$_POST['selected_item_color'], 5];
         }
 
-        if(isset($_POST['item_font_size'])){
-        
+        if (isset($_POST['item_font_size'])) {
+
             $settings_data['style']['fontSize'] = [$_POST['item_font_size'] . 'em', 6];
         }
-            
-    }else{
-            foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
+    } else {
+        foreach ($style_preset[$_POST['style_preset']] as $key => $value) {
             $settings_data['style'][$key] = $value;
         }
-        
     }
 
 
     //////////////////////////* general settings *//////////////////////////
-    
-    if(isset($_POST['show-menu'])){
+
+    if (isset($_POST['show-menu'])) {
         $settings_data['showMenu'] = $_POST['show-menu'];
-    }else{
+    } else {
         $settings_data['showMenu'] = 'off';
     }
 
-    if(isset($_POST['menu_id'])){
+    if (isset($_POST['menu_id'])) {
         $settings_data['menuId'] = $_POST['menu_id'];
-    }else{
+    } else {
         $settings_data['menuId'] = '';
     }
-    
 
-    if(isset($_POST['show-menu'])){
+
+    if (isset($_POST['show-menu'])) {
         $settings_data['buttonAlignment'] = $_POST['button-alignment'];
-    }else{
+    } else {
         $settings_data['buttonAlignment'] = $records ? $records->buttonAlignment : 'right';
     }
-    
-    if(isset($_POST['show-menu'])){
+
+    if (isset($_POST['show-menu'])) {
         $settings_data['menuAlignment'] = $_POST['menu-alignment'];
-    }else{
+    } else {
         $settings_data['menuAlignment'] = $records ? $records->menuAlignment : 'right';
     }
 
     //////////////////////////* Header settings *//////////////////////////
 
-
-    if(isset($_POST['show-header'])){
+    if (isset($_POST['show-header'])) {
         $settings_data['showHeader'] = $_POST['show-header'];
-    }else{
+    } else {
 
         $settings_data['showHeader'] = 'off';
     }
 
-    
-    if(isset($_POST['show-header'])){
+
+    if (isset($_POST['show-header'])) {
         $settings_data['headerType'] = $_POST['header-type'];
-    }else{
+    } else {
         $settings_data['headerType'] = $records ? $records->headerType : 'logo';
     }
-    
-    if(isset($_POST['show-header'])){
-        $settings_data['headerAlignment'] = $_POST['header-alignment'];
-    }else{
-        
-        $settings_data['headerAlignment'] = $records ? $records->headerAlignment : 'center';
 
+    if (isset($_POST['show-header'])) {
+        $settings_data['headerAlignment'] = $_POST['header-alignment'];
+    } else {
+
+        $settings_data['headerAlignment'] = $records ? $records->headerAlignment : 'center';
     }
 
-    if(isset($_POST['header-text'])){
+    if (isset($_POST['header-text'])) {
         $settings_data['headerText'] = $_POST['header-text'];
-    }else{
+    } else {
         $settings_data['headerText'] = $records ? $records->headerText : '';
     }
-
-    if(isset($_POST['header-search'])){
+    
+    if (isset($_POST['logo'])) {
+        $settings_data['logo'] = $_POST['logo'];
+    } else {
+        $settings_data['logo'] = $records ? $records->logo : '';
+    }
+    
+    if (isset($_POST['header-search'])) {
         $settings_data['headerSearch'] = $_POST['header-search'];
-    }else{
+    } else {
         $settings_data['headerSearch'] = $records ? $records->headerSearch : 'off';
+    }
+    if (isset($_POST['search-text'])) {
+        $settings_data['searchText'] = $_POST['search-text'];
+    } else {
+        $settings_data['searchText'] = $records ? $records->searchText : 'Search';
     }
 
     //////////////////////////* Footer settings *//////////////////////////
 
-    if(isset($_POST['show-footer'])){
+    if (isset($_POST['show-footer'])) {
         $settings_data['showFooter'] = $_POST['show-footer'];
-    }else{
+    } else {
         $settings_data['showFooter'] = 'off';
     }
-    if(isset($_POST['show-login'])){
+    if (isset($_POST['show-login'])) {
         $settings_data['showLogin'] = $_POST['show-login'];
-    }else{
+    } else {
         $settings_data['showLogin'] = $records ? $records->showLogin : 'off';
     }
-    if(isset($_POST['show-footer'])){
+    if (isset($_POST['show-login'])) {
+        $settings_data['loginUrl'] = $_POST['login-url'];
+    } else {
+        $settings_data['loginUrl'] = $records ? $records->loginUrl : '';
+    }
+    if (isset($_POST['show-login'])) {
+        $settings_data['registerUrl'] = $_POST['register-url'];
+    } else {
+        $settings_data['registerUrl'] = $records ? $records->registerUrl : '';
+    }
+    if (isset($_POST['show-footer'])) {
         $settings_data['footerAlignment'] = $_POST['footer-alignment'];
-    }else{
+    } else {
         $settings_data['footerAlignment'] = $records ? $records->footerAlignment : 'left';
     }
 
     //////////////////////////* Presets settings *//////////////////////////
 
-    if(isset($_POST['style_preset'])){
+    if (isset($_POST['style_preset'])) {
         $settings_data['stylePreset'] = $_POST['style_preset'];
-    }else{
+    } else {
         $settings_data['stylePreset'] = $records ? $records->stylePreset : 'dark';
     }
 
     $records = $setting_manager->save_general_settings($settings_data);
+}
 
+//TODO: Fix notifications
+//TODO: Fix error if there is no menu created
+//TODO: enable disable search place holder text
+
+
+//TODO: check message 
+add_action( 'admin_notices', 'no_nav_menu' );
+if (empty($menus)) {
+
+    no_nav_menu();
+    /* $message = sprintf(
+        esc_html__('"%1$s" requires at least "%2$s" to be used.', 'mobile-custom-nav-menu'),
+        '<strong>' . esc_html_e('Mobile Custom Nav Menu', 'mobile-custom-nav-menu') . '</strong>',
+        '<strong>' . esc_html__('one nav menu', 'mobile-custom-nav-menu') . '</strong>',
+        '<a href="#">' . esc_html__('Create menu', 'mobile-custom-nav-menu') . '</a>'
+    );
+    printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message); */
+}
+
+
+function no_nav_menu() {
+    ?>
+    <div class="notice notice-warning mcnm-notice">
+        <img src="<?= MOBILE_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg' ?>" width="50px">
+        <p>
+            <strong><?= esc_html_e('Mobile Custom Nav Menu', 'mobile-custom-nav-menu') ?></strong>
+            <?= esc_html_e('requires at least', 'mobile-custom-nav-menu') ?>
+            <strong><?= esc_html_e('one nav menu', 'mobile-custom-nav-menu') ?></strong>
+            <?= esc_html_e('to be used.', 'mobile-custom-nav-menu') ?>
+        </p>
+    </div>
+    <?php
 }
 
 
 ?>
 
-
 <!-- HTML -->
 
 <div class="wrap">
-    
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://yoursite.com/wp-content/themes/yourtheme/style.css" media="all">
+    <h2></h2>
+
     <div class="settings-header-page">
         <span class="plugin-logo"><img src="<?= esc_attr(MOBILE_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg') ?>" alt=""> </span>
         <div>
-            <h3><?= esc_html_e('Mobile Menu Settings', 'mobile-custom-nav-menu') ?></h3>
-            <h4>friendly use mobile nav menu</h4>
+            <h3><?= esc_html_e( 'Mobile Menu Settings', 'mobile-custom-nav-menu' ) ?></h3>
+            <h4><?= esc_html_e( 'friendly use mobile nav menu', 'mobile-custom-nav-menu' ) ?></h4>
         </div>
     </div>
 
 
     <!-- tab links -->
     <div class="tabs">
-        <label class="tab default" onClick="openTab(event, 'general')">General Options</label>
-        <label class="tab" onClick="openTab(event, 'header')">Header</label>
-        <label class="tab" onClick="openTab(event, 'footer')">Footer</label>
-        <label class="tab" onClick="openTab(event, 'style-presets')">Style Presets</label>
-        <!-- <label class="tab" onClick="openTab(event, 'custom-colors')">Customize Style</label> -->
-        <label class="tab" onClick="openTab(event, 'item-icon')">Menu Icon</label>
+        <label class="tab default" onClick="openTab(event, 'general')"> <?= esc_html_e( 'General Options', 'mobile-custom-nav-menu' ) ?> </label>
+        <label class="tab" onClick="openTab(event, 'header')"><?= esc_html_e( 'Header', 'mobile-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'footer')"><?= esc_html_e( 'Footer', 'mobile-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'style-presets')"><?= esc_html_e( 'Style Presets', 'mobile-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'custom-colors')"><?= esc_attr( 'Customize Style', 'mobile-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'item-icon')"><?= esc_html_e( 'Menu Icon', 'mobile-custom-nav-menu' ) ?></label>
     </div>
     <div class="settings">
         <div class="settings-options">
 
             <form method="post">
-            <!-- tabs content -->
-    
+
                 <!-- General Tab -->
                 <div id="general" class="tab-content">
                     <div class="option">
                         <div class="label">
-                            <label for="menu-active"><?= esc_html('Activate mobile menu')?></label>
+                            <label for="menu-active"><?= esc_html_e('Activate mobile menu', 'mobile-custom-nav-menu') ?></label>
                         </div>
                         <div class="checkbox-input">
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active')">
+                            <input <?= $records != null && $records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active', this)">
                             <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-menu"></label>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select"><?= esc_html('Select Menu')?></label>
+                            <label for="menu-select"><?= esc_html_e('Select Menu', 'mobile-custom-nav-menu') ?></label>
                         </div>
-                
+
                         <div class="select-input">
-                            <select <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> id="menu-select" name='menu_id' class="menu-active">
-                                
+                            <select <?= $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> id="menu-select" name='menu_id' class="menu-active">
+
                                 <?php
-                                    if(empty($menus)){
-                                        echo 'You must create a menu';
+                                $html = '';
+                                if (empty($menus)) {
+                                    $html = esc_html_e( 'You must create a menu', 'mobile-custom-nav-menu' ) ;
+                                }
+                                foreach ($menus as $key => $menu) {
+                                    $selected = '';
+                                    if ($menu['id'] == $records->menuId) {
+                                        $selected = 'selected';
                                     }
-                                    foreach ($menus as $key => $menu) {
-                                        $selected = '';
-                                        if($menu['id'] == $records->menuId){
-                                            $selected = 'selected';
-                                        }
-                                        echo '<option value="'.$menu['id'].'" '.$selected.'>'.$menu['name'].'</option>' ;
-                                    }
+                                    $html .= '<option value="' . esc_attr( $menu['id'] ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $menu['name'] ) . '</option>';
+                                }
+
+                                echo $html;
                                 ?>
-        
+
                             </select>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select">Menu button position</label>
+                            <label for="menu-select"> <?= esc_html_e( 'Menu button position', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'left' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
                             <label for="button-alignment-left" data="LEFT"></label>
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'center' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-center" value="center">
                             <label for="button-alignment-center" data="CENTER"></label>
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $records != null ? '' : 'default'; ?>" <?php echo $records != null && $records->buttonAlignment && $records->buttonAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active <?php echo esc_attr( $records != null ? '' : 'default' ); ?>" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'right' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
                             <label for="button-alignment-right" data="RIGHT"></label>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select">Menu position</label>
+                            <label for="menu-select"> <?= esc_html_e( 'Menu position', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'left' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->menuAlignment && $records->menuAlignment == 'left' ? 'checked' : '' ); ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
                             <label for="menu-alignment-left" data="LEFT"></label>
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'center' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->menuAlignment && $records->menuAlignment == 'center' ? 'checked' : '' ); ?> type="radio" name="menu-alignment" id="menu-alignment-center" value="center">
                             <label for="menu-alignment-center" data="CENTER"></label>
-                            <input <?php echo $records != null && $records->showMenu == 'on' ? '' : 'disabled'; ?> class="menu-active <?php echo $records != null ? '' : 'default'; ?>" <?php echo $records != null && $records->menuAlignment && $records->menuAlignment == 'right' ? 'checked' : ''; ?> type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active <?php echo esc_attr( $records != null ? '' : 'default' ); ?>" <?php echo esc_attr( $records != null && $records->menuAlignment && $records->menuAlignment == 'right' ? 'checked' : '' ); ?> type="radio" name="menu-alignment" id="menu-alignment-right" value="right">
                             <label for="menu-alignment-right" data="RIGHT"></label>
                         </div>
                     </div>
                 </div>
-    
+
                 <!-- Header Tab -->
+                
                 <div id="header" class="tab-content">
+
                     <div class="option">
                         <div class="label">
-                            <label for="show-header">Show menu header</label>
+                            <label for="show-header"> <?= esc_html_e( 'Show menu header', 'mobile-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="checkbox-input">
-                            <input <?php echo $records != null && $records->showHeader == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-header" id="show-header" onclick="enable_input('header-style')">
+                            <input <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? 'checked' : '' ); ?> class="tgl-skewed" type="checkbox" name="show-header" id="show-header" onclick="enable_input('header-style', this)">
                             <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-header"></label>
                         </div>
                     </div>
+
                     <div class="option">
                         <div class="label">
-                            <label for="header-search">Show menu search</label>
+                            <label for="header-search"> <?= esc_html_e( 'Show menu search', 'mobile-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="checkbox-input">
-                            <input <?php echo $records != null && $records->headerSearch == 'on' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="tgl-skewed header-style" type="checkbox" name="header-search" id="header-search">
+                            <input onclick="enable_input('header-search', this)" <?php echo esc_attr( $records != null && $records->headerSearch == 'on' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="tgl-skewed header-style" type="checkbox" name="header-search" id="header-search">
                             <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="header-search"></label>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <div class="label">
+                            <label for="search-text"><?= esc_html_e( 'Search place holder', 'mobile-custom-nav-menu' ) ?></label>
+                        </div>
+                        <div class="text-input">
+                            <input value="<?= esc_attr( $records != null ? $records->searchText : '' ) ?> " <?= esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> class="header-style" type="text" name="search-text" id="search-text">
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="header-type">Show menu header</label>
+                            <label for="header-type"> <?= esc_html_e( 'Select header image type', 'mobile-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="input">
-                            <select <?php echo $records != null && $records->showHeader == 'on' ? '' : 'disabled'; ?> name="header-type" class="header-style">
-                                <option <?php echo $records != null && $records->headerType == 'logo' ? 'selected' : ''; ?> value="logo">Site logo</option>
-                                <option <?php echo $records != null && $records->headerType == 'avatar' ? 'selected' : ''; ?> value="avatar">User avatar</option>
+                            <select onchange="enable_custom_header_image_input(this.value)" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="header-type" class="header-style">
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'logo' ? 'selected' : '' ); ?> value="logo"> <?= esc_html_e( 'Site logo', 'mobile-custom-nav-menu' ) ?> </option>
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'avatar' ? 'selected' : '' ); ?> value="avatar"> <?= esc_html_e( 'User avatar', 'mobile-custom-nav-menu' ) ?></option>
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? 'selected' : '' ); ?> value="custom-image"> <?= esc_html_e( 'Custom Image', 'mobile-custom-nav-menu' ) ?></option>
                             </select>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="">Header alignment</label>
+                            <label for="header-custom-image"><?= esc_html_e( 'Select header image', 'mobile-custom-nav-menu' ) ?></label>
+                        </div>
+                        <div class="input">
+                            <label <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? '' : esc_attr('disabled') ); ?> type="reset" id="logo-preview-container" class="upload_custom_image" onclick="select_logo();"><?= '<img src="' . esc_attr($records != null && $records->headerType == 'custom-image' ? $records->logo : MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg') . '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'; ?></label>
+                            <input style="display:none;" type="text" name="logo" id="logo" value="<?= esc_attr( $records != null && $records->headerType == 'custom-image' ? $records->logo : '' ) ?>" />
+                        </div>
+                    </div>
+                    <div class="option">
+                        <div class="label">
+                            <label for=""><?= esc_html_e( 'Header alignment', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
-                            <input <?php echo $records != null && $records->headerAlignment == 'left' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
+                            <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'left' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
                             <label for="header-alignment-left" data="LEFT"></label>
-                            <input <?php echo $records != null && $records->headerAlignment == 'center' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
+                            <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'center' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="header-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
                             <label for="header-alignment-center" data="CENTER"></label>
-                            <input <?php echo $records != null && $records->headerAlignment == 'right' ? 'checked' : ''; echo $records != null && $records->showHeader == 'on' ? '' : ' disabled'; ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
+                            <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'right' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-right" value="right">
                             <label for="header-alignment-right" data="RIGHT"></label>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-header">Header text</label>
+                            <label for="show-header"><?= esc_html_e( 'Header text', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="text-input">
-                            <input <?php echo $records != null ? 'value="'. $records->headerText.'"' : 'value=""'; echo $records != null && $records->showHeader == 'on' ? '' : 'disabled'; ?> class="header-style" type="text" name="header-text" id="show-header">
+                            <input value="<?= esc_attr( $records != null ? $records->headerText : '' ) ?> " <?= esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> class="header-style" type="text" name="header-text" id="show-header">
                         </div>
                     </div>
-                    
+
                 </div>
-    
+
                 <!-- Footer Tab -->
                 <div id="footer" class="tab-content">
                     <div class="option">
                         <div class="label">
-                            <label for="show-footer">Show menu footer</label>
+                            <label for="show-footer"><?= esc_html_e( 'Show menu footer', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
-                            <input <?php echo $records != null && $records->showFooter == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style')">
+                            <input <?php echo esc_attr( $records != null && $records->showFooter == 'on' ? 'checked' : '' ); ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style', this)">
                             <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-footer"></label>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-logout">Show logout or login</label>
+                            <label for="show-logout"><?= esc_html_e( 'Show logout login', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
-                            <input <?php echo $records != null && $records->showLogin == 'on' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
+                            <input onclick="enable_input('footer-login', this)" <?php echo esc_attr( $records != null && $records->showLogin == 'on' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showFooter == 'on' ? '' : ' disabled' ); ?> class="tgl-skewed footer-style" type="checkbox" name="show-login" id="show-login">
                             <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="show-login"></label>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="">Footer alignment</label>
+                            <label for="show-logout"><?= esc_html_e( 'Set login page', 'mobile-custom-nav-menu' ) ?></label>
+                        </div>
+                        <div class="checkbox-input">
+                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="login-url">
+                                <?php
+                                
+                                foreach ($pages as $key => $page) {
+                                    echo '<option value="' . esc_attr( $page['url'] ) . '" ' . esc_attr( $records != null && $records->loginUrl == $page['url'] ? 'selected' : '' ) . '>' . esc_html( $page['name'] ) . '</option>';
+                                }
+                                
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <div class="label">
+                            <label for="show-logout"><?= esc_html_e( 'Set register page', 'mobile-custom-nav-menu' ) ?></label>
+                        </div>
+                        <div class="checkbox-input">
+                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="register-url">
+                                <?php
+                                
+                                foreach ($pages as $key => $page) {
+                                    echo '<option value="' . esc_attr( $page['url'] ) . '" ' . esc_attr( $records != null && $records->registerUrl == $page['url'] ? 'selected' : '' ) . '>' . esc_html( $page['name'] ) . '</option>';
+                                }
+                                
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <div class="label">
+                            <label for=""><?= esc_html_e( 'Footer alignment', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
-                            <input <?php echo $records != null && $records->footerAlignment == 'left' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="footer-alignment" id="footer-alignment-left" value="left">
+                            <input <?php echo esc_attr( $records != null && $records->footerAlignment == 'left' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showFooter == 'on' ? '' : ' disabled' ); ?> class="footer-style <?php echo esc_attr( $records != null ? '' : 'default' ); ?>" type="radio" name="footer-alignment" id="footer-alignment-left" value="left">
                             <label for="footer-alignment-left" data="LEFT"></label>
-                            <input <?php echo $records != null && $records->footerAlignment == 'center' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-center" value="center">
+                            <input <?php echo esc_attr( $records != null && $records->footerAlignment == 'center' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showFooter == 'on' ? '' : ' disabled' ); ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-center" value="center">
                             <label for="footer-alignment-center" data="CENTER"></label>
-                            <input <?php echo $records != null && $records->footerAlignment == 'right' ? 'checked' : ''; echo $records != null && $records->showFooter == 'on' ? '' : ' disabled'; ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-right" value="right">
+                            <input <?php echo esc_attr( $records != null && $records->footerAlignment == 'right' ? 'checked' : '' );
+                                    echo esc_attr( $records != null && $records->showFooter == 'on' ? '' : ' disabled' ); ?> class="footer-style" type="radio" name="footer-alignment" id="footer-alignment-right" value="right">
                             <label for="footer-alignment-right" data="RIGHT"></label>
                         </div>
                     </div>
                 </div>
-                
-    
+
+
                 <!-- Color Tab -->
                 <div id="custom-colors" class="tab-content">
-                    
-                
+
+
                     <div class="option">
                         <div class="label">
-                            <!-- <input type="checkbox" name="" id="bg-color" onclick="enable_input('bg-color-color-picker')"> -->
-                            <label for="bg-color">Background color</label>
+                            <label for="bg-color"><?= esc_html_e( 'Background color', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
-                            <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo $records != null ? $records->style->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ?>">
+                            <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo esc_attr( $records != null ? $records->style->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ) ?>">
                         </div>
                     </div>
-                    
+
                     <div class="option">
                         <div class="label">
-                            <!-- <input type="checkbox" name="" id="f-color" onclick="enable_input('front-color-picker')"> -->
-                            <label for="f-color">Font color</label>
+                            <label for="f-color"><?= esc_html_e( 'Font color', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
-                            <input type="color" name="front_color" class="front-color-picker" value="<?php echo $records ? $records->style->fontColor[0] : $style_preset['dark']['fontColor'][0] ?>">
+                            <input type="color" name="front_color" class="front-color-picker" value="<?php echo esc_attr( $records ? $records->style->fontColor[0] : $style_preset['dark']['fontColor'][0] ) ?>">
                         </div>
                     </div>
-                    
+
                     <div class="option">
                         <div class="label">
-                            <!-- <input type="checkbox" name="" id="s-item-bg-color" onclick="enable_input('select-item-bg-color-picker')"> -->
-                            <label for="s-item-bg-color">Selected item background color</label>
+                            <label for="s-item-bg-color"><?= esc_html_e( 'Selected item background color', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
-                            <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo $records ? ($records->stylePreset == 'glass' ? substr($records->style->selectedItemBackground[0], 0, -2) : $records->style->selectedItemBackground[0] ) : $style_preset['dark']['selectedItemBackground'][0] ?>">
+                            <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo esc_attr( $records ? ($records->stylePreset == 'glass' ? substr($records->style->selectedItemBackground[0], 0, -2) : $records->style->selectedItemBackground[0]) : $style_preset['dark']['selectedItemBackground'][0] ) ?>">
                         </div>
                     </div>
-                    
+
                     <div class="option">
                         <div class="label">
-                            <!-- <input type="checkbox" name="" id="s-item-color" onclick="enable_input('select-item-color-picker')"> -->
-                            <label for="s-item-color">Selected item font color</label>
+                            <label for="s-item-color"><?= esc_html_e( 'Selected item font color', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
-                            <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo $records ? $records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ?>">
+                            <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo esc_attr( $records ? $records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ) ?>">
                         </div>
                     </div>
-                    
+
                     <div class="option">
                         <div class="label">
-                            <!-- <input type="checkbox" name="" id="s-font-size" onclick="enable_input('select-font-size-picker')"> -->
-                            <label for="s-font-size">Font size</label>
+                            <label for="s-font-size"><?= esc_html_e( 'Font size', 'mobile-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="slider-input">
-                            <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo $records ? substr($records->style->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ?>">
+                            <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo esc_attr( $records ? substr($records->style->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ) ?>">
                             <span>0</span>
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
-    
+
                 <!-- Presets Tab -->
-                <div id="style-presets" class="tab-content" >
-                    <div style="display: flex;">
-                        <div class="option">
-                            <label for="dark">
-                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . '/img/dark.png' ) ; ?>" width="120px" >
-                            </label>
-                            <br>
-                            <div class="radio-input">
+                <div id="style-presets" class="tab-content">
+                    <div class="style-presets-table">
+                        <div class="preset <?= esc_attr( !empty($records) && $records->stylePreset == 'dark' ? 'selected' : '' ); ?>" style="background: url(<?= esc_attr(plugin_dir_url(__FILE__) . 'img/dark.png'); ?>); background-size:cover; background-repeat:no-repeat;">
+                            <div class="preset-info">
+                                <div class="info">
+                                    <h4>Dark</h4>
+                                    <div class="radio-input">
+                                        <input class="<?php echo esc_attr($records && $records->stylePreset ? $records->stylePreset : 'default') ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'dark' ? 'checked' : '' ); ?>>
+                                        <label class="style-radio" for="dark" data="select"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preset <?= esc_attr( !empty($records) && $records->stylePreset == 'light' ? 'selected' : '' ); ?>" style="background: url(<?= esc_attr(plugin_dir_url(__FILE__) . 'img/light.png'); ?>); background-size:cover; background-repeat:no-repeat;">
+                            <div class="preset-info">
+                                <div class="info">
+                                    <h4>Light</h4>
+                                    <div class="radio-input">
+                                        <input type="radio" name="style_preset" id="light" value="light" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'light' ? 'checked' : '' ); ?>>
+                                        <label class="style-radio" for="light" data="select"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="preset <?= esc_attr( !empty($records) && $records->stylePreset == 'blue' ? 'selected' : '' ); ?>" style="background: url(<?= esc_attr(plugin_dir_url(__FILE__) . 'img/blue.png'); ?>); background-size:cover; background-repeat:no-repeat;">
+                            <div class="preset-info">
+                                <div class="info">
+                                    <h4>Blue</h4>
+                                    <div class="radio-input">
         
-                                <input class="<?php echo esc_attr( $records && $records->stylePreset ? $records->stylePreset : 'default' ) ?>" type="radio" name="style_preset" id="dark" value="dark" <?php echo !empty($records) && $records->stylePreset == 'dark' ? 'checked' : ''; ?>>
-                                
-                                <label class="style-radio" for="dark" data="Dark"></label>
+                                        <input type="radio" name="style_preset" id="blue" value="blue" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'blue' ? 'checked' : '' ); ?>>
+        
+                                        <label class="style-radio" for="blue" data="select"></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="option">
-                            <label for="light">
-                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/light.png' ); ?>" width="120px" >
-                            </label>
-                            <br>
-                            <div class="radio-input">
-    
-                                <input type="radio" name="style_preset" id="light" value="light" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'light' ? 'checked' : '' ); ?>>
-                                <label class="style-radio" for="light" data="Light"></label>
-                            </div>
-                            
-                        </div>
-                        <div class="option">
-                            <label for="blue">
-                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/blue.png' ); ?>" width="120px" >
-                            </label>
-                            <br>
-                            <div class="radio-input">
-    
-                                <input type="radio" name="style_preset" id="blue" value="blue" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'blue' ? 'checked' : '' ); ?>>
-                                
-                                <label class="style-radio" for="blue" data="Blue"></label>
-                            </div>
-                        </div>
-                        <div class="option">
-                            <label for="glass">
-                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/glass.png' ); ?>" width="120px" >
-                            </label>
-                            <br>
-                            <div class="radio-input">
-    
-                                <input type="radio" name="style_preset" id="glass" value="glass" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'glass' ? 'checked' : '' ); ?>>
-                                
-                                <label class="style-radio" for="glass" data="Glass"></label>
-                            </div>
-                        </div>
-                        <div class="option">
-                            <label for="custom-style">
-                                <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ). '/img/glass.png' ); ?>" width="120px" >
-                            </label>
-                            <br>
-                            <div class="radio-input">
-    
-                                <input type="radio" name="style_preset" id="custom-style" value="custom-style" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'custom-style' ? 'checked' : '' ); ?>>
-                                
-                                <label class="style-radio" for="custom-style" data="Custom"></label>
+                        <div class="preset <?= esc_attr( !empty($records) && $records->stylePreset == 'glass' ? 'selected' : '' ); ?>" style="background: url(<?= esc_attr(plugin_dir_url(__FILE__) . 'img/glass.png'); ?>); background-size:cover; background-repeat:no-repeat;">
+                            <div class="preset-info">
+                                <div class="info">
+                                    <h4>Glass</h4>
+                                    <div class="radio-input">
+        
+                                        <input type="radio" name="style_preset" id="glass" value="glass" <?php echo esc_attr( !empty($records) && $records->stylePreset == 'glass' ? 'checked' : '' ); ?>>
+        
+                                        <label class="style-radio" for="glass" data="select"></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
-    
-                        
+
+
                 <!-- Item Icon Tab -->
                 <div id="item-icon" class="tab-content">
                     <div class="option">
-                        
-                        <h2>Under construction</h2>
-                    
+
+                        <h2><?= esc_html_e( 'Under construction', 'mobile-custom-nav-menu' ) ?></h2>
+
                         <ul class="item-icon">
                             <?php
-                            $items = wp_get_nav_menu_items( $records->menuId );
-    
-                            
-        
+                            $items = wp_get_nav_menu_items($records->menuId);
+
+                            if(empty($items)){
+                                $items = [];
+                            }
+
                             $html = '';
-        
+
                             foreach ($items as $key => $value) {
                                 $html .= '<li class="icon-selector">';
                                 $html .= '<p>' . esc_html( $value->title ) . '</p>';
@@ -520,12 +635,12 @@ if(isset($_POST['save-settings'])){
                             }
                             echo $html;
                             ?>
-                            
+
                         </ul>
                     </div>
                 </div>
                 <br><br>
-                <button class="button button-primary"  type="submit" name="save-settings">Save Changes</button>
+                <button class="mcnm-button" type="submit" name="save-settings"><?= esc_html_e( 'Save Changes', 'mobile-custom-nav-menu' ) ?></button>
             </form>
         </div>
         <div class="preview">
@@ -544,131 +659,133 @@ if(isset($_POST['save-settings'])){
             </div>
             <?php
 
-                function custom_search_form( ) {
-                    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
-                                <div class="search-form"><label class="screen-reader-text" for="s">' . __( 'Search:' ) . '</label>
+            function custom_search_form()
+            {
+                $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url('/') ) . '" >
+                                <div class="search-form"><label class="screen-reader-text" for="s">' . esc_html_e('Search:', 'mobile-custom-nav-menu') . '</label>
                                     <input class="search-text-input" type="text" value="" name="s" id="s" />
-                                    <button class="search-button" type="submit" id="searchsubmit" >'.file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL .'includes/img/search-icon.svg'). '</button>
+                                    <button class="search-button" type="submit" id="searchsubmit" >' . file_get_contents(MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/search-icon.svg') . '</button>
                                 </div>
                             </form>';
 
-                    return $form;
+                return $form;
+            }
+
+
+            $settings = new MCNM_Settings_Management;
+
+            $records = $settings->load_settings();
+
+            $header = '';
+
+            $logout = '';
+
+            $search = custom_search_form();
+
+            if (!empty($records) && $records->showHeader == 'on') {
+
+                $header = '<div class="header">';
+
+                if ($records->headerType == 'logo') {
+
+                    $header .= '<div class="blog-logo ' . esc_attr($records->headerAlignment) . '" >' . get_custom_logo() . '</div>';
+                }
+                if ($records->headerType == 'avatar') {
+
+                    $header .= '<div class="user-avatar ' . esc_attr($records->headerAlignment) . '"><img src="' . esc_attr(get_avatar_url(wp_get_current_user()->ID)) . '"><a href="' . esc_attr(wp_get_current_user()->user_url) . '">' . esc_html(wp_get_current_user()->display_name) . '</a></div>';
+                }
+                if ($records->headerText) {
+                    $header .= '<div class="custom-text"><h2 class="' . esc_attr( $records->headerAlignment ) . '">' . esc_attr( $records->headerText ) . '</h2></div>';
+                }
+                if ($records->headerSearch == 'on') {
+                    $header .= '<div class="custom-text">' . $search . '</div>';
                 }
 
+                $header .= '</div>';
+            } else {
+                $header = '<br><br>';
+            }
+
+
+
+            add_filter('get_search_form', 'custom_search_form', 40);
+
+
+
+            if (!empty($records) && $records->showFooter == 'on') {
                 
-                $settings = new MCNM_Settings_Management;
-
-                $records = $settings->load_settings();
-
-                $header = '';
-
-                $logout = '';
-
-                $search = custom_search_form( );
-
-                if (!empty($records) && $records->showHeader == 'on') {
-
-                    $header = '<div class="header">';
-
-                    if ($records->headerType == 'logo') {
-
-                        $header .= '<div class="blog-logo ' . esc_attr( $records->headerAlignment ) . '" >' . get_custom_logo() . '</div>';
-                    }
-                    if ($records->headerType == 'avatar') {
-
-                        $header .= '<div class="user-avatar ' . esc_attr( $records->headerAlignment ) . '"><img src="' . esc_attr( get_avatar_url(wp_get_current_user()->ID) ) . '"><a href="' . esc_attr( wp_get_current_user()->user_url ) . '">' . esc_html( wp_get_current_user()->display_name ) . '</a></div>';
-                    }
-                    if ($records->headerText) {
-                        $header .= '<div class="custom-text"><h2 class="' . $records->headerAlignment . '">' . $records->headerText . '</h2></div>';
-                    }
-                    if($records->headerSearch == 'on'){
-                        $header .= '<div class="custom-text">' . $search . '</div>';
-                    }
-
-                    $header .= '</div>';
-                } else {
-                    $header = '<br><br>';
-                }
-
-
-
-                add_filter( 'get_search_form', 'custom_search_form', 40 );
-
-
-
-                if (!empty($records) && $records->showFooter == 'on') {
-
-                    if (is_user_logged_in() && $records->showLogin == 'on') {
-
-                        $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( wp_logout_url('home') ) . '">Log Out</a></div>';
-                        
-                    }
-                }
                 
-            wp_nav_menu(array(
-                'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
-                'container' => 'div',
-                'container_class' => 'floating-nav-menu-container',
-                'menu_class' => 'floating-nav-menu ' . esc_attr( $records->stylePreset ) . ' down ' . esc_attr( $records->menuAlignment ),
-                'menu_id' => 'loco',
-                'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
-                'walker' => !empty($records->menuId) ? new Preview_Mobile_Custom_nav_menu_walker() : null,
-            ));
+
+                if (is_user_logged_in() && $records->showLogin == 'on') {
+
+                    $logout = '<br><hr><br><div class="menu-footer ' . esc_attr($records->footerAlignment) . '"><a href="' . esc_attr(wp_logout_url('home')) . '">Log Out</a></div>';
+                }
+            }
+
+            
+            if(!empty( $menus )){
+
+                wp_nav_menu(array(
+                    'menu' => !empty($records->menuId) ? $records->menuId : (object) array('term_id' => 0),
+                    'container' => 'div',
+                    'container_class' => 'floating-nav-menu-container',
+                    'menu_class' => 'floating-nav-menu ' . esc_attr($records->stylePreset) . ' down ' . esc_attr($records->menuAlignment),
+                    'menu_id' => 'loco',
+                    'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
+                    'walker' => !empty($records->menuId) ? new Preview_Mobile_Custom_nav_menu_walker() : null,
+                ));
+
+            }
             ?>
         </div>
 
     </div>
-    
+
     <div class="icon-modal hide" id="icon-panel">
         <div class="panel">
-            <div class="header"><h3>Select Icon</h3><span>&times;</span>
-        </div>
-        <br>
-        <br>
+            <div class="header">
+                <h3><?= esc_html_e( 'Select Icon', 'mobile-custom-nav-menu' ) ?></h3><span>&times;</span>
+            </div>
+            <br>
+            <br>
 
             <div class="content">
 
-                <?php 
+                <?php
 
-                    $icons = get_icons();
-                    $icon = '';
-                            
-                    foreach ($icons as $key => $value) {
-                        $icon .= '<div>';
-                        
-                        $icon .= '<img src="' . esc_attr( plugin_dir_url( __FILE__).'../includes/icons/'.$value ).'" ></img>';
-                        $icon .= '</div>';
-                    }
-                    echo $icon;
+                $icons = get_icons();
+                $icon = '';
+
+                foreach ($icons as $key => $value) {
+                    $icon .= '<div>';
+
+                    $icon .= '<img src="' . esc_attr(plugin_dir_url(__FILE__) . '../includes/icons/' . $value) . '" ></img>';
+                    $icon .= '</div>';
+                }
+                echo $icon;
 
                 ?>
             </div>
         </div>
-        
     </div>
 </div>
 
 
 
 <script>
-
     var defaultInputs = document.getElementsByClassName('default');
 
     for (let index = 0; index < defaultInputs.length; index++) {
         const element = defaultInputs[index];
 
-        if(element.disabled){
+        if (element.disabled) {
             element.disabled = false;
             element.click();
             element.disabled = true;
-        }else{
+        } else {
             element.click();
         }
-        
+
     }
     slider();
 </script>
-
-
-
-
