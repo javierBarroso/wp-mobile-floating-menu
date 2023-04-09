@@ -1,4 +1,4 @@
-button.mobile-nav-toggle {
+button.jabago-nav-toggle {
   display: none;
 }
 
@@ -450,7 +450,7 @@ nav.floating-nav-menu-container {
         -ms-flex-pack: start;
             justify-content: flex-start;
   }
-  .nav-toggle-container button.mobile-nav-toggle {
+  .nav-toggle-container button.jabago-nav-toggle {
     -webkit-transform: scale(0);
             transform: scale(0);
     display: block;
@@ -477,7 +477,7 @@ nav.floating-nav-menu-container {
     -webkit-animation-delay: .5s;
             animation-delay: .5s;
   }
-  .nav-toggle-container button.mobile-nav-toggle[aria-expanded='true'] {
+  .nav-toggle-container button.jabago-nav-toggle[aria-expanded='true'] {
     background-color: transparent;
     background: url("../img/boton-menu-close.svg");
     background-repeat: no-repeat;
@@ -535,4 +535,4 @@ nav.floating-nav-menu-container {
             transform: scale(1);
   }
 }
-/*# sourceMappingURL=mobile-custom-nav-menu-public.css.map */
+/*# sourceMappingURL=jabago-custom-nav-menu-public.css.map */

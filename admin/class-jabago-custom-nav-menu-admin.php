@@ -5,19 +5,19 @@
  * @link       https://profiles.wordpress.org/javierbarroso/
  * @since      1.0.0
  *
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/admin
  * @author     Javier Barroso <abby.javi.infox@gmail.com>
  * 
  * 
- *  Text Domain: mobile-custom-nav-menu
+ *  Text Domain: jabago-custom-nav-menu
  *  Domain Path: /languages
  * 
  * 
  */
 
 
-class Mobile_Custom_Nav_Menu_Admin
+class Jabago_Custom_Nav_Menu_Admin
 {
 
 	/**
@@ -53,7 +53,7 @@ class Mobile_Custom_Nav_Menu_Admin
 
 		add_action('admin_menu', array($this, 'add_admin_menu'));
 
-		add_filter('plugin_action_links_' . MOBILE_CUSTOM_NAV_MENU_NAME, array($this, 'settings_link'));
+		add_filter('plugin_action_links_' . JABAGO_CUSTOM_NAV_MENU_NAME, array($this, 'settings_link'));
 	}
 
 	function settings_link($links)
@@ -72,19 +72,19 @@ class Mobile_Custom_Nav_Menu_Admin
 	function add_admin_menu()
 	{
 		add_menu_page(
-			'Mobile Custom Nav Menu',
-			'Mobile Custom Nav Menu',
+			'Jabago Custom Nav Menu',
+			'Jabago Custom Nav Menu',
 			'manage_options',
 			'mcnm',
-			array($this, 'mobile_custom_nav_menu_settings'),
-			MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/boton-menu-icon.svg', 
+			array($this, 'jabago_custom_nav_menu_settings'),
+			JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/boton-menu-icon.svg', 
 			3
 		);
 	}
 
-	function mobile_custom_nav_menu_settings()
+	function jabago_custom_nav_menu_settings()
 	{
-		require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'admin/partials/page-mobile-custom-nav-menu-settings.php';
+		require_once JABAGO_CUSTOM_NAV_MENU_PATH . 'admin/partials/page-jabago-custom-nav-menu-settings.php';
 	}
 
 
@@ -107,8 +107,8 @@ class Mobile_Custom_Nav_Menu_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-admin.css', array(), $this->version, 'all');
-		wp_enqueue_style($this->plugin_name . 'previe-variables', MOBILE_CUSTOM_NAV_MENU_URL . 'includes/css/mobile-custom-nav-menu-variables.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name, JABAGO_CUSTOM_NAV_MENU_URL . 'includes/css/jabago-custom-nav-menu-admin.css', array(), $this->version, 'all');
+		wp_enqueue_style($this->plugin_name . 'previe-variables', JABAGO_CUSTOM_NAV_MENU_URL . 'includes/css/jabago-custom-nav-menu-variables.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -131,6 +131,6 @@ class Mobile_Custom_Nav_Menu_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script($this->plugin_name, MOBILE_CUSTOM_NAV_MENU_URL . 'includes/js/mobile-custom-nav-menu-admin.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name, JABAGO_CUSTOM_NAV_MENU_URL . 'includes/js/jabago-custom-nav-menu-admin.js', array('jquery'), $this->version, false);
 	}
 }

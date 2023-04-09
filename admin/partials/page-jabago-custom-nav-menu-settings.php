@@ -5,20 +5,20 @@
  * @link       https://profiles.wordpress.org/javierbarroso/
  * @since      1.0.0
  *
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/admin
  * @author     Javier Barroso <abby.javi.infox@gmail.com>
  * 
  * 
- *  Text Domain: mobile-custom-nav-menu
+ *  Text Domain: jabago-custom-nav-menu
  *  Domain Path: /languages
  * 
  * 
  */
 
 require_once 'style-presets.php';
-require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php';
-require_once MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php';
+require_once JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php';
+require_once JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-jabago-custom-nav-menu-walker.php';
 
 
 
@@ -56,7 +56,7 @@ if (isset($records->stylePreset)) {
 function get_icons()
 {
 
-    $files = scandir(MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/icons/');
+    $files = scandir(JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/icons/');
     unset($files[0]);
     unset($files[1]);
     return $files;
@@ -227,10 +227,10 @@ if (empty($menus)) {
 
     no_nav_menu();
     /* $message = sprintf(
-        esc_html__('"%1$s" requires at least "%2$s" to be used.', 'mobile-custom-nav-menu'),
-        '<strong>' . esc_html_e('Mobile Custom Nav Menu', 'mobile-custom-nav-menu') . '</strong>',
-        '<strong>' . esc_html__('one nav menu', 'mobile-custom-nav-menu') . '</strong>',
-        '<a href="#">' . esc_html__('Create menu', 'mobile-custom-nav-menu') . '</a>'
+        esc_html__('"%1$s" requires at least "%2$s" to be used.', 'jabago-custom-nav-menu'),
+        '<strong>' . esc_html_e('Jabago Custom Nav Menu', 'jabago-custom-nav-menu') . '</strong>',
+        '<strong>' . esc_html__('one nav menu', 'jabago-custom-nav-menu') . '</strong>',
+        '<a href="#">' . esc_html__('Create menu', 'jabago-custom-nav-menu') . '</a>'
     );
     printf('<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message); */
 }
@@ -239,12 +239,12 @@ if (empty($menus)) {
 function no_nav_menu() {
     ?>
     <div class="notice notice-warning mcnm-notice">
-        <img src="<?= MOBILE_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg' ?>" width="50px">
+        <img src="<?= JABAGO_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg' ?>" width="50px">
         <p>
-            <strong><?= esc_html_e('Mobile Custom Nav Menu', 'mobile-custom-nav-menu') ?></strong>
-            <?= esc_html_e('requires at least', 'mobile-custom-nav-menu') ?>
-            <strong><?= esc_html_e('one nav menu', 'mobile-custom-nav-menu') ?></strong>
-            <?= esc_html_e('to be used.', 'mobile-custom-nav-menu') ?>
+            <strong><?= esc_html_e('Jabago Custom Nav Menu', 'jabago-custom-nav-menu') ?></strong>
+            <?= esc_html_e('requires at least', 'jabago-custom-nav-menu') ?>
+            <strong><?= esc_html_e('one nav menu', 'jabago-custom-nav-menu') ?></strong>
+            <?= esc_html_e('to be used.', 'jabago-custom-nav-menu') ?>
         </p>
     </div>
     <?php
@@ -261,22 +261,22 @@ function no_nav_menu() {
     <h2></h2>
 
     <div class="settings-header-page">
-        <span class="plugin-logo"><img src="<?= esc_attr(MOBILE_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg') ?>" alt=""> </span>
+        <span class="plugin-logo"><img src="<?= esc_attr(JABAGO_CUSTOM_NAV_MENU_URL . '/includes/img/boton-menu.svg') ?>" alt=""> </span>
         <div>
-            <h3><?= esc_html_e( 'Mobile Menu Settings', 'mobile-custom-nav-menu' ) ?></h3>
-            <h4><?= esc_html_e( 'friendly use mobile nav menu', 'mobile-custom-nav-menu' ) ?></h4>
+            <h3><?= esc_html_e( 'Jabago Menu Settings', 'jabago-custom-nav-menu' ) ?></h3>
+            <h4><?= esc_html_e( 'friendly use jabago nav menu', 'jabago-custom-nav-menu' ) ?></h4>
         </div>
     </div>
 
 
     <!-- tab links -->
     <div class="tabs">
-        <label class="tab default" onClick="openTab(event, 'general')"> <?= esc_html_e( 'General Options', 'mobile-custom-nav-menu' ) ?> </label>
-        <label class="tab" onClick="openTab(event, 'header')"><?= esc_html_e( 'Header', 'mobile-custom-nav-menu' ) ?></label>
-        <label class="tab" onClick="openTab(event, 'footer')"><?= esc_html_e( 'Footer', 'mobile-custom-nav-menu' ) ?></label>
-        <label class="tab" onClick="openTab(event, 'style-presets')"><?= esc_html_e( 'Style Presets', 'mobile-custom-nav-menu' ) ?></label>
-        <label class="tab" onClick="openTab(event, 'custom-colors')"><?= esc_attr( 'Customize Style', 'mobile-custom-nav-menu' ) ?></label>
-        <label class="tab" onClick="openTab(event, 'item-icon')"><?= esc_html_e( 'Menu Icon', 'mobile-custom-nav-menu' ) ?></label>
+        <label class="tab default" onClick="openTab(event, 'general')"> <?= esc_html_e( 'General Options', 'jabago-custom-nav-menu' ) ?> </label>
+        <label class="tab" onClick="openTab(event, 'header')"><?= esc_html_e( 'Header', 'jabago-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'footer')"><?= esc_html_e( 'Footer', 'jabago-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'style-presets')"><?= esc_html_e( 'Style Presets', 'jabago-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'custom-colors')"><?= esc_attr( 'Customize Style', 'jabago-custom-nav-menu' ) ?></label>
+        <label class="tab" onClick="openTab(event, 'item-icon')"><?= esc_html_e( 'Menu Icon', 'jabago-custom-nav-menu' ) ?></label>
     </div>
     <div class="settings">
         <div class="settings-options">
@@ -287,7 +287,7 @@ function no_nav_menu() {
                 <div id="general" class="tab-content">
                     <div class="option">
                         <div class="label">
-                            <label for="menu-active"><?= esc_html_e('Activate mobile menu', 'mobile-custom-nav-menu') ?></label>
+                            <label for="menu-active"><?= esc_html_e('Activate jabago menu', 'jabago-custom-nav-menu') ?></label>
                         </div>
                         <div class="checkbox-input">
                             <input <?= $records != null && $records->showMenu == 'on' ? 'checked' : ''; ?> class="tgl-skewed" type="checkbox" name="show-menu" id="show-menu" onclick="enable_input('menu-active', this)">
@@ -296,7 +296,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select"><?= esc_html_e('Select Menu', 'mobile-custom-nav-menu') ?></label>
+                            <label for="menu-select"><?= esc_html_e('Select Menu', 'jabago-custom-nav-menu') ?></label>
                         </div>
 
                         <div class="select-input">
@@ -305,7 +305,7 @@ function no_nav_menu() {
                                 <?php
                                 $html = '';
                                 if (empty($menus)) {
-                                    $html = esc_html_e( 'You must create a menu', 'mobile-custom-nav-menu' ) ;
+                                    $html = esc_html_e( 'You must create a menu', 'jabago-custom-nav-menu' ) ;
                                 }
                                 foreach ($menus as $key => $menu) {
                                     $selected = '';
@@ -323,7 +323,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select"> <?= esc_html_e( 'Menu button position', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="menu-select"> <?= esc_html_e( 'Menu button position', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
                             <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'left' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
@@ -336,7 +336,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select"> <?= esc_html_e( 'Menu position', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="menu-select"> <?= esc_html_e( 'Menu position', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
                             <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->menuAlignment && $records->menuAlignment == 'left' ? 'checked' : '' ); ?> type="radio" name="menu-alignment" id="menu-alignment-left" value="left">
@@ -355,7 +355,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="show-header"> <?= esc_html_e( 'Show menu header', 'mobile-custom-nav-menu' ) ?> </label>
+                            <label for="show-header"> <?= esc_html_e( 'Show menu header', 'jabago-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="checkbox-input">
                             <input <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? 'checked' : '' ); ?> class="tgl-skewed" type="checkbox" name="show-header" id="show-header" onclick="enable_input('header-style', this)">
@@ -365,7 +365,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="header-search"> <?= esc_html_e( 'Show menu search', 'mobile-custom-nav-menu' ) ?> </label>
+                            <label for="header-search"> <?= esc_html_e( 'Show menu search', 'jabago-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="checkbox-input">
                             <input onclick="enable_input('header-search', this)" <?php echo esc_attr( $records != null && $records->headerSearch == 'on' ? 'checked' : '' );
@@ -376,7 +376,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="search-text"><?= esc_html_e( 'Search place holder', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="search-text"><?= esc_html_e( 'Search place holder', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="text-input">
                             <input value="<?= esc_attr( $records != null ? $records->searchText : '' ) ?> " <?= esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> class="header-style" type="text" name="search-text" id="search-text">
@@ -384,28 +384,28 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="header-type"> <?= esc_html_e( 'Select header image type', 'mobile-custom-nav-menu' ) ?> </label>
+                            <label for="header-type"> <?= esc_html_e( 'Select header image type', 'jabago-custom-nav-menu' ) ?> </label>
                         </div>
                         <div class="input">
                             <select onchange="enable_custom_header_image_input(this.value)" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="header-type" class="header-style">
-                                <option <?php echo esc_attr( $records != null && $records->headerType == 'logo' ? 'selected' : '' ); ?> value="logo"> <?= esc_html_e( 'Site logo', 'mobile-custom-nav-menu' ) ?> </option>
-                                <option <?php echo esc_attr( $records != null && $records->headerType == 'avatar' ? 'selected' : '' ); ?> value="avatar"> <?= esc_html_e( 'User avatar', 'mobile-custom-nav-menu' ) ?></option>
-                                <option <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? 'selected' : '' ); ?> value="custom-image"> <?= esc_html_e( 'Custom Image', 'mobile-custom-nav-menu' ) ?></option>
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'logo' ? 'selected' : '' ); ?> value="logo"> <?= esc_html_e( 'Site logo', 'jabago-custom-nav-menu' ) ?> </option>
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'avatar' ? 'selected' : '' ); ?> value="avatar"> <?= esc_html_e( 'User avatar', 'jabago-custom-nav-menu' ) ?></option>
+                                <option <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? 'selected' : '' ); ?> value="custom-image"> <?= esc_html_e( 'Custom Image', 'jabago-custom-nav-menu' ) ?></option>
                             </select>
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="header-custom-image"><?= esc_html_e( 'Select header image', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="header-custom-image"><?= esc_html_e( 'Select header image', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="input">
-                            <label <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? '' : esc_attr('disabled') ); ?> type="reset" id="logo-preview-container" class="upload_custom_image" onclick="select_logo();"><?= '<img src="' . esc_attr($records != null && $records->headerType == 'custom-image' ? $records->logo : MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg') . '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'; ?></label>
+                            <label <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? '' : esc_attr('disabled') ); ?> type="reset" id="logo-preview-container" class="upload_custom_image" onclick="select_logo();"><?= '<img src="' . esc_attr($records != null && $records->headerType == 'custom-image' ? $records->logo : JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg') . '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'; ?></label>
                             <input style="display:none;" type="text" name="logo" id="logo" value="<?= esc_attr( $records != null && $records->headerType == 'custom-image' ? $records->logo : '' ) ?>" />
                         </div>
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for=""><?= esc_html_e( 'Header alignment', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for=""><?= esc_html_e( 'Header alignment', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
                             <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'left' ? 'checked' : '' );
@@ -421,7 +421,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-header"><?= esc_html_e( 'Header text', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="show-header"><?= esc_html_e( 'Header text', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="text-input">
                             <input value="<?= esc_attr( $records != null ? $records->headerText : '' ) ?> " <?= esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> class="header-style" type="text" name="header-text" id="show-header">
@@ -434,7 +434,7 @@ function no_nav_menu() {
                 <div id="footer" class="tab-content">
                     <div class="option">
                         <div class="label">
-                            <label for="show-footer"><?= esc_html_e( 'Show menu footer', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="show-footer"><?= esc_html_e( 'Show menu footer', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
                             <input <?php echo esc_attr( $records != null && $records->showFooter == 'on' ? 'checked' : '' ); ?> class="tgl-skewed" type="checkbox" name="show-footer" id="show-footer" onclick="enable_input('footer-style', this)">
@@ -443,7 +443,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-logout"><?= esc_html_e( 'Show logout login', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="show-logout"><?= esc_html_e( 'Show logout login', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
                             <input onclick="enable_input('footer-login', this)" <?php echo esc_attr( $records != null && $records->showLogin == 'on' ? 'checked' : '' );
@@ -453,7 +453,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-logout"><?= esc_html_e( 'Set login page', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="show-logout"><?= esc_html_e( 'Set login page', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
                             <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="login-url">
@@ -469,7 +469,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="show-logout"><?= esc_html_e( 'Set register page', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="show-logout"><?= esc_html_e( 'Set register page', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
                             <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="register-url">
@@ -485,7 +485,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for=""><?= esc_html_e( 'Footer alignment', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for=""><?= esc_html_e( 'Footer alignment', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
                             <input <?php echo esc_attr( $records != null && $records->footerAlignment == 'left' ? 'checked' : '' );
@@ -508,7 +508,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="bg-color"><?= esc_html_e( 'Background color', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="bg-color"><?= esc_html_e( 'Background color', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
                             <input type="color" name="background_color" class="bg-color-color-picker" value="<?php echo esc_attr( $records != null ? $records->style->menuBackground[0] : $style_preset['dark']['menuBackground'][0] ) ?>">
@@ -517,7 +517,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="f-color"><?= esc_html_e( 'Font color', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="f-color"><?= esc_html_e( 'Font color', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
                             <input type="color" name="front_color" class="front-color-picker" value="<?php echo esc_attr( $records ? $records->style->fontColor[0] : $style_preset['dark']['fontColor'][0] ) ?>">
@@ -526,7 +526,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="s-item-bg-color"><?= esc_html_e( 'Selected item background color', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="s-item-bg-color"><?= esc_html_e( 'Selected item background color', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
                             <input type="color" name="selected_item_background_color" class="select-item-bg-color-picker" value="<?php echo esc_attr( $records ? ($records->stylePreset == 'glass' ? substr($records->style->selectedItemBackground[0], 0, -2) : $records->style->selectedItemBackground[0]) : $style_preset['dark']['selectedItemBackground'][0] ) ?>">
@@ -535,7 +535,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="s-item-color"><?= esc_html_e( 'Selected item font color', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="s-item-color"><?= esc_html_e( 'Selected item font color', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="color-input">
                             <input type="color" name="selected_item_color" class="select-item-color-picker" value="<?php echo esc_attr( $records ? $records->style->selectedItemColor[0] : $style_preset['dark']['selectedItemColor'][0] ) ?>">
@@ -544,7 +544,7 @@ function no_nav_menu() {
 
                     <div class="option">
                         <div class="label">
-                            <label for="s-font-size"><?= esc_html_e( 'Font size', 'mobile-custom-nav-menu' ) ?></label>
+                            <label for="s-font-size"><?= esc_html_e( 'Font size', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="slider-input">
                             <input step="0.01" min="1" max="4" type="range" name="item_font_size" class="select-font-size-picker range-picker" oninput="slider()" value="<?php echo esc_attr( $records ? substr($records->style->fontSize[0], 0, -2) : substr($style_preset['dark']['fontSize'][0], 0, -2) ) ?>">
@@ -615,7 +615,7 @@ function no_nav_menu() {
                 <div id="item-icon" class="tab-content">
                     <div class="option">
 
-                        <h2><?= esc_html_e( 'Under construction', 'mobile-custom-nav-menu' ) ?></h2>
+                        <h2><?= esc_html_e( 'Under construction', 'jabago-custom-nav-menu' ) ?></h2>
 
                         <ul class="item-icon">
                             <?php
@@ -640,7 +640,7 @@ function no_nav_menu() {
                     </div>
                 </div>
                 <br><br>
-                <button class="mcnm-button" type="submit" name="save-settings"><?= esc_html_e( 'Save Changes', 'mobile-custom-nav-menu' ) ?></button>
+                <button class="mcnm-button" type="submit" name="save-settings"><?= esc_html_e( 'Save Changes', 'jabago-custom-nav-menu' ) ?></button>
             </form>
         </div>
         <div class="preview">
@@ -662,9 +662,9 @@ function no_nav_menu() {
             function custom_search_form()
             {
                 $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url('/') ) . '" >
-                                <div class="search-form"><label class="screen-reader-text" for="s">' . esc_html_e('Search:', 'mobile-custom-nav-menu') . '</label>
+                                <div class="search-form"><label class="screen-reader-text" for="s">' . esc_html_e('Search:', 'jabago-custom-nav-menu') . '</label>
                                     <input class="search-text-input" type="text" value="" name="s" id="s" />
-                                    <button class="search-button" type="submit" id="searchsubmit" >' . file_get_contents(MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/search-icon.svg') . '</button>
+                                    <button class="search-button" type="submit" id="searchsubmit" >' . file_get_contents(JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/search-icon.svg') . '</button>
                                 </div>
                             </form>';
 
@@ -732,7 +732,7 @@ function no_nav_menu() {
                     'menu_class' => 'floating-nav-menu ' . esc_attr($records->stylePreset) . ' down ' . esc_attr($records->menuAlignment),
                     'menu_id' => 'loco',
                     'items_wrap' => '<ul data-visible="true" class="%2$s">%3$s</ul>',
-                    'walker' => !empty($records->menuId) ? new Preview_Mobile_Custom_nav_menu_walker() : null,
+                    'walker' => !empty($records->menuId) ? new Preview_Jabago_Custom_nav_menu_walker() : null,
                 ));
 
             }
@@ -744,7 +744,7 @@ function no_nav_menu() {
     <div class="icon-modal hide" id="icon-panel">
         <div class="panel">
             <div class="header">
-                <h3><?= esc_html_e( 'Select Icon', 'mobile-custom-nav-menu' ) ?></h3><span>&times;</span>
+                <h3><?= esc_html_e( 'Select Icon', 'jabago-custom-nav-menu' ) ?></h3><span>&times;</span>
             </div>
             <br>
             <br>

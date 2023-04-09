@@ -3,7 +3,7 @@
 
 /**
  * 
- * @package Wp_Mobile_Floating_Menu
+ * @package Wp_Jabago_Floating_Menu
  * 
  */
 
@@ -52,7 +52,7 @@ class MCNM_Settings_Management{
         }
     
         
-        $filePath = MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/css/mobile-custom-nav-menu-variables.css';
+        $filePath = JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/css/jabago-custom-nav-menu-variables.css';
         
         $styleFile = file($filePath, FILE_IGNORE_NEW_LINES);
         

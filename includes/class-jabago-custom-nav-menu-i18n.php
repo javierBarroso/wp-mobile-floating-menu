@@ -1,12 +1,12 @@
 <?php
 /**
  * @since      1.0.0
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/includes
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/includes
  * @author     Javier Barroso <abby.javi.infox5@gmail.com>
  */
 
-class Mobile_Custom_Nav_Menu_i18n
+class Jabago_Custom_Nav_Menu_i18n
 {
 
 	/**
@@ -18,7 +18,7 @@ class Mobile_Custom_Nav_Menu_i18n
 	{
 
 		load_plugin_textdomain(
-			'mobile-custom-nav-menu',
+			'jabago-custom-nav-menu',
 			false,
 			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);

@@ -547,15 +547,6 @@ div.settings-header-page div h4 {
   overflow-y: scroll;
   margin: 0 50px;
   position: relative;
-  /* html{
-            --menuBackground : #ffffffff;
-            --fontColor: #747474ff;
-            --selectedItemBackground: #eeeff6ff;
-            --selectedItemColor: #2a2e3aff;
-            --background:rgba(36, 36, 36, 0);
-            --background-display:none;
-            --backMenuColor: rgba(36, 36, 36, 0);
-        } */
 }
 
 .settings .preview .previw-back {
@@ -1059,7 +1050,7 @@ div.settings-header-page div h4 {
           justify-content: flex-start;
 }
 
-.settings .nav-toggle-container button.mobile-nav-toggle {
+.settings .nav-toggle-container button.jabago-nav-toggle {
   -webkit-transform: scale(0);
           transform: scale(0);
   display: block;
@@ -1087,7 +1078,7 @@ div.settings-header-page div h4 {
           animation-delay: .5s;
 }
 
-.settings .nav-toggle-container button.mobile-nav-toggle[aria-expanded='true'] {
+.settings .nav-toggle-container button.jabago-nav-toggle[aria-expanded='true'] {
   background-color: transparent;
   background: url("../includes/img/menu_button/boton-menu-close.svg");
   background-repeat: no-repeat;
@@ -1122,4 +1113,4 @@ div.settings-header-page div h4 {
             transform: scale(1);
   }
 }
-/*# sourceMappingURL=mobile-custom-nav-menu-admin.css.map */
+/*# sourceMappingURL=jabago-custom-nav-menu-admin.css.map */

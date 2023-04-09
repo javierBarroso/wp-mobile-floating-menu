@@ -2,14 +2,14 @@
 
 /**
  * @since      1.0.0
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/includes
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/includes
  * @author     Javier Barroso <abby.javi.infox5@gmail.com>
  */
 
 
 
-class Mobile_Custom_Nav_Menu
+class Jabago_Custom_Nav_Menu
 {
 
 	/**
@@ -18,7 +18,7 @@ class Mobile_Custom_Nav_Menu
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Mobile_Custom_Nav_Menu_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Jabago_Custom_Nav_Menu_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -51,12 +51,12 @@ class Mobile_Custom_Nav_Menu
 	 */
 	public function __construct()
 	{
-		if (defined('MOBILE_CUSTOM_NAV_MENU_VERSION')) {
-			$this->version = MOBILE_CUSTOM_NAV_MENU_VERSION;
+		if (defined('JABAGO_CUSTOM_NAV_MENU_VERSION')) {
+			$this->version = JABAGO_CUSTOM_NAV_MENU_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = MOBILE_CUSTOM_NAV_MENU_NAME;
+		$this->plugin_name = JABAGO_CUSTOM_NAV_MENU_NAME;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -87,26 +87,26 @@ class Mobile_Custom_Nav_Menu
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-mobile-custom-nav-menu-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-jabago-custom-nav-menu-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-mobile-custom-nav-menu-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-jabago-custom-nav-menu-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-mobile-custom-nav-menu-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-jabago-custom-nav-menu-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-mobile-custom-nav-menu-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-jabago-custom-nav-menu-public.php';
 
-		$this->loader = new Mobile_Custom_Nav_Menu_Loader();
+		$this->loader = new Jabago_Custom_Nav_Menu_Loader();
 	}
 
 	/**
@@ -121,7 +121,7 @@ class Mobile_Custom_Nav_Menu
 	private function set_locale()
 	{
 		
-		$plugin_i18n = new Mobile_Custom_Nav_Menu_i18n();
+		$plugin_i18n = new Jabago_Custom_Nav_Menu_i18n();
 
 		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
@@ -136,7 +136,7 @@ class Mobile_Custom_Nav_Menu
 	private function define_admin_hooks()
 	{
 		
-		$plugin_admin = new Mobile_Custom_Nav_Menu_Admin($this->get_plugin_name(), $this->get_version());
+		$plugin_admin = new Jabago_Custom_Nav_Menu_Admin($this->get_plugin_name(), $this->get_version());
 
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -152,7 +152,7 @@ class Mobile_Custom_Nav_Menu
 	private function define_public_hooks()
 	{
 
-		$plugin_public = new Mobile_Custom_Nav_Menu_Public($this->get_plugin_name(), $this->get_version());
+		$plugin_public = new Jabago_Custom_Nav_Menu_Public($this->get_plugin_name(), $this->get_version());
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
@@ -184,7 +184,7 @@ class Mobile_Custom_Nav_Menu
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Mobile_Custom_Nav_Menu_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Jabago_Custom_Nav_Menu_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader()
 	{

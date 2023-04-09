@@ -5,23 +5,23 @@
  * @link       https://profiles.wordpress.org/javierbarroso/
  * @since      1.0.0
  *
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/admin
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/admin
  * @author     Javier Barroso <abby.javi.infox@gmail.com>
  * 
  * 
- *  Text Domain: mobile-custom-nav-menu
+ *  Text Domain: jabago-custom-nav-menu
  *  Domain Path: /languages
  * 
  * 
  */
 
-require_once( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-mobile-custom-nav-menu-walker.php');
-require_once( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php');
+require_once( JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-jabago-custom-nav-menu-walker.php');
+require_once( JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.php');
 
 
 if (!is_admin()) {
-    //new MobileFloatingMenuFrontEnd;
+    //new JabagoFloatingMenuFrontEnd;
 }
 $settings = new MCNM_Settings_Management;
 
@@ -30,7 +30,7 @@ $records = $settings->load_settings();
 
 ?>
 <div class="nav-toggle-container <?= !empty($records) ? esc_attr( $records->buttonAlignment ) : esc_attr( 'hide' ) ?>">
-    <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
+    <button id="jabago-nav-toggle" class="jabago-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
 </div>
 <div class="floating-menu-back"></div>
 
@@ -43,7 +43,7 @@ function custom_search_form( ) {
     $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url( '/' ) ) . '" >
                 <div class="search-form">
                     <input class="search-text-input" type="text" placeholder="' . esc_attr( $records->searchText ) . '" name="s" id="s" />
-                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( MOBILE_CUSTOM_NAV_MENU_PATH . 'includes/img/search-icon.svg' ) . '</button>
+                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/img/search-icon.svg' ) . '</button>
                 </div>
             </form>';
 
@@ -115,7 +115,7 @@ if (!empty($records) && $records->menuId && $records->showMenu == 'on') {
         'menu_class' => 'floating-nav-menu ' . esc_attr( $records->stylePreset ) . ' down ' . esc_attr( $records->menuAlignment ),
         'menu_id' => 'mcnm_public',
         'items_wrap' => '<ul data-visible="false" class="%2$s">' . $header . '%3$s' . $logout . '</ul>',
-        'walker' => !empty($records->menuId) ? new Mobile_Custom_Nav_Menu_Walker() : null,
+        'walker' => !empty($records->menuId) ? new Jabago_Custom_Nav_Menu_Walker() : null,
     ));
 
 

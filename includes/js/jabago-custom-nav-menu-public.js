@@ -1,9 +1,9 @@
-const mobileMenu = document.querySelector(".floating-nav-menu");
-const navToggle = document.querySelector(".mobile-nav-toggle");
+const jabagoMenu = document.querySelector(".floating-nav-menu");
+const navToggle = document.querySelector(".jabago-nav-toggle");
 const menuItem = document.querySelectorAll(".menu-item");
 const menuBackground = document.querySelector(".floating-menu-back");
 
-//mobileMenu.setAttribute('data-visible', false);
+//jabagoMenu.setAttribute('data-visible', false);
 
 function drop_down(id) {
 
@@ -29,14 +29,14 @@ const navLinks = document.querySelectorAll('nav a').forEach(link => {
 
 
 navToggle.addEventListener("click", () => {
-    const visibility = mobileMenu.getAttribute('data-visible');
+    const visibility = jabagoMenu.getAttribute('data-visible');
     console.log('test')
     if(visibility === 'false'){
-        mobileMenu.setAttribute('data-visible', true)
+        jabagoMenu.setAttribute('data-visible', true)
         navToggle.setAttribute('aria-expanded', true)
         menuBackground.classList += ' active'
     }else{
-        mobileMenu.setAttribute('data-visible', false)
+        jabagoMenu.setAttribute('data-visible', false)
         navToggle.setAttribute('aria-expanded', false)
         menuBackground.classList = 'floating-menu-back'
     }

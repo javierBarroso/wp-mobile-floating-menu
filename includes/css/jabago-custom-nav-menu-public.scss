@@ -1,6 +1,6 @@
 
 
-button.mobile-nav-toggle{
+button.jabago-nav-toggle{
     display: none;
 }
 nav.floating-nav-menu-container{
@@ -440,7 +440,7 @@ nav.floating-nav-menu-container{
             left: 15px;
             justify-content: flex-start;
         }
-        button.mobile-nav-toggle{
+        button.jabago-nav-toggle{
             transform: scale(0);
             display: block;
             color: aliceblue;
@@ -462,7 +462,7 @@ nav.floating-nav-menu-container{
             animation: button-enter cubic-bezier(0.175, 0.885, 0.32, 1.275) .5s 1 forwards;
             animation-delay: .5s;
         }
-        button.mobile-nav-toggle[aria-expanded='true']{
+        button.jabago-nav-toggle[aria-expanded='true']{
             background-color: transparent;
             background: url("../img/boton-menu-close.svg");
             background-repeat: no-repeat;

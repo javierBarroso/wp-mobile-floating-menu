@@ -2,12 +2,12 @@
 
 /**
  * @since      1.0.0
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/includes
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/includes
  * @author     Javier Barroso <abby.javi.infox5@gmail.com>
  */
 
-class Mobile_Custom_Nav_Menu_Walker extends Walker_Nav_Menu{
+class Jabago_Custom_Nav_Menu_Walker extends Walker_Nav_Menu{
 
     private $curItem;
 
@@ -20,7 +20,7 @@ class Mobile_Custom_Nav_Menu_Walker extends Walker_Nav_Menu{
     function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
     {
         
-        $icon = file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/down-arrow.svg' );
+        $icon = file_get_contents( JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/down-arrow.svg' );
         
         $classes = '';
         $this->curItem = $data_object->ID;
@@ -37,7 +37,7 @@ class Mobile_Custom_Nav_Menu_Walker extends Walker_Nav_Menu{
     }
 }
 
-class Preview_Mobile_Custom_nav_menu_walker extends Walker_Nav_Menu{
+class Preview_Jabago_Custom_nav_menu_walker extends Walker_Nav_Menu{
 
     function start_lvl(&$output, $depth = 0, $args = null)
     {
@@ -48,7 +48,7 @@ class Preview_Mobile_Custom_nav_menu_walker extends Walker_Nav_Menu{
     function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
     {
         
-        $icon = file_get_contents( MOBILE_CUSTOM_NAV_MENU_URL . 'includes/img/down-arrow.svg' );
+        $icon = file_get_contents( JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/down-arrow.svg' );
         
         $classes = '';
         $this->curItem = $data_object->ID;
