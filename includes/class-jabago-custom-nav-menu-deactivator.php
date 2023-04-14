@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    WordPress_Mobile_Menu
- * @subpackage WordPress_Mobile_Menu/includes
+ * @package    WordPress_Jabago_Menu
+ * @subpackage WordPress_Jabago_Menu/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    WordPress_Mobile_Menu
- * @subpackage WordPress_Mobile_Menu/includes
+ * @package    WordPress_Jabago_Menu
+ * @subpackage WordPress_Jabago_Menu/includes
  * @author    Javier Barroso <abby.javi.infox5@gmail.com>
  */
-class Mobile_Custom_Nav_Menu_Deactivation {
+class Jabago_Custom_Nav_Menu_Deactivation {
 
 	/**
 	 * Plugin deactivation class.

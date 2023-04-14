@@ -12,16 +12,35 @@ function showIconSelectorPanel(id){
     }
 }
 
-function enable_input(cl){
+function enable_input(cl, enable){
 
-    var inputs = document.getElementsByClassName(cl)
+    var inputs = document.getElementsByClassName(cl);
 
     for (let index = 0; index < inputs.length; index++) {
+
         var element = inputs[index];
-        
-        element.disabled ? element.disabled = false : element.disabled = true
+        element.disabled = !enable.checked;
+
     }
-    
+
+}
+
+function enable_custom_header_image_input(value){
+
+    var custom_image_button = document.querySelector('#logo-preview-container');
+
+    (value == 'custom-image') ? custom_image_button.disabled = false : custom_image_button.disabled = true;
+}
+
+function select_logo(){
+    upload = wp.media({title: 'Select headr\'s image', button: {text: 'Use this image'}}).on('select', function(){
+        var attachment = upload.state().get('selection').first().toJSON()
+        if(document.getElementById('logo-preview')){
+            document.getElementById('logo-preview').remove();
+        }
+        document.getElementById('logo-preview-container').innerHTML = '<img src="' + attachment.url + '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'
+        document.getElementById('logo').value = attachment.url
+    }).open()
 }
 
 function openTab(event, id){
@@ -45,9 +64,7 @@ function openTab(event, id){
     
 }
 
-function test(){
-    window.location.href = window-location.href + '?test=' + 'Hola';
-}
+
 
 function slider(){
     var slider = document.getElementsByClassName("range-picker");

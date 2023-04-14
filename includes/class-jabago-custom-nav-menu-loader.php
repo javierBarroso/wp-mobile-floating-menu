@@ -1,15 +1,15 @@
 <?php
 /**
  * @since      1.0.0
- * @package    Mobile_Custom_Nav_Menu
- * @subpackage Mobile_Custom_Nav_Menu/includes
+ * @package    Jabago_Custom_Nav_Menu
+ * @subpackage Jabago_Custom_Nav_Menu/includes
  * @author     Javier Barroso <abby.javi.infox5@gmail.com>
  */
 
  
 
 
-class Mobile_Custom_Nav_Menu_Loader
+class Jabago_Custom_Nav_Menu_Loader
 {
 
 	/**
