@@ -1,9 +1,9 @@
 
     html{
---menuBackground : #EFEFEF;
---fontColor : #23232D;
---selectedItemBackground : #C1BCB8;
---selectedItemColor : #2a2e3a;
+--menuBackground : #0F0F0F;
+--fontColor : #EFEEE5;
+--selectedItemBackground : #212123;
+--selectedItemColor : #EFEEE5;
 --fontSize : 1em;
         --background:rgba(36, 36, 36, 0);
         --background-display:none;
