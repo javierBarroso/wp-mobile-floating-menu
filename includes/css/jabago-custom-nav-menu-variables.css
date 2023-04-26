@@ -7,6 +7,6 @@
 --fontSize : 1em;
         --background:rgba(36, 36, 36, 0);
         --background-display:none;
-        --backMenuColor: rgba(36, 36, 36, 0);
+        --backMenuColor: rgba(36, 36, 36, 0.6);
     }
     

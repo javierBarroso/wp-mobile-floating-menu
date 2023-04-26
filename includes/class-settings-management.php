@@ -8,7 +8,7 @@
  */
 
 
-class MCNM_Settings_Management{
+class Jabago_Cnm_Settings_Management{
 
 
     function get_menus_list(){
@@ -31,7 +31,7 @@ class MCNM_Settings_Management{
 
         global $wpdb;
         
-        $query = 'SELECT * FROM '. MCNM_TABLE;
+        $query = 'SELECT * FROM '. JABAGO_CUSTOM_NAV_MENU_TABLE;
         $records = $wpdb->get_results($query);
 
         $output = null;
@@ -45,9 +45,9 @@ class MCNM_Settings_Management{
                 'current_style' => $settings_data,
             ];
         
-            empty($records) ? $wpdb -> insert( MCNM_TABLE, $settings ) : $wpdb -> update( MCNM_TABLE, $settings, array('Id' => 1));
+            empty($records) ? $wpdb -> insert( JABAGO_CUSTOM_NAV_MENU_TABLE, $settings ) : $wpdb -> update( JABAGO_CUSTOM_NAV_MENU_TABLE, $settings, array('Id' => 1));
         
-            $query = 'SELECT current_style FROM '. MCNM_TABLE .' WHERE 1';
+            $query = 'SELECT current_style FROM '. JABAGO_CUSTOM_NAV_MENU_TABLE .' WHERE 1';
             $records = $wpdb->get_results($query);
         }
     
@@ -75,7 +75,7 @@ class MCNM_Settings_Management{
 
         $output = null;
 
-        $query = 'SELECT * FROM '. MCNM_TABLE;
+        $query = 'SELECT * FROM '. JABAGO_CUSTOM_NAV_MENU_TABLE;
         $records = $wpdb->get_results($query);
 
         if($records){

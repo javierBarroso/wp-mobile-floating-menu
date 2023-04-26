@@ -24,7 +24,7 @@ class Jabago_Custom_Nav_Menu_Activation {
 
         global $wpdb;
 
-        $query = "CREATE TABLE IF NOT EXISTS `" . MCNM_TABLE . "`(
+        $query = "CREATE TABLE IF NOT EXISTS `" . JABAGO_CUSTOM_NAV_MENU_TABLE . "`(
             `Id` INT NOT NULL AUTO_INCREMENT , 
             `current_style` TEXT NULL , 
             PRIMARY KEY (`Id`));";

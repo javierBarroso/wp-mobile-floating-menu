@@ -69,11 +69,11 @@ if(!defined('JABAGO_CUSTOM_NAV_MENU_URL')){
 }
 
 global $wpdb;
-if (!defined('MCNM_TABLE')) {
-	define('MCNM_TABLE', $wpdb->prefix . 'mcnm_jabago_custom_nav_menu');
+if (!defined('JABAGO_CUSTOM_NAV_MENU_TABLE')) {
+	define('JABAGO_CUSTOM_NAV_MENU_TABLE', $wpdb->prefix . 'jabago_custom_nav_menu');
 }
-if (!defined('MCNM_SETTINGS_TABLE')) {
-	define('MCNM_SETTINGS_TABLE', $wpdb->prefix . 'mcnm_jabago_custom_nav_menu_settings');
+if (!defined('JABAGO_CUSTOM_NAV_MENU_SETTINGS_TABLE')) {
+	define('JABAGO_CUSTOM_NAV_MENU_SETTINGS_TABLE', $wpdb->prefix . 'jabago_custom_nav_menu_settings');
 }
 
 

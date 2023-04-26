@@ -22,7 +22,7 @@ require_once JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-jabago-custom-nav-men
 
 
 
-$setting_manager = new MCNM_Settings_Management;
+$setting_manager = new Jabago_Cnm_Settings_Management;
 
 $menus = $setting_manager->get_menus_list();
 
@@ -126,6 +126,12 @@ if (isset($_POST['save-settings'])) {
     }
 
     if (isset($_POST['show-menu'])) {
+        $settings_data['buttonVerticalAlignment'] = $_POST['button-vertical-alignment'];
+    } else {
+        $settings_data['buttonVerticalAlignment'] = $records ? $records->buttonVerticalAlignment : 'bottom';
+    }
+
+    if (isset($_POST['show-menu'])) {
         $settings_data['menuAlignment'] = $_POST['menu-alignment'];
     } else {
         $settings_data['menuAlignment'] = $records ? $records->menuAlignment : 'right';
@@ -169,7 +175,7 @@ if (isset($_POST['save-settings'])) {
     if (isset($_POST['header-search'])) {
         $settings_data['headerSearch'] = $_POST['header-search'];
     } else {
-        $settings_data['headerSearch'] = $records ? $records->headerSearch : 'off';
+        $settings_data['headerSearch'] = 'off';
     }
     if (isset($_POST['search-text'])) {
         $settings_data['searchText'] = $_POST['search-text'];
@@ -187,7 +193,7 @@ if (isset($_POST['save-settings'])) {
     if (isset($_POST['show-login'])) {
         $settings_data['showLogin'] = $_POST['show-login'];
     } else {
-        $settings_data['showLogin'] = $records ? $records->showLogin : 'off';
+        $settings_data['showLogin'] = 'off';
     }
     if (isset($_POST['show-login'])) {
         $settings_data['loginUrl'] = $_POST['login-url'];
@@ -220,7 +226,7 @@ if (isset($_POST['save-settings'])) {
 //TODO: Fix error if there is no menu created
 //TODO: enable disable search place holder text
 
-
+//TODO: fix a on hover
 //TODO: check message 
 add_action( 'admin_notices', 'no_nav_menu' );
 if (empty($menus)) {
@@ -323,7 +329,7 @@ function no_nav_menu() {
                     </div>
                     <div class="option">
                         <div class="label">
-                            <label for="menu-select"> <?= esc_html_e( 'Menu button position', 'jabago-custom-nav-menu' ) ?></label>
+                            <label for="menu-select"> <?= esc_html_e( 'Menu button horizontal position', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="radio-input">
                             <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'left' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-left" value="left">
@@ -332,6 +338,17 @@ function no_nav_menu() {
                             <label for="button-alignment-center" data="CENTER"></label>
                             <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active <?php echo esc_attr( $records != null ? '' : 'default' ); ?>" <?php echo esc_attr( $records != null && $records->buttonAlignment && $records->buttonAlignment == 'right' ? 'checked' : '' ); ?> type="radio" name="button-alignment" id="button-alignment-right" value="right">
                             <label for="button-alignment-right" data="RIGHT"></label>
+                        </div>
+                    </div>
+                    <div class="option">
+                        <div class="label">
+                            <label for="menu-select"> <?= esc_html_e( 'Menu button vertical position', 'jabago-custom-nav-menu' ) ?></label>
+                        </div>
+                        <div class="radio-input">
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active" <?php echo esc_attr( $records != null && $records->buttonVerticalAlignment && $records->buttonVerticalAlignment == 'top' ? 'checked' : '' ); ?> type="radio" name="button-vertical-alignment" id="button-vertical-alignment-top" value="top">
+                            <label for="button-vertical-alignment-top" data="TOP"></label>
+                            <input <?php echo esc_attr( $records != null && $records->showMenu == 'on' ? '' : 'disabled' ); ?> class="menu-active <?php echo esc_attr( $records != null ? '' : 'default' ); ?>" <?php echo esc_attr( $records != null && $records->buttonVerticalAlignment && $records->buttonVerticalAlignment == 'bottom' ? 'checked' : '' ); ?> type="radio" name="button-vertical-alignment" id="button-vertical-alignment-bottom" value="bottom">
+                            <label for="button-vertical-alignment-bottom" data="BOTTOM"></label>
                         </div>
                     </div>
                     <div class="option">
@@ -388,19 +405,19 @@ function no_nav_menu() {
                         </div>
                         <div class="input">
                             <select onchange="enable_custom_header_image_input(this.value)" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="header-type" class="header-style">
-                                <option <?php echo esc_attr( $records != null && $records->headerType == 'logo' ? 'selected' : '' ); ?> value="logo"> <?= esc_html_e( 'Site logo', 'jabago-custom-nav-menu' ) ?> </option>
+                                <option <?php echo esc_attr( $records != null ? '' : 'selected' ); ?> <?php echo esc_attr( $records != null && $records->headerType == 'logo' ? 'selected' : '' ); ?> value="logo"> <?= esc_html_e( 'Site logo', 'jabago-custom-nav-menu' ) ?> </option>
                                 <option <?php echo esc_attr( $records != null && $records->headerType == 'avatar' ? 'selected' : '' ); ?> value="avatar"> <?= esc_html_e( 'User avatar', 'jabago-custom-nav-menu' ) ?></option>
                                 <option <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? 'selected' : '' ); ?> value="custom-image"> <?= esc_html_e( 'Custom Image', 'jabago-custom-nav-menu' ) ?></option>
                             </select>
                         </div>
                     </div>
-                    <div class="option">
+                    <div class="option" id="logo-select-container" style="display:<?= $records == null ? esc_attr( 'none' ) : ( $records->headerType == 'custom-image' ? 'grid' : 'none' ) ?>">
                         <div class="label">
                             <label for="header-custom-image"><?= esc_html_e( 'Select header image', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="input">
-                            <label <?php echo esc_attr( $records != null && $records->headerType == 'custom-image' ? '' : esc_attr('disabled') ); ?> type="reset" id="logo-preview-container" class="upload_custom_image" onclick="select_logo();"><?= '<img src="' . esc_attr($records != null && $records->headerType == 'custom-image' ? $records->logo : JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg') . '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'; ?></label>
-                            <input style="display:none;" type="text" name="logo" id="logo" value="<?= esc_attr( $records != null && $records->headerType == 'custom-image' ? $records->logo : '' ) ?>" />
+                            <label type="reset" id="logo-preview-container" class="upload_custom_image" onclick="select_logo();"><?= '<img src="' . esc_attr($records != null && $records->headerType == 'custom-image' ? $records->logo : JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg') . '" style="object-fit:contain" width=100 height=100 name="logo-preview" id="logo-preview" style="object-fit: cover;">'; ?></label>
+                            <input style="display:none;" type="text" name="logo" id="logo" value="<?= esc_attr( $records != null && $records->headerType == 'custom-image' ? $records->logo : JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/logo_placeholder.svg' ) ?>" />
                         </div>
                     </div>
                     <div class="option">
@@ -411,7 +428,7 @@ function no_nav_menu() {
                             <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'left' ? 'checked' : '' );
                                     echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="header-style" type="radio" name="header-alignment" id="header-alignment-left" value="left">
                             <label for="header-alignment-left" data="LEFT"></label>
-                            <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'center' ? 'checked' : '' );
+                            <input  <?php echo esc_attr( $records != null && $records->headerAlignment == 'center' ? 'checked' : '' );
                                     echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : ' disabled' ); ?> class="header-style <?php echo $records != null ? '' : 'default'; ?>" type="radio" name="header-alignment" id="header-alignment-center" value="center">
                             <label for="header-alignment-center" data="CENTER"></label>
                             <input <?php echo esc_attr( $records != null && $records->headerAlignment == 'right' ? 'checked' : '' );
@@ -456,7 +473,7 @@ function no_nav_menu() {
                             <label for="show-logout"><?= esc_html_e( 'Set login page', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
-                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="login-url">
+                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' && $records->showLogin == 'on' ? '' : 'disabled' ); ?> name="login-url">
                                 <?php
                                 
                                 foreach ($pages as $key => $page) {
@@ -472,7 +489,7 @@ function no_nav_menu() {
                             <label for="show-logout"><?= esc_html_e( 'Set register page', 'jabago-custom-nav-menu' ) ?></label>
                         </div>
                         <div class="checkbox-input">
-                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' ? '' : 'disabled' ); ?> name="register-url">
+                            <select class="footer-login footer-style" <?php echo esc_attr( $records != null && $records->showHeader == 'on' && $records->showLogin == 'on' ? '' : 'disabled' ); ?> name="register-url">
                                 <?php
                                 
                                 foreach ($pages as $key => $page) {
@@ -672,7 +689,7 @@ function no_nav_menu() {
             }
 
 
-            $settings = new MCNM_Settings_Management;
+            $settings = new Jabago_Cnm_Settings_Management;
 
             $records = $settings->load_settings();
 

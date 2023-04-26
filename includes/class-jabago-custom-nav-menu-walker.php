@@ -55,7 +55,7 @@ class Preview_Jabago_Custom_nav_menu_walker extends Walker_Nav_Menu{
         $classes .= ($args->walker->has_children) ? 'parent menu-item' : 'menu-item';
         $output .= '<li class="'. esc_attr( $classes ) .'" id="menu-item-'. esc_attr( $this->curItem ) .'">';
         $output .= '<div><a >'.$data_object->title;
-        $output .= ($args->walker->has_children) ? '</a><span onclick="openSubmenu('. esc_attr( $this->curItem ) .')" id="expand-icon-'. esc_attr( $this->curItem ) .'" class="submenu-icon" src="'. esc_attr( plugins_url( '/includes/img/down-arrow.svg', __DIR__ ) ) .'">'. $icon .'</span></div>' : '</a></div>';
+        $output .= ($args->walker->has_children) ? '</a><span onclick="openSubmenu('. esc_attr( $this->curItem ) .')" id="expand-icon-'. esc_attr( $this->curItem ) .'" class="submenu-icon" >'. $icon .'</span></div>' : '</a></div>';
         
     }
 

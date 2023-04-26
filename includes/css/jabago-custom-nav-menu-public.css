@@ -19,6 +19,21 @@ hr {
   border-top: solid 1px var(--fontColor);
 }
 
+.floating-menu-back {
+  width: 100%;
+  height: 0px;
+  position: fixed;
+  background: var(--backMenuColor);
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s, height 0.3s;
+}
+.floating-menu-back.active {
+  transition: opacity 0.3s, height 0.3s;
+  height: 100%;
+  opacity: 1;
+}
+
 nav.floating-nav-menu-container {
   display: block;
 }
@@ -40,26 +55,29 @@ nav.floating-nav-menu-container ul.floating-nav-menu {
   z-index: 100000;
   background-color: var(--menuBackground);
 }
+nav.floating-nav-menu-container ul.floating-nav-menu::-webkit-scrollbar {
+  display: none;
+}
 nav.floating-nav-menu-container ul.floating-nav-menu.right {
   padding: 1rem 25% 5rem 5%;
   border-radius: 1rem 0 0 1rem;
-  inset: 5% -20% 5% 60%;
+  inset: 5% -20% 5% 70%;
   transform: translateX(120%);
 }
 nav.floating-nav-menu-container ul.floating-nav-menu.left {
   padding: 1rem 5% 5rem 25%;
   border-radius: 0 1rem 1rem 0;
-  inset: 5% 20% 5% -20%;
+  inset: 5% 70% 5% -20%;
   transform: translateX(-150%);
 }
 nav.floating-nav-menu-container ul.floating-nav-menu.center {
   padding: 1rem 5% 6rem 5%;
   border-radius: 1rem 1rem 0 0;
-  inset: 5% 5% -20% 5%;
+  inset: 5% 30% -20% 30%;
   transform: translateY(150%);
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .header {
-  padding: 0.5rem 0 0.5rem 0;
+  padding: 2rem 0 0.5rem 0;
   border-bottom: solid 1px var(--fontColor);
   margin-bottom: 1.5rem;
 }
@@ -68,7 +86,7 @@ nav.floating-nav-menu-container ul.floating-nav-menu .header h2 {
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .header .search-form {
   display: flex;
-  padding: 0 10px;
+  padding: 0 0px;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .header .search-form .search-text-input {
   background-color: var(--selectedItemBackground);
@@ -112,7 +130,8 @@ nav.floating-nav-menu-container ul.floating-nav-menu .header .search-form button
   stroke: var(--fontColor);
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .header .custom-text {
-  padding: 15px 0;
+  padding: 10px 0 0 0;
+  line-height: 20px;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .header .custom-text .right {
   text-align: right;
@@ -237,7 +256,7 @@ nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item.parent ul.floa
   max-height: 0;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item.parent ul.floating-nav-submenu[data-visible=false] {
-  transform: translateX(120%);
+  transform: translateX(180%);
   transition: max-height 0.2s 0.2s, transform 0.2s;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item.parent ul.floating-nav-submenu[data-visible=false] li.menu-item {
@@ -274,22 +293,25 @@ nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item div span.subme
   text-align: center;
   margin: auto 10px;
   display: contents;
+  cursor: pointer;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item div span.submenu-icon svg {
   transition-duration: 0.5s;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.5rem;
+  height: 100%;
+  padding: 0.2rem;
+  aspect-ratio: 1;
   margin: auto 10px;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item div span.submenu-icon svg path {
   fill: var(--fontColor);
   stroke: var(--fontColor);
+  stroke-width: 0.1px;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu li.menu-item div a:is(:active, :link, :visited).active {
   color: var(--selectedItemColor);
   font-family: "Poppins-Thin";
   background-color: var(--selectedItemBackground);
-  border-radius: 0.5em;
   line-height: 100%;
 }
 nav.floating-nav-menu-container ul.floating-nav-menu .menu-footer {
@@ -369,13 +391,18 @@ nav.floating-nav-menu-container ul.floating-nav-menu[data-visible=false].center 
   width: 60px;
   height: 60px;
   aspect-ratio: 1;
-  bottom: 15px;
   margin: 0 15px;
   transform-origin: 50%;
   -webkit-animation: button-enter cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s 1 forwards;
           animation: button-enter cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s 1 forwards;
   -webkit-animation-delay: 0.5s;
           animation-delay: 0.5s;
+}
+.nav-toggle-container button.jabago-nav-toggle.top {
+  top: 20px;
+}
+.nav-toggle-container button.jabago-nav-toggle.bottom {
+  bottom: 20px;
 }
 .nav-toggle-container button.jabago-nav-toggle[aria-expanded=true] {
   background-color: transparent;

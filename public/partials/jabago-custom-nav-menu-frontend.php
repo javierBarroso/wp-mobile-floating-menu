@@ -23,30 +23,31 @@ require_once( JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/class-settings-management.
 if (!is_admin()) {
     //new JabagoFloatingMenuFrontEnd;
 }
-$settings = new MCNM_Settings_Management;
+$settings = new Jabago_Cnm_Settings_Management;
 
 $records = $settings->load_settings();
 
-
 ?>
 <div class="nav-toggle-container <?= !empty($records) ? esc_attr( $records->buttonAlignment ) : esc_attr( 'hide' ) ?>">
-    <button id="jabago-nav-toggle" class="jabago-nav-toggle" aria-controls="floating-nav-menu" aria-expanded="false"></button>
+    <button id="jabago-nav-toggle" class="jabago-nav-toggle <?= !empty($records) ? esc_attr( $records->buttonVerticalAlignment ) : esc_attr( 'hide' )?>" aria-controls="floating-nav-menu" aria-expanded="false"></button>
 </div>
 <div class="floating-menu-back"></div>
 
 <?php
 
 function custom_search_form( ) {
-    $settings = new MCNM_Settings_Management;
+    $settings = new Jabago_Cnm_Settings_Management;
     $records = $settings->load_settings();
 
-    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url( '/' ) ) . '" >
-                <div class="search-form">
-                    <input class="search-text-input" type="text" placeholder="' . esc_attr( $records->searchText ) . '" name="s" id="s" />
-                    <button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents( JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/img/search-icon.svg' ) . '</button>
-                </div>
-            </form>';
+    $placeholder = !empty($records) ? (!empty($records->searchText) ? $records->searchText : '') : '';
 
+
+    $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . esc_attr( home_url( '/' ) ) . '" >';
+    $form .= '<div class="search-form">';
+    $form .= '<input class="search-text-input" type="text"  name="s" id="s" placeholder="' . $placeholder . '" />';
+    $form .= '<button class="search-button" type="submit" id="searchsubmit" >'. file_get_contents(JABAGO_CUSTOM_NAV_MENU_PATH . 'includes/img/search-icon.svg' ) . '</button>';
+    $form .= '</div></form>';
+    
     return $form;
 }
 
@@ -55,6 +56,7 @@ $header = '';
 $logout = '';
 
 $search = custom_search_form();
+
 
 if (!empty($records) && $records->showHeader == 'on') {
 
@@ -73,7 +75,7 @@ if (!empty($records) && $records->showHeader == 'on') {
         $header .= '<div class="custom-image ' . esc_attr( $records->headerAlignment ) . '"><img src="' . esc_attr( $records->logo ) . '"></div>';
     }
     if ($records->headerText) {
-        $header .= '<div class="custom-text"><h2 class="' . esc_attr( $records->headerAlignment ) . '">' . esc_html( $records->headerText ) . '</h2></div>';
+        $header .= '<div class="custom-text"><div class="' . esc_attr( $records->headerAlignment ) . '">' . esc_html( $records->headerText ) . '</div></div>';
     }
     if($records->headerSearch == 'on'){
         $header .= '<div class="custom-text">' . $search . '</div>';
@@ -92,16 +94,16 @@ add_filter( 'get_search_form', 'custom_search_form', 40 );
 
 if (!empty($records) && $records->showFooter == 'on') {
 
-    if($records->showLogin == 'off'){
-        return;
-    }
-    if (is_user_logged_in()) {
-
-        $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( wp_logout_url('home') ) . '">Log Out</a></div>';
+    if($records->showLogin != 'off'){
         
-    }else{
-
-        $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( $records->loginUrl ) . '">Log In</a><br><a href="' . esc_attr( $records->registerUrl ) . '">Register</a></div>';
+        if (is_user_logged_in()) {
+            
+            $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( wp_logout_url('home') ) . '">Log Out</a></div>';
+            
+        }else{
+            
+            $logout = '<br><hr><br><div class="menu-footer ' . esc_attr( $records->footerAlignment ) . '"><a href="' . esc_attr( $records->loginUrl ) . '">Log In</a><br><a href="' . esc_attr( $records->registerUrl ) . '">Register</a></div>';
+        }
     }
 }
 

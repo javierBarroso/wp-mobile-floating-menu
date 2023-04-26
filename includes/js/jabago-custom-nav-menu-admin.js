@@ -26,10 +26,10 @@ function enable_input(cl, enable){
 }
 
 function enable_custom_header_image_input(value){
+    console.log(value)
+    var custom_image_button = document.querySelector('#logo-select-container');
 
-    var custom_image_button = document.querySelector('#logo-preview-container');
-
-    (value == 'custom-image') ? custom_image_button.disabled = false : custom_image_button.disabled = true;
+    (value == 'custom-image') ? custom_image_button.style.display = 'grid' : custom_image_button.style.display = 'none'
 }
 
 function select_logo(){

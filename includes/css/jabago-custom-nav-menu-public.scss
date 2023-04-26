@@ -23,6 +23,22 @@ hr{
     border-top: solid 1px var(--fontColor);
 }
 
+.floating-menu-back{
+    width: 100%;
+    height: 0px;
+    position: fixed;
+    background: var(--backMenuColor);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s, height 0.3s;
+    
+    &.active{
+        transition: opacity 0.3s, height 0.3s;
+        height: 100%;
+        opacity: 1;
+    }
+}
+
 nav.floating-nav-menu-container{
     display: block;
     *{
@@ -41,29 +57,31 @@ nav.floating-nav-menu-container{
         margin: 0;
         position: fixed;
         z-index: 100000;
-        
+        &::-webkit-scrollbar{
+            display: none;
+        }
         &.right{
             padding: 1rem 25% 5rem 5%;
             border-radius: 1rem 0 0 1rem;
             
-            inset: 5% -20% 5% 60%;
+            inset: 5% -20% 5% 70%;
             transform: translateX(120%);
         }
         &.left{
             padding: 1rem 5% 5rem 25%;
             border-radius: 0 1rem 1rem 0;
-            inset: 5% 20% 5% -20%;
+            inset: 5% 70% 5% -20%;
             transform: translateX(-150%);
         }
         &.center{
             padding: 1rem 5% 6rem 5%;
             border-radius: 1rem 1rem 0 0;
-            inset: 5% 5% -20% 5%;
+            inset: 5% 30% -20% 30%;
             transform: translateY(150%);
         }
 
         .header{
-            padding: .5rem 0 .5rem 0;
+            padding: 2rem 0 .5rem 0;
             border-bottom: solid 1px var(--fontColor);
             margin-bottom: 1.5rem;
             h2{
@@ -72,7 +90,7 @@ nav.floating-nav-menu-container{
 
             .search-form{
                 display: flex;
-                padding: 0 10px;
+                padding: 0 0px;
                 .search-text-input{
                     background-color: var(--selectedItemBackground);
                     border-color: var(--fontColor);
@@ -110,7 +128,8 @@ nav.floating-nav-menu-container{
                 }
             }
             .custom-text{
-                padding: 15px 0;
+                padding: 10px 0 0 0;
+                line-height: 20px;
                 .right{
                     text-align: right;
                     
@@ -263,7 +282,6 @@ nav.floating-nav-menu-container{
             &.parent{
                 border: none;
                 display: block;
-                
                 ul.floating-nav-submenu{
                     width: 95%;
                     margin-left: auto;
@@ -276,7 +294,7 @@ nav.floating-nav-menu-container{
                 } */
                 ul.floating-nav-submenu[data-visible="false"]{
                     
-                    transform: translateX(120%);
+                    transform: translateX(180%);
                     
                     transition:  max-height .2s .2s, transform .2s;
                     
@@ -319,14 +337,19 @@ nav.floating-nav-menu-container{
                     text-align: center;
                     margin: auto 10px;
                     display: contents;
+                    cursor: pointer;
                     svg{
+                        // background-color: blue;
                         transition-duration: 0.5s;
-                        width: 1.5rem;
-                        height: 1.5rem;
+                        width: 2.5rem;
+                        height: 100%;
+                        padding: .2rem;
+                        aspect-ratio: 1;
                         margin: auto 10px;
                         path{
                             fill: var(--fontColor);
                             stroke: var(--fontColor);
+                            stroke-width: 0.1px;
                         }
                     }
                     
@@ -337,7 +360,7 @@ nav.floating-nav-menu-container{
                     color: var(--selectedItemColor);
                     font-family: 'Poppins-Thin';
                     background-color: var(--selectedItemBackground);
-                    border-radius: 0.5em;
+                    // border-radius: 0.5em;
                     line-height: 100%;
                     
                 }
@@ -437,11 +460,16 @@ nav.floating-nav-menu-container{
         width: 60px;
         height: 60px;
         aspect-ratio: 1;
-        bottom: 15px;
         margin: 0 15px;
         transform-origin: 50%;
         animation: button-enter cubic-bezier(0.175, 0.885, 0.32, 1.275) .5s 1 forwards;
         animation-delay: .5s;
+        &.top{
+            top: 20px;
+        }
+        &.bottom{
+            bottom: 20px;
+        }
     }
     button.jabago-nav-toggle[aria-expanded='true']{
         background-color: transparent;

@@ -75,7 +75,7 @@ class Jabago_Custom_Nav_Menu_Admin
 			'Jabago Custom Nav Menu',
 			'Jabago Custom Nav Menu',
 			'manage_options',
-			'mcnm',
+			'jabago_cnm',
 			array($this, 'jabago_custom_nav_menu_settings'),
 			JABAGO_CUSTOM_NAV_MENU_URL . 'includes/img/boton-menu-icon.svg', 
 			3
